@@ -1,0 +1,247 @@
+---
+title: "Preserved Structure Across Vector Space Representations"
+bibliography: library.bib
+csl: apa6.csl
+document-params: "10pt, letterpaper"
+header-includes:
+   - \usepackage{lipsum}
+
+author-information: > 
+    \author{{\large \bf Andrei Amatuni} \\ \texttt{andrei.amatuni@duke.edu} \\ Department of Psychology \\ Duke University
+    \And {\large \bf Elika Bergelson} \\ \texttt{elika.bergelson@duke.edu} \\ Department of Psychology \\ Duke University}
+
+abstract: 
+    "We find evidence of preserved structure between vector space representations of words and their corresponding image embeddings. This is evidence of regularity between the representations learned using distributional statistics of words and the visual characteristics of those same items. We find that some classes of objects, namely inanimate ones, preserve their within-class structure across these two spaces more strongly than others (e.g. animate objects), and that this quality of preserving class-level relationships across representational spaces might aid in lexical acquisition, with invariance serving as an informative marker of category boundaries. Our current analysis does not show significant AoA benefits for inanimate objects, but does exhibit a stable pattern suggesting that other partitioning schemes might be worth exploring (or something like that)"
+    
+keywords:
+    "vector space models; semantic similarity; word learning"
+    
+output: cogsci2016::cogsci_paper
+---
+
+```{r global_options, include=FALSE}
+rm(list=ls())
+knitr::opts_chunk$set(fig.width=3, fig.height=3, fig.crop = F, fig.pos = "tb", fig.path='figs/',
+                      echo=F, warning=F, cache=F, message=F, sanitize = T)
+```
+
+```{r, libraries}
+library(png)
+library(grid)
+library(ggplot2)
+library(xtable)
+library(tidyverse)
+library(ggpubr)
+```
+
+```{r preliminary_data_loading}
+animate <- c("puppy", "duck", "elephant", "pig", "monkey", "giraffe",
+             "bear", "baby", "fish", "frog", "cow", "dog", "cat")
+combo <- read_csv("data/pairwise_distances.csv")
+
+wb_prod <- read_csv("data/wordbank_production.csv") %>%  
+   mutate(definition = forcats::fct_recode(definition,
+    "fish"    = "fish (animal)",
+    "water"   = "water (beverage)")) %>% 
+  filter(definition%in%combo$X1) %>% 
+  mutate(animate = ifelse(definition %in% animate, "animate", "inanimate"))
+
+wb_comp <- read_csv("data/wordbank_comprehension.csv") %>%
+     mutate(definition = forcats::fct_recode(definition,
+    "fish"    = "fish (animal)",
+    "water"   = "water (beverage)")) %>% 
+    filter(definition%in%combo$X1) %>% 
+    mutate(animate = ifelse(definition %in% animate, "animate", "inanimate"))
+
+# fix water picture in img space
+```
+
+
+# Introduction
+
+# Methods
+
+We generate two sets of vector representations for a common set of words first learned by most infants. The first set of vectors are taken from a pretrained set of GloVe representations [@pennington2014glove], a modern distributional semantic vector space model. The second set is taken from the final layer activations of a pretrained image recognition model, Google's Inception V3 convolutional neural network [@szegedy2016rethinking]. Both of these representations are what's refered to as "embeddings". They map objects from one medium (e.g. images or words) into a metric space, where distances between points can be computed and function as a measure of similarity between objects. 
+
+In the case of our word vectors, the GloVe algorithm instantiates the distributional hypothesis, which proposes that words which co-occur with each other share similar meaning [@firth1957synopsis; @harris1954distributional], and by capturing the covariance of tokens in large text corpora, you capture some aspect of their semantic structure. The image embeddings, on the other hand, are taken from the final layer of activations in a convolutional neural network, whose objective function tunes network parameters in service of object recognition, where the loss function is computed in reference to a set of labeled training images [@ILSVRC15]. The final layer of this network encodes the most abstract and integrated visual features, serving as the basis for classification into 1000 different classes. 
+
+## Defining a prototypical image
+In the case of word vectors, each word is assigned a unique point in a common vector space. Different images containing objects of the same type, on the other hand, will have varying vector representations after passing through the layers of a neural network. This presents a problem in comparing the two forms of representation. We must first define the most prototypical (or average) image vector for any given category of object.
+
+Given a set of images $S_c$ containing objects belonging to a single category $c$ (e.g. cat, dog, chair), we define our prototypical vector $\hat{x}_c$ of $S_c$ as the generalized median within a representational space $U$. This is the vector with minimal distance between it and all the other members of set $S_c$ in $U$. If $x$ and $y$ are vectors in space $U$, resulting from images in $S_c$ being passed through a neural network, then
+
+$$
+ \hat{x_c} = \operatorname*{arg\,min}_{x\in U} \sum_{y\in U} d(x, y)
+$$
+We define our $d(x, y)$ to be the cosine similarity measure:
+
+$$
+d(x, y) = 1 - \frac{x\cdot y}{\|x\|\|y\|}
+$$
+
+Our $d(x, y)$ is not a metric in the strict sense, but is less susceptible to differences in $L^2$ norm influencing our measure of similarity, as is the case with the Euclidean distance. These magnitude difference can be the product of frequency effects in the training data, and the cosine similarity corrects for this. 
+
+The image inputs we use are all 960x960 images of a single object on a gray background. These images were chosen by virtue of their presence in infants' early linguistic environment, aggregated as part of the SEEDLingS project, which gathered longitudinal audio and video data of infants' home environments [@bergelson2016seedlings; @bergelson2016seedlingsdatabrary]. We arrive at a set of 27 unique words, selected on the basis of having at least 9 unique images with which to determine the most prototypical. The more images we have of any given category, the more robust our measure of category variance in image vector space, resulting more representative category vectors.  These are all words found on WordBank [@frank2017wordbank], a compilation of the MacArthur-Bates Communicative Development Inventory, which we use as our proxy for age of acquisition. By studying the behavior of these developmentally salient objects, our analysis is able to speak to the statistical structure of those objects which infants will be most readily contending with. 
+
+## Comparing spaces 
+
+After we have our two sets of vectors (i.e. those from word vector space and those from image vector space), we can compare all the pairwise distances between objects, both within a single space and across the two. When comparing across the two spaces, a correlation in pairwise distances implies that inter-object distances have been conserved. For example, if "dog" and "cat" are close together in word space and mutually far apart from "chair" and "table" in that same space, maintaining this relationship for all pairwise distances in the \textit{other} vector space means that the global inter-object structure is preserved across this mapping, despite being in radically different spaces, both in terms of dimensionality (300 for words, and 2048 for images in our case) and by virtue of using completely different algorithms and inputs to establish the vector representations for objects. So while their absolute locations might have been radically transformed, this correlation would be a measure of the \textit{degree of invariance} in their positioning relative to each other. 
+
+# Results
+
+```{r animate_corrs, echo=F}
+animate_corr <- cor.test(subset(combo, animate=="animate")$cos_word, subset(combo, animate=="animate")$cos_img, conf.int=T)
+#eb confint: -.28 to .032, p = .12
+not_anim_corr <- cor.test(subset(combo, animate=="inanimate")$cos_word, subset(combo, animate=="inanimate")$cos_img, conf.int=T)
+#eb confint: .24-.49, p=.0000017
+mixed_corr <- cor.test(subset(combo, animate=="mixed")$cos_word, subset(combo, animate=="mixed")$cos_img, conf.int=T)
+
+not_anim_corr_string <- sprintf("($R = %0.2f$, $p < %1.2g$)", not_anim_corr$estimate, not_anim_corr$p.value)
+
+```
+
+We find that pairwise cosine distances between objects in word vector space correlate with those same pairwise distances in the image vector space. If we partition the set of inter-word distances into those that are either animate-animate, inanimate-inanimate, or mixed, we find that the pairs of distances between inanimate objects significantly correlate across our two spaces `r not_anim_corr_string`, while the other two pairings do not. 
+
+
+```{r pairwise_corr, echo = F, fig.cap = cap, fig.height=5, fig.width=3.4}
+ggplot(combo, aes(cos_word, cos_img, color = word))+
+  geom_point(size=3, shape =1)+
+  geom_smooth(method="lm", aes(group=1), show.legend=F)+
+  geom_smooth(method="lm", aes(group=1), se=F)+ # this second line is to trick ggplot into not putting the gray fill in the boxes in the legend (coming from the standard error in the first line)
+  theme_bw()+
+  xlab("Cosine Word")+
+  ylab("Cosine Image")+
+  theme(legend.position="bottom", 
+        legend.title = element_blank(), 
+        legend.text = element_text(size=7), 
+        legend.key.width = unit(0.4, "cm"),
+        legend.key = element_rect(fill = 'white', size = 0.1)
+        )
+
+pairwise_corr <- cor.test(combo$cos_img, combo$cos_word)
+
+cap <- sprintf("Relative cosine distance between points in word embedding space correlates with relative distance in image embedding space ($R = %0.2f$, $p < %1.2g$). Graph contains all pairwise distances for every word.", pairwise_corr$estimate, pairwise_corr$p.value)
+```
+
+
+```{r pairwise_corr_animate_vs_not, echo = F, fig.cap=cap, fig.width=3.4}
+
+#eb confint: -.12 to .09, p = .80
+#eb hey so this is good: even if you correct for 3 comparisons, the inanimate correlation is robust, and it's CI does not overlap with the others.
+combo %>%
+  ggplot(aes(cos_word, cos_img, color = word))+
+  geom_point(size=2, shape = 1)+
+    stat_smooth(method = "lm", aes(group=1))+theme_bw()+
+    facet_wrap(~factor(animate, levels=c("animate", "inanimate", "mixed"), labels=c("Animate", "Inanimate", "Mixed")), dir="v", nrow = 1)+
+    xlab("Cosine Word")+
+    ylab("Cosine Image")+
+    theme(legend.position="none")
+    
+cap <- sprintf("Inanimate objects display a significantly stronger correlation when mapping across vector spaces, meaning that they preserve their within-class structural relationships more reliabily across these two spaces. Animate and mixed distances do not correlate. Each graph contains all pairwise distances between objects that are either a) both animate ($R = %0.2f$, $p < %1.2g$), b) both inanimate ($R = %0.2f$, $p < %1.2g$), or c) mixed animate-to-inanimate ($R = %0.2f$, $p < %1.2g$)", animate_corr$estimate, animate_corr$p.value, not_anim_corr$estimate, not_anim_corr$p.value, mixed_corr$estimate, mixed_corr$p.value)
+    
+```
+
+
+<!-- ```{r overlap_table, results="asis"} -->
+<!-- n <- 100 -->
+<!-- x <- rnorm(n) -->
+<!-- y <- 2*x + rnorm(n) -->
+<!-- out <- lm(y ~ x) -->
+
+<!-- tab1 <- xtable::xtable(summary(out)$coef, digits=c(0, 2, 2, 1, 2),  -->
+<!--                       caption = "This table prints across one column.") -->
+
+<!-- print(tab1, type="latex", comment = F, table.placement = "H") -->
+<!-- ``` -->
+
+```{r animacy_aoa, echo=F, fig.height=4, fig.width=3.1}
+wb_prod_long <- wb_prod %>% 
+  gather(`16`:`30`, value = 'mean_prop_prod', key = "month")
+wb_comp_long <- wb_comp %>% 
+  gather(`8`:`18`, value = 'mean_prop_comp', key = "month")
+
+#each month sep
+ggplot(wb_prod_long, aes(x = animate, y = mean_prop_prod, color = animate))+
+  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")+
+  facet_wrap(~month, scales = "free_y")+
+  theme_bw()+
+  theme(legend.position = "bottom",
+        axis.text.x=element_blank())
+
+ggplot(wb_comp_long, aes(x = animate, y = mean_prop_comp, color = animate))+
+  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")+
+  facet_wrap(~month, scales = "free_y")+
+  theme_bw()+
+  theme(legend.position = "bottom",
+        axis.text.x=element_blank())
+```
+
+```{r animacy_aoa_overall, echo=F}
+wb_prod_long_allmonths <- wb_prod_long %>% 
+  group_by(definition, animate) %>% 
+  summarise(overall_prop_prod = mean(mean_prop_prod))
+wb_comp_long_allmonths <- wb_comp_long %>% 
+  group_by(definition, animate) %>% 
+  summarise(overall_prop_comp = mean(mean_prop_comp))
+
+#1 datapoint going into error bars per word 
+ggplot(wb_prod_long_allmonths,aes(x = animate , y = overall_prop_prod, color=animate))+
+  theme_bw()+
+  theme(axis.text.x=element_blank())+
+  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
+ggplot(wb_comp_long_allmonths,aes(x = animate , y = overall_prop_comp, color=animate))+
+  theme_bw()+
+  theme(axis.text.x=element_blank())+
+  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
+
+# 1 datapoint going into error bars per word per month
+ggplot(wb_prod_long,aes(x = animate , y = mean_prop_prod, color=animate))+
+  theme_bw()+
+  theme(axis.text.x=element_blank())+
+  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
+ggplot(wb_comp_long,aes(x = animate , y = mean_prop_comp, color=animate))+
+  theme_bw()+
+  theme(axis.text.x=element_blank())+
+  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
+
+#stats
+#at the word level with month collapsed, data are normally dist:
+# shapiro.test(wb_prod_long_allmonths$overall_prop_prod)
+# shapiro.test(wb_comp_long_allmonths$overall_prop_comp)
+#not so with month kept in the dataset
+# qplot(wb_prod_long$mean_prop_prod)
+# qplot(wb_comp_long$mean_prop_comp)
+# shapiro.test(wb_prod_long$mean_prop_prod)
+# shapiro.test(wb_comp_long$mean_prop_comp)
+
+#no diff in overall prop prod for animate vs. inanimate
+# t.test(subset(wb_prod_long_allmonths, animate =="animate")$overall_prop_prod,
+#        subset(wb_prod_long_allmonths, animate =="inanimate")$overall_prop_prod)
+# 
+# t.test(subset(wb_comp_long_allmonths, animate =="animate")$overall_prop_comp,
+#        subset(wb_comp_long_allmonths, animate =="inanimate")$overall_prop_comp)
+```
+
+# Discussion
+
+
+# Conclusion
+
+
+# Acknowledgements
+
+Place acknowledgments (including funding information) in a section at
+the end of the paper.
+
+[@gelman1986categories, @tversky1977features, @kemp2005generative, @hahn2003similarity, @pennington2014glove, @szegedy2016rethinking, @firth1957synopsis, @harris1954distributional, @ILSVRC15]
+
+# References 
+
+```{r}
+# References will be generated automatically by Pandoc and included here.
+# The following code is some latex to format the bibliography. Do not remove it.
+```
+
+\setlength{\parindent}{-0.1in} 
+\setlength{\leftskip}{0.125in}
+\noindent
