@@ -59,7 +59,7 @@ wb_comp <- read_csv("data/wordbank_comprehension.csv") %>%
 
 # Introduction
 
-Infants learning language are presented with a challenge to carve the world into distinct lexical entities, provided with little supervision in their task of mapping the territory of what William James [-@james2013principles] called a "great blooming, buzzing confusion". 
+Infants are presented with a challenge to carve the world into distinct lexical entities in the process of learning language, provided with little supervision while mapping a territory which William James [-@james2013principles] dubbed a "great blooming, buzzing confusion". How they determine which aspects of the world to attend to in service of this goal, is an area of ongoing research [@mareschal2001categorization]. Different features of objects and their environment are varyingly informative with regards to object segmentation and category structure. Some researchers have suggested that categorization is along fundamentally perceptual grounds and that only later in development is conceptual knowledge incorporated into these nascent perceptual categories [@quinn2000emergence; @quinn1997reexamination; @quinn2000understanding]. Others suggest that these are two distinct processes, such that perceptual categories are computed automatically by the sensory systems and conceptual categories are independently formed through conscious action [@mandler2000perceptual]. 
 
 # Methods
 
