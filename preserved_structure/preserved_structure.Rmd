@@ -59,7 +59,7 @@ wb_comp <- read_csv("data/wordbank_comprehension.csv") %>%
 
 # Introduction
 
-
+Infants learning language are presented with a challenge to carve the world into distinct lexical entities, provided with little supervision in their task of mapping the territory of what William James [-@james2013principles] called a "great blooming, buzzing confusion". 
 
 # Methods
 
