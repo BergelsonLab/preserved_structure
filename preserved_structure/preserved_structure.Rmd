@@ -11,7 +11,7 @@ author-information: >
     \And {\large \bf Elika Bergelson} \\ \texttt{elika.bergelson@duke.edu} \\ Department of Psychology \\ Duke University}
 
 abstract: 
-    "We find evidence of preserved structure between vector space representations of words and their corresponding image embeddings. This is evidence of regularity between the representations learned using distributional statistics of words and the visual characteristics of those same items. We find that some classes of objects, namely inanimate ones, preserve their within-class structure across these two spaces more strongly than others (e.g. animate objects), and that this quality of preserving class-level relationships across representational spaces might aid in lexical acquisition, with invariance serving as an informative marker of category boundaries. Our current analysis does not show significant AoA benefits for inanimate objects, but does exhibit a stable pattern suggesting that other partitioning schemes might be worth exploring (or something like that)"
+    "We find evidence of preserved structure between vector space representations of words and their corresponding image embeddings. This is evidence of regularity between the representations learned using distributional statistics of words and the visual characteristics of those same items. We find that some classes of objects, namely inanimate ones, preserve their within-class structure across these two spaces more strongly than others (e.g. animate objects), and that this quality of preserving class-level relationships across representational spaces might aid in lexical acquisition, with invariance serving as an informative marker of category boundaries. Our current analysis does not show significant age-of-acquisition benefits for inanimate objects, but does exhibit a stable pattern suggesting that other partitioning schemes might be worth exploring (or something like that)"
     
 keywords:
     "vector space models; semantic similarity; word learning"
@@ -61,7 +61,7 @@ wb_comp <- read_csv("data/wordbank_comprehension.csv") %>%
 
 # Methods
 
-We generate two sets of vector representations for a common set of words first learned by most infants. The first set of vectors are taken from a pretrained set of GloVe representations [@pennington2014glove], a modern distributional semantic vector space model. The second set is taken from the final layer activations of a pretrained image recognition model, Google's Inception V3 convolutional neural network [@szegedy2016rethinking]. Both of these representations are what's refered to as "embeddings". They map objects from one medium (e.g. images or words) into a metric space, where distances between points can be computed and function as a measure of similarity between objects. 
+We generate two sets of vector representations for a common set of words first learned by most infants. The first set of vectors are taken from a pretrained set of GloVe representations [@pennington2014glove], a modern distributional semantic vector space model. The second set is taken from the final layer activations of a pretrained image recognition model, Google's Inception V3 convolutional neural network [@szegedy2016rethinking]. Both of these representations are what's refered to as "embeddings". They map objects from one medium (e.g. images or words) into a metric space where distances between points can be computed and function as a measure of similarity between objects. 
 
 In the case of our word vectors, the GloVe algorithm instantiates the distributional hypothesis, which proposes that words which co-occur with each other share similar meaning [@firth1957synopsis; @harris1954distributional], and by capturing the covariance of tokens in large text corpora, you capture some aspect of their semantic structure. The image embeddings, on the other hand, are taken from the final layer of activations in a convolutional neural network, whose objective function tunes network parameters in service of object recognition, where the loss function is computed in reference to a set of labeled training images [@ILSVRC15]. The final layer of this network encodes the most abstract and integrated visual features, serving as the basis for classification into 1000 different classes. 
 
@@ -81,7 +81,7 @@ $$
 
 Our $d(x, y)$ is not a metric in the strict sense, but is less susceptible to differences in $L^2$ norm influencing our measure of similarity, as is the case with the Euclidean distance. These magnitude difference can be the product of frequency effects in the training data, and the cosine similarity corrects for this. 
 
-The image inputs we use are all 960x960 images of a single object on a gray background. These images were chosen by virtue of their presence in infants' early linguistic environment, aggregated as part of the SEEDLingS project, which gathered longitudinal audio and video data of infants' home environments [@bergelson2016seedlings; @bergelson2016seedlingsdatabrary]. We arrive at a set of 27 unique words, selected on the basis of having at least 9 unique images with which to determine the most prototypical. The more images we have of any given category, the more robust our measure of category variance in image vector space, resulting more representative category vectors.  These are all words found on WordBank [@frank2017wordbank], a compilation of the MacArthur-Bates Communicative Development Inventory, which we use as our proxy for age of acquisition. By studying the behavior of these developmentally salient objects, our analysis is able to speak to the statistical structure of those objects which infants will be most readily contending with. 
+The image inputs we use are all 960x960 images of a single object on a gray background. These images were chosen by virtue of their presence in infants' early linguistic environment, aggregated as part of the SEEDLingS project, which gathered longitudinal audio and video data of infants' home environments [@bergelson2016seedlings; @bergelson2016seedlingsdatabrary]. We arrive at a set of 27 unique words, selected on the basis of having at least 9 unique images with which to determine the most prototypical. The more images we have of any given category, the more robust our measure of category variance in image vector space, resulting in more representative category vectors.  These are all words found on WordBank [@frank2017wordbank], a compilation of the MacArthur-Bates Communicative Development Inventory, which we use as our proxy for age of acquisition. By studying the behavior of these developmentally salient objects, our analysis is able to speak to the statistical structure of those objects which infants will be most readily contending with. 
 
 ## Comparing spaces 
 
@@ -100,10 +100,12 @@ not_anim_corr_string <- sprintf("($R = %0.2f$, $p < %1.2g$)", not_anim_corr$esti
 
 ```
 
-We find that pairwise cosine distances between objects in word vector space correlate with those same pairwise distances in the image vector space. If we partition the set of inter-word distances into those that are either animate-animate, inanimate-inanimate, or mixed, we find that the pairs of distances between inanimate objects significantly correlate across our two spaces `r not_anim_corr_string`, while the other two pairings do not. 
+We find that pairwise cosine distances between objects in word vector space correlate with those same pairwise distances in the image vector space (see Figure \ref{fig:pairwise-corr}). If we partition the set of inter-word distances into those that are either animate-animate, inanimate-inanimate, or mixed, we find that the pairs of distances between inanimate objects significantly correlate across our two spaces `r not_anim_corr_string`, while the other two pairings do not (see Figure \ref{fig:pairwise-corr-animate-vs-not}). We expect that those classes of objects which preserve their structure between representations more strongly would result in earlier object-referent mappings. This is because inferences about object-referent mappings conditioned on both visual and semantic features would be more stable than in those cases where those two representations vary independently. For example, an object that is both round (i.e. visual feature) and tends to roll (i.e. semantic feature) would be more salient as a distinct entity than an object whose visual features are entirely uninformative about its functional or semantic qualities. 
+
+In our case the class of objects which displays stronger structure preservation (within class) are the inanimate objects. When we partition our set of 27 words into animate and inanimates and plot their relative AoA, we find a noticable though insignificant preference for inanimates (see Figures \ref{fig:animacy-aoa-prod} and \ref{fig:animacy-aoa-comp}). The choice to partition our set into these two categories is to a degree arbitrary, and we have no reason to believe infants would learn one class of objects earlier than the other. Our current analysis is offered purely as an exploratory exercise, suggesting that perhaps partitions along other taxonomic or associative lines may provide insight in future investigations. 
 
 
-```{r pairwise_corr, echo = F, fig.cap = cap, fig.height=5, fig.width=3.4}
+```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=5, fig.width=3.4}
 ggplot(combo, aes(cos_word, cos_img, color = word))+
   geom_point(size=3, shape =1)+
   geom_smooth(method="lm", aes(group=1), show.legend=F)+
@@ -124,7 +126,7 @@ cap <- sprintf("Relative cosine distance between points in word embedding space 
 ```
 
 
-```{r pairwise_corr_animate_vs_not, echo = F, fig.cap=cap, fig.width=3.4}
+```{r pairwise-corr-animate-vs-not, echo = F, fig.cap=cap, fig.width=3.4}
 
 #eb confint: -.12 to .09, p = .80
 #eb hey so this is good: even if you correct for 3 comparisons, the inanimate correlation is robust, and it's CI does not overlap with the others.
@@ -154,12 +156,14 @@ cap <- sprintf("Inanimate objects display a significantly stronger correlation w
 <!-- print(tab1, type="latex", comment = F, table.placement = "H") -->
 <!-- ``` -->
 
-```{r animacy_aoa, echo=F, fig.height=4, fig.width=3.1}
+```{r animacy_aoa, echo=F}
 wb_prod_long <- wb_prod %>% 
   gather(`16`:`30`, value = 'mean_prop_prod', key = "month")
 wb_comp_long <- wb_comp %>% 
   gather(`8`:`18`, value = 'mean_prop_comp', key = "month")
+```
 
+```{r animacy-aoa-prod, echo=F, fig.height=4, fig.width=3.1, fig.cap = cap}
 #each month sep
 ggplot(wb_prod_long, aes(x = animate, y = mean_prop_prod, color = animate))+
   stat_summary(fun.data=mean_cl_boot, geom = "pointrange")+
@@ -167,16 +171,20 @@ ggplot(wb_prod_long, aes(x = animate, y = mean_prop_prod, color = animate))+
   theme_bw()+
   theme(legend.position = "bottom",
         axis.text.x=element_blank())
+cap <- "By month AoA of animates vs. inanimates using child production data"
+```
 
+```{r animacy-aoa-comp, echo=F, fig.height=4, fig.width=3.1, fig.cap = cap}
 ggplot(wb_comp_long, aes(x = animate, y = mean_prop_comp, color = animate))+
   stat_summary(fun.data=mean_cl_boot, geom = "pointrange")+
   facet_wrap(~month, scales = "free_y")+
   theme_bw()+
   theme(legend.position = "bottom",
         axis.text.x=element_blank())
+cap <- "By month AoA of animates vs. inanimates using child production data"
 ```
 
-```{r animacy_aoa_overall, echo=F}
+```{r animacy_aoa_overall, echo=F, fig.height=2, fig.cap = cap}
 wb_prod_long_allmonths <- wb_prod_long %>% 
   group_by(definition, animate) %>% 
   summarise(overall_prop_prod = mean(mean_prop_prod))
@@ -203,6 +211,8 @@ ggplot(wb_comp_long,aes(x = animate , y = mean_prop_comp, color=animate))+
   theme_bw()+
   theme(axis.text.x=element_blank())+
   stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
+
+cap <- "AoA for animates vs inanimates collapsed over month"
 
 #stats
 #at the word level with month collapsed, data are normally dist:

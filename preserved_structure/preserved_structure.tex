@@ -70,9 +70,9 @@ strongly than others (e.g.~animate objects), and that this quality of
 preserving class-level relationships across representational spaces
 might aid in lexical acquisition, with invariance serving as an
 informative marker of category boundaries. Our current analysis does not
-show significant AoA benefits for inanimate objects, but does exhibit a
-stable pattern suggesting that other partitioning schemes might be worth
-exploring (or something like that)
+show significant age-of-acquisition benefits for inanimate objects, but
+does exhibit a stable pattern suggesting that other partitioning schemes
+might be worth exploring (or something like that)
 
 \textbf{Keywords:}
 vector space models; semantic similarity; word learning
@@ -90,9 +90,9 @@ set is taken from the final layer activations of a pretrained image
 recognition model, Google's Inception V3 convolutional neural network
 (Szegedy, Vanhoucke, Ioffe, Shlens, \& Wojna, 2016). Both of these
 representations are what's refered to as ``embeddings''. They map
-objects from one medium (e.g.~images or words) into a metric space,
-where distances between points can be computed and function as a measure
-of similarity between objects.
+objects from one medium (e.g.~images or words) into a metric space where
+distances between points can be computed and function as a measure of
+similarity between objects.
 
 In the case of our word vectors, the GloVe algorithm instantiates the
 distributional hypothesis, which proposes that words which co-occur with
@@ -148,14 +148,14 @@ infants' home environments (Bergelson, 2016a, 2016b). We arrive at a set
 of 27 unique words, selected on the basis of having at least 9 unique
 images with which to determine the most prototypical. The more images we
 have of any given category, the more robust our measure of category
-variance in image vector space, resulting more representative category
-vectors. These are all words found on WordBank (Frank, Braginsky,
-Yurovsky, \& Marchman, 2017), a compilation of the MacArthur-Bates
-Communicative Development Inventory, which we use as our proxy for age
-of acquisition. By studying the behavior of these developmentally
-salient objects, our analysis is able to speak to the statistical
-structure of those objects which infants will be most readily contending
-with.
+variance in image vector space, resulting in more representative
+category vectors. These are all words found on WordBank (Frank,
+Braginsky, Yurovsky, \& Marchman, 2017), a compilation of the
+MacArthur-Bates Communicative Development Inventory, which we use as our
+proxy for age of acquisition. By studying the behavior of these
+developmentally salient objects, our analysis is able to speak to the
+statistical structure of those objects which infants will be most
+readily contending with.
 
 \subsection{Comparing spaces}\label{comparing-spaces}
 
@@ -181,35 +181,72 @@ other.
 
 We find that pairwise cosine distances between objects in word vector
 space correlate with those same pairwise distances in the image vector
-space. If we partition the set of inter-word distances into those that
-are either animate-animate, inanimate-inanimate, or mixed, we find that
-the pairs of distances between inanimate objects significantly correlate
-across our two spaces (\(R = 0.38\), \(p < 1.7e-07\)), while the other
-two pairings do not.
+space (see Figure \ref{fig:pairwise-corr}). If we partition the set of
+inter-word distances into those that are either animate-animate,
+inanimate-inanimate, or mixed, we find that the pairs of distances
+between inanimate objects significantly correlate across our two spaces
+(\(R = 0.38\), \(p < 1.7e-07\)), while the other two pairings do not
+(see Figure \ref{fig:pairwise-corr-animate-vs-not}). We expect that
+those classes of objects which preserve their structure between
+representations more strongly would result in earlier object-referent
+mappings. This is because inferences about object-referent mappings
+conditioned on both visual and semantic features would be more stable
+than in those cases where those two representations vary independently.
+For example, an object that is both round (i.e.~visual feature) and
+tends to roll (i.e.~semantic feature) would be more salient as a
+distinct entity than an object whose visual features are entirely
+uninformative about its functional or semantic qualities.
+
+In our case the class of objects which displays stronger structure
+preservation (within class) are the inanimate objects. When we partition
+our set of 27 words into animate and inanimates and plot their relative
+AoA, we find a noticable though insignificant preference for inanimates
+(see Figures \ref{fig:animacy-aoa-prod} and \ref{fig:animacy-aoa-comp}).
+The choice to partition our set into these two categories is to a degree
+arbitrary, and we have no reason to believe infants would learn one
+class of objects earlier than the other. Our current analysis is offered
+purely as an exploratory exercise, suggesting that perhaps partitions
+along other taxonomic or associative lines may provide insight in future
+investigations.
 
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/pairwise_corr-1} \caption[Relative cosine distance between points in word embedding space correlates with relative distance in image embedding space ($R = 0.30$, $p < 9.9e-16$)]{Relative cosine distance between points in word embedding space correlates with relative distance in image embedding space ($R = 0.30$, $p < 9.9e-16$). Graph contains all pairwise distances for every word.}\label{fig:pairwise_corr}
+\includegraphics{figs/pairwise-corr-1} \caption[Relative cosine distance between points in word embedding space correlates with relative distance in image embedding space ($R = 0.30$, $p < 9.9e-16$)]{Relative cosine distance between points in word embedding space correlates with relative distance in image embedding space ($R = 0.30$, $p < 9.9e-16$). Graph contains all pairwise distances for every word.}\label{fig:pairwise-corr}
 \end{figure}
 \end{CodeChunk}
 
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/pairwise_corr_animate_vs_not-1} \caption[Inanimate objects display a significantly stronger correlation when mapping across vector spaces, meaning that they preserve their within-class structural relationships more reliabily across these two spaces]{Inanimate objects display a significantly stronger correlation when mapping across vector spaces, meaning that they preserve their within-class structural relationships more reliabily across these two spaces. Animate and mixed distances do not correlate. Each graph contains all pairwise distances between objects that are either a) both animate ($R = -0.13$, $p < 0.12$), b) both inanimate ($R = 0.38$, $p < 1.7e-07$), or c) mixed animate-to-inanimate ($R = -0.01$, $p < 0.8$)}\label{fig:pairwise_corr_animate_vs_not}
+\includegraphics{figs/pairwise-corr-animate-vs-not-1} \caption[Inanimate objects display a significantly stronger correlation when mapping across vector spaces, meaning that they preserve their within-class structural relationships more reliabily across these two spaces]{Inanimate objects display a significantly stronger correlation when mapping across vector spaces, meaning that they preserve their within-class structural relationships more reliabily across these two spaces. Animate and mixed distances do not correlate. Each graph contains all pairwise distances between objects that are either a) both animate ($R = -0.13$, $p < 0.12$), b) both inanimate ($R = 0.38$, $p < 1.7e-07$), or c) mixed animate-to-inanimate ($R = -0.01$, $p < 0.8$)}\label{fig:pairwise-corr-animate-vs-not}
 \end{figure}
 \end{CodeChunk}
 
 \begin{CodeChunk}
-
-\includegraphics{figs/animacy_aoa-1} 
-\includegraphics{figs/animacy_aoa-2} \end{CodeChunk}
+\begin{figure}[tb]
+\includegraphics{figs/animacy-aoa-prod-1} \caption[By month AoA of animates vs]{By month AoA of animates vs. inanimates using child production data}\label{fig:animacy-aoa-prod}
+\end{figure}
+\end{CodeChunk}
 
 \begin{CodeChunk}
+\begin{figure}[tb]
+\includegraphics{figs/animacy-aoa-comp-1} \caption[By month AoA of animates vs]{By month AoA of animates vs. inanimates using child production data}\label{fig:animacy-aoa-comp}
+\end{figure}
+\end{CodeChunk}
 
-\includegraphics{figs/animacy_aoa_overall-1} 
-\includegraphics{figs/animacy_aoa_overall-2} 
-\includegraphics{figs/animacy_aoa_overall-3} 
-\includegraphics{figs/animacy_aoa_overall-4} \end{CodeChunk}
+\begin{CodeChunk}
+\begin{figure}[tb]
+\includegraphics{figs/animacy_aoa_overall-1} \caption[AoA for animates vs inanimates collapsed over month]{AoA for animates vs inanimates collapsed over month}\label{fig:animacy_aoa_overall1}
+\end{figure}
+\begin{figure}[tb]
+\includegraphics{figs/animacy_aoa_overall-2} \caption[AoA for animates vs inanimates collapsed over month]{AoA for animates vs inanimates collapsed over month}\label{fig:animacy_aoa_overall2}
+\end{figure}
+\begin{figure}[tb]
+\includegraphics{figs/animacy_aoa_overall-3} \caption[AoA for animates vs inanimates collapsed over month]{AoA for animates vs inanimates collapsed over month}\label{fig:animacy_aoa_overall3}
+\end{figure}
+\begin{figure}[tb]
+\includegraphics{figs/animacy_aoa_overall-4} \caption[AoA for animates vs inanimates collapsed over month]{AoA for animates vs inanimates collapsed over month}\label{fig:animacy_aoa_overall4}
+\end{figure}
+\end{CodeChunk}
 
 \section{Discussion}\label{discussion}
 
