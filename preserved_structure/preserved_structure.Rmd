@@ -59,6 +59,8 @@ wb_comp <- read_csv("data/wordbank_comprehension.csv") %>%
 
 # Introduction
 
+
+
 # Methods
 
 We generate two sets of vector representations for a common set of words first learned by most infants. The first set of vectors are taken from a pretrained set of GloVe representations [@pennington2014glove], a modern distributional semantic vector space model. The second set is taken from the final layer activations of a pretrained image recognition model, Google's Inception V3 convolutional neural network [@szegedy2016rethinking]. Both of these representations are what's refered to as "embeddings". They map objects from one medium (e.g. images or words) into a metric space where distances between points can be computed and function as a measure of similarity between objects. 
@@ -68,7 +70,7 @@ In the case of our word vectors, the GloVe algorithm instantiates the distributi
 ## Defining a prototypical image
 In the case of word vectors, each word is assigned a unique point in a common vector space. Different images containing objects of the same type, on the other hand, will have varying vector representations after passing through the layers of a neural network. This presents a problem in comparing the two forms of representation. We must first define the most prototypical (or average) image vector for any given category of object.
 
-Given a set of images $S_c$ containing objects belonging to a single category $c$ (e.g. cat, dog, chair), we define our prototypical vector $\hat{x}_c$ of $S_c$ as the generalized median within a representational space $U$. This is the vector with minimal sum of distances between it and all the other members of set $S_c$ in $U$. If $x$ and $y$ are vectors in space $U$, resulting from images in $S_c$ being passed through a neural network, then
+Given a set of images $S_c$ containing objects belonging to a single category $c$ (e.g. cat, dog, chair), we define our prototypical vector $\hat{x}_c$ of $S_c$ as the generalized median within a representational space $U$. This is the vector with minimal sum of distances between it and all the other members of set $S_c$ in $U$. If $x$ and $y$ are vectors in space $U$, products of images in $S_c$ being passed through a neural network, then
 
 $$
  \hat{x_c} = \operatorname*{arg\,min}_{x\in U} \sum_{y\in U} d(x, y)
@@ -102,7 +104,7 @@ not_anim_corr_string <- sprintf("($R = %0.2f$, $p < %1.2g$)", not_anim_corr$esti
 
 We find that pairwise cosine distances between objects in word vector space correlate with those same pairwise distances in the image vector space (see Figure \ref{fig:pairwise-corr}). If we partition the set of inter-word distances into those that are either animate-animate, inanimate-inanimate, or mixed, we find that the pairs of distances between inanimate objects significantly correlate across our two spaces `r not_anim_corr_string`, while the other two pairings do not (see Figure \ref{fig:pairwise-corr-animate-vs-not}). We expect that those classes of objects which preserve their structure between representations more strongly would result in earlier object-referent mappings. This is because inferences about object-referent mappings conditioned on both visual and semantic features would be more stable compared to those cases where the two representations vary independently. For example, an object that is both round (i.e. visual feature) and tends to roll (i.e. semantic feature) would be more salient as a distinct entity than an object whose visual features are entirely uninformative about its functional or semantic qualities. 
 
-In our case the class of objects which displays stronger structure preservation (within class) are the inanimate objects. When we partition our set of 27 words into animate and inanimates and plot their relative AoA, we find a noticable though insignificant preference for inanimates (see Figures \ref{fig:animacy-aoa-prod} and \ref{fig:animacy-aoa-comp}). The choice to partition our set into these two categories is to a degree arbitrary, and we have no reason to believe infants would learn one class of objects earlier than the other. Our current analysis is offered purely as an exploratory exercise, suggesting that perhaps partitions along other taxonomic or associative lines may provide insight in future investigations. 
+In our current analysis the class of objects which displays stronger structure preservation (within class) are the inanimate objects. When we partition our set of 27 words into animate and inanimates and plot their relative AoA, we find a noticable though insignificant preference for inanimates (see Figures \ref{fig:animacy-aoa-prod} and \ref{fig:animacy-aoa-comp}). The choice to partition our set into these two categories is to a degree arbitrary, and we have no reason to believe infants would learn one class of objects earlier than the other. Our current analysis is offered purely as an exploratory exercise, suggesting that perhaps partitions along other taxonomic or associative lines may provide insight in future investigations. 
 
 
 ```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=5, fig.width=3.4}
@@ -171,7 +173,7 @@ ggplot(wb_prod_long, aes(x = animate, y = mean_prop_prod, color = animate))+
   theme_bw()+
   theme(legend.position = "bottom",
         axis.text.x=element_blank())
-cap <- "By month AoA of animates vs. inanimates using child production data"
+cap <- "By-month AoA of animates vs. inanimates using child production data"
 ```
 
 ```{r animacy-aoa-comp, echo=F, fig.height=4, fig.width=3.1, fig.cap = cap}
@@ -181,7 +183,7 @@ ggplot(wb_comp_long, aes(x = animate, y = mean_prop_comp, color = animate))+
   theme_bw()+
   theme(legend.position = "bottom",
         axis.text.x=element_blank())
-cap <- "By month AoA of animates vs. inanimates using child production data"
+cap <- "By-month AoA of animates vs. inanimates using child comprehension data"
 ```
 
 ```{r animacy_aoa_overall, echo=F, fig.height=2, fig.cap = cap}
@@ -207,6 +209,8 @@ ggplot(wb_prod_long,aes(x = animate , y = mean_prop_prod, color=animate))+
   theme_bw()+
   theme(axis.text.x=element_blank())+
   stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
+
+# [aa] the bars on this graph don't overlap. is that worth noting?
 ggplot(wb_comp_long,aes(x = animate , y = mean_prop_comp, color=animate))+
   theme_bw()+
   theme(axis.text.x=element_blank())+
@@ -220,7 +224,7 @@ cap <- "AoA for animates vs inanimates collapsed over month"
 # shapiro.test(wb_comp_long_allmonths$overall_prop_comp)
 #not so with month kept in the dataset
 # qplot(wb_prod_long$mean_prop_prod)
-# qplot(wb_comp_long$mean_prop_comp)
+# qplot(wb_comp_long$mean_prop_comp) # [aa] comprehension behaves differently
 # shapiro.test(wb_prod_long$mean_prop_prod)
 # shapiro.test(wb_comp_long$mean_prop_comp)
 
