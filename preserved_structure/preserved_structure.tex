@@ -121,10 +121,10 @@ object.
 Given a set of images \(S_c\) containing objects belonging to a single
 category \(c\) (e.g.~cat, dog, chair), we define our prototypical vector
 \(\hat{x}_c\) of \(S_c\) as the generalized median within a
-representational space \(U\). This is the vector with minimal distance
-between it and all the other members of set \(S_c\) in \(U\). If \(x\)
-and \(y\) are vectors in space \(U\), resulting from images in \(S_c\)
-being passed through a neural network, then
+representational space \(U\). This is the vector with minimal sum of
+distances between it and all the other members of set \(S_c\) in \(U\).
+If \(x\) and \(y\) are vectors in space \(U\), resulting from images in
+\(S_c\) being passed through a neural network, then
 
 \[
  \hat{x_c} = \operatorname*{arg\,min}_{x\in U} \sum_{y\in U} d(x, y)
