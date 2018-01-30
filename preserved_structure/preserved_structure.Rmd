@@ -9,8 +9,7 @@ header-includes:
    - \usepackage[export]{adjustbox}
 
 author-information: > 
-    \author{{\large \bf Andrei Amatuni} \\ \texttt{andrei.amatuni@duke.edu} \\ Department of Psychology \\ Duke University
-    \And {\large \bf Elika Bergelson} \\ \texttt{elika.bergelson@duke.edu} \\ Department of Psychology \\ Duke University}
+      \author{{\large \bf Andrei Amatuni, Elika Bergelson} \\ \texttt{\{andrei.amatuni, elika.bergelson\}@duke.edu} \\ 417 Chapel Dr. Durham, NC 27708 USA \\ Department of Psychology and Neuroscience \\ Duke University}
 
 abstract: 
     "Certain concepts, words, and images are intuitively more similar than others (dog vs. cat, dog vs. spoon), though quantifying such similarity is notoriously tricky. Indeed, this kind of computation is likely a critical part of learning the category boundaries for words within a given language. Here, we use a set of items (n= 27, e.g. 'dog') that are highly common in young infants'input, and use both image-based and word-based algorithms to independently compute similarity among these items. We find two key results. First, the pair-wise item similarities derived within image-space and word co-occurrence-space are correlated, suggesting evidence of preserved structure among these extremely different representational formats. Second, the 'closest' neighbors for each item computed within each space overlap significantly. We further discuss the potential role of animacy in a set of exploratory analyses. We conclude that this approach, which does not rely on human ratings of similarity, may nevertheless reflect  stable within-class structure across these two spaces. We speculate that such invariance, in turn, might aid in lexical acquisition, by serving as an informative marker of category boundaries."
@@ -120,6 +119,7 @@ not_anim_corr <- cor.test(subset(combo, animate=="inanimate")$cos_word, subset(c
 mixed_corr <- cor.test(subset(combo, animate=="mixed")$cos_word, subset(combo, animate=="mixed")$cos_img, conf.int=T)%>% tidy()
 
 not_anim_corr_string <- sprintf("($R = %0.2f$, $p < %1.2g$)", not_anim_corr$estimate, not_anim_corr$p.value)
+pairwise_corr_string <- sprintf("($R = %0.2f$, $p < %1.2g$)", pairwise_corr$estimate, pairwise_corr$p.value)
 ```
 
 ```{r overlap_stats, echo = F, results = "hide"}
@@ -135,7 +135,7 @@ wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio,
 #  geom_histogram(binwidth=.15, position = "stack")
 ```
 
-To test whether image- and word-based similarity converged for this set of common items, we conducted several analyses. First, we tested whether the pairwise cosine distances for all items in word vector space correlated with those same pairwise distances in the image vector space (see Figure \ref{fig:pairwise-corr}). Indeed, we find a significant correlation (R= `r pairwise_corr$estimate`, p= `r pairwise_corr$p.value`)\{footnote: we present Pearson correlations above in keeping with the linear fits on the graph; all reported significance patterns are identical using Spearman's $\rho$.}
+To test whether image- and word-based similarity converged for this set of common items, we conducted several analyses. First, we tested whether the pairwise cosine distances for all items in word vector space correlated with those same pairwise distances in the image vector space (see Figure \ref{fig:pairwise-corr}). Indeed, we find a significant correlation `r pairwise_corr_string` \footnote{we present Pearson correlations above in keeping with the linear fits on the graph; all reported significance patterns are identical using Spearman's $\rho$.}
 
 Next, we examined the degree to which our set of 27 words shared overlapping neighbors in the two vector spaces (see Table \ref{tbl:overlap-table}). We defined 'neighbor' by first determining the mean similarity between each item and the 26 other items. Any items whose distance to this 'target **say something clear here** was considered a neighbor. With this normalized neighborhood threshold, we find that the majority of items have at least 1 neighbor which is shared across representational spaces. Within word-space, items had on average XX neighbors, Range XX-XX. Within Image-space, items had XX neighbors, Range XX-XX. 
 
