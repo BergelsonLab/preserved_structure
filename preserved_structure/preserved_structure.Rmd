@@ -110,7 +110,7 @@ After we have our two sets of vectors (i.e. those from word vector space and tho
 # Results
 
 ```{r img_word_corrs, echo=F}
-#eb you'll want to use tidy to reference elements of the cor.test output, e.g.
+#eb you may want to use tidy to reference elements of the cor.test output more easily, e.g.
 #i alsoput all the stats into this chunk, removed from graph chunk below
 pairwise_corr <- cor.test(combo$cos_img, combo$cos_word, conf.int=T) %>% tidy()
 animate_corr <- cor.test(subset(combo, animate=="animate")$cos_word, subset(combo, animate=="animate")$cos_img, conf.int=T)%>% tidy()
@@ -135,7 +135,14 @@ wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio,
 #  geom_histogram(binwidth=.15, position = "stack")
 ```
 
-We find that pairwise cosine distances between objects in word vector space correlate with those same pairwise distances in the image vector space (see Figure \ref{fig:pairwise-corr}). If we partition the set of inter-word distances into those that are either animate-animate, inanimate-inanimate, or mixed, we find that the pairs of distances between inanimate objects significantly correlate across our two spaces `r not_anim_corr_string`, while the other two pairings do not (see Figure \ref{fig:pairwise-corr-animate-vs-not}). 
+To test whether image- and word-based similarity converged for this set of common items, we conducted several analyses. First, we tested whether the pairwise cosine distances for all items in word vector space correlated with those same pairwise distances in the image vector space (see Figure \ref{fig:pairwise-corr}). Indeed, we find a significant correlation (R= `r pairwise_corr$estimate`, p= `r pairwise_corr$p.value`)\{footnote: we present Pearson correlations above in keeping with the linear fits on the graph; all reported significance patterns are identical using Spearman's $\rho$.}
+
+Next, we examined the degree to which our set of 27 words shared overlapping neighbors in the two vector spaces (see Table \ref{tbl:overlap-table}). We defined 'neighbor' by first determining the mean similarity between each item and the 26 other items. Any items whose distance to this 'target **say something clear here** was considered a neighbor. With this normalized neighborhood threshold, we find that the majority of items have at least 1 neighbor which is shared across representational spaces. Within word-space, items had on average XX neighbors, Range XX-XX. Within Image-space, items had XX neighbors, Range XX-XX. 
+
+If we compute neighbor 'overlap' across the spaces, we find that the overlap is significantly greater than 0, i.e. the images considered 'close' and the words considered 'close' overlapped (Mean Overlap XX, p< XX by wilcoxon test)
+
+###Animacy (Eb stopped here)
+If we partition the set of inter-word distances into those that are either animate-animate, inanimate-inanimate, or mixed, we find that the pairs of distances between inanimate objects significantly correlate across our two spaces `r not_anim_corr_string`, while the other two pairings do not (see Figure \ref{fig:pairwise-corr-animate-vs-not}). 
 
 We expect that those classes of objects which preserve their structure between representations more strongly would result in earlier object-referent mappings. This is because inferences about object-referent mappings conditioned on both visual and semantic features would be more stable compared to those cases where the two representations vary independently. For example, an object that is both round (i.e. visual feature) and tends to roll (i.e. semantic feature) would be more salient as a distinct entity than an object whose visual features are entirely uninformative about its functional or semantic qualities. 
 
