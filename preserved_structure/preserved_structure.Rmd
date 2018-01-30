@@ -13,7 +13,7 @@ author-information: >
     \And {\large \bf Elika Bergelson} \\ \texttt{elika.bergelson@duke.edu} \\ Department of Psychology \\ Duke University}
 
 abstract: 
-    "We find evidence of preserved structure between vector space representations of words and their corresponding image embeddings. This is evidence of regularity between the representations learned using distributional statistics of words and the visual characteristics of those same items. We find that some classes of objects, namely inanimate ones, preserve their within-class structure across these two spaces more strongly than others (e.g. animate objects), and that this quality of preserving class-level relationships across representational spaces might aid in lexical acquisition, with invariance serving as an informative marker of category boundaries. Our current analysis does not show significant age-of-acquisition benefits for inanimate objects, but does exhibit a stable pattern suggesting that other partitioning schemes might be worth exploring (or something like that)"
+    "Certain concepts, words, and images are intuitively more similar than others (dog vs. cat, dog vs. spoon), though quantifying such similarity is notoriously tricky. Indeed, this kind of computation is likely a critical part of learning the category boundaries for words within a given language. Here, we use a set of items (n= 27, e.g. 'dog') that are highly common in young infants'input, and use both image-based and word-based algorithms to independently compute similarity among these items. We find two key results. First, the pair-wise item similarities derived within image-space and word co-occurrence-space are correlated, suggesting evidence of preserved structure among these extremely different representational formats. Second, the 'closest' neighbors for each item computed within each space overlap significantly. We further discuss the potential role of animacy in a set of exploratory analyses. We conclude that this approach, which does not rely on human ratings of similarity, may nevertheless reflect  stable within-class structure across these two spaces. We speculate that such invariance, in turn, might aid in lexical acquisition, by serving as an informative marker of category boundaries."
     
 keywords:
     "vector space models; semantic similarity; word learning"
@@ -34,41 +34,55 @@ library(ggplot2)
 library(xtable)
 library(tidyverse)
 library(ggpubr)
+library(broom)
 ```
 
 ```{r preliminary_data_loading}
 animate <- c("puppy", "duck", "elephant", "pig", "monkey", "giraffe",
              "bear", "baby", "fish", "frog", "cow", "dog", "cat")
-combo <- read_csv("data/pairwise_distances.csv")
-
+words27 <-  read_csv("data/pairwise_distances.csv") %>% distinct(word)
+combo <- read_csv("data/pairwise_distances.csv") %>%
+  unite(pair, X1, word, remove = T) %>% 
+  distinct(cos_word,.keep_all = T)
+#eb this gets rid of our redundancy issues
 wb_prod <- read_csv("data/wordbank_production.csv") %>%  
    mutate(definition = forcats::fct_recode(definition,
     "fish"    = "fish (animal)",
     "water"   = "water (beverage)")) %>% 
-  filter(definition%in%combo$X1) %>% 
+  filter(definition%in%words27$word) %>% 
   mutate(animate = ifelse(definition %in% animate, "animate", "inanimate"))
 
 wb_comp <- read_csv("data/wordbank_comprehension.csv") %>%
      mutate(definition = forcats::fct_recode(definition,
     "fish"    = "fish (animal)",
     "water"   = "water (beverage)")) %>% 
-    filter(definition%in%combo$X1) %>% 
+  filter(definition%in%words27$word) %>% 
     mutate(animate = ifelse(definition %in% animate, "animate", "inanimate"))
-
+overlap_ratios <- read_csv("data/overlap_ratios.csv") %>% 
+  mutate(animate = ifelse(word %in% animate, T, F))
 # fix water picture in img space
 ```
 
 
 # Introduction
 
-Infants are presented with a challenge to carve the world into distinct lexical entities in the process of learning their first language. They're provided with little supervision while mapping a territory which William James [-@james2013principles] dubbed a "great blooming, buzzing confusion". How they determine which aspects of the world to attend to in service of this goal, is an area of ongoing research [@mareschal2001categorization]. Different features of objects and their environments are varyingly informative with regards to object segmentation and category structure. Some researchers have suggested that categorization is along fundamentally perceptual grounds and that only later in development is conceptual knowledge incorporated into these nascent perceptual categories [@quinn2000emergence; @quinn1997reexamination; @quinn2000understanding]. Others suggest that there are in fact two distinct processes at work, such that perceptual categories are computed automatically by the sensory systems, while conceptual categories are independently formed through conscious action [@mandler2000perceptual]. Träuble and Pauen [-@trauble2007role] provide evidence of functional information (regarding the animacy of objects) influencing early category judgements. Gelman and Markman [-@gelman1986categories] explicitly set these two sources of category cues against each other (i.e. functional vs. perceptual), in hopes of discovering which holds greater influence in infant categorization behavior. 
+Infants are presented with a challenge to carve the world into distinct lexical entities in the process of learning their first language. They're provided with little supervision while mapping a territory which William James [-@james2013principles] dubbed a "great blooming, buzzing confusion". How they determine which aspects of the world to attend to in service of this goal, is an area of ongoing research [@mareschal2001categorization]. Different features of objects and their environments are varyingly informative with regards to object segmentation and category structure. Some researchers have suggested that categorization is along fundamentally perceptual grounds and that only later in development is conceptual knowledge incorporated into these nascent perceptual categories [@quinn2000emergence; @quinn1997reexamination; @quinn2000understanding]. Others suggest that there are in fact two distinct processes at work, such that perceptual categories are computed automatically by the sensory systems, while conceptual categories are independently formed through conscious action [@mandler2000perceptual]. Träuble and Pauen [-@trauble2007role] provide evidence of functional information (regarding the animacy of objects) influencing early category judgements. Gelman and Markman [-@gelman1986categories] explicitly set these two sources of category cues against each other (i.e. functional vs. perceptual), and found that preschoolers can override perceptual overlap in reasoning about functional similarity, in natural kinds.
 
-The degree to which these two sources of information are separable is an important open question. Any model which hopes to explain the mechanics of human categorization must address how these seemingly disparate forms of information interface in mental representations, and to what degree they interact. In our current study we examine the degree of interaction between representations learned by two different algorithms which operate on apparently dissimilar inputs, namely images and text. These algorithms learn feature representations without hand engineering, purely as a byproduct of their particular training objectives. These training objectives are completely divorced from one another. The features that these algorithms learn are then used to serve their unique practical ends (e.g. machine translation or object recognition in images). We ignore these practical uses and instead focus on the representations these algorithms learn, using them as a window into the structure of visual and semantic forms. 
+The degree to which conceptual and perceptual information are separable, both in early learning, and in adult experts, is an important open question. Any model which hopes to explain the mechanics of human categorization must address how these potentially disparate information-sources interface in mental representations, and to what degree they interact. While evidence from human learners suggests they integrate perceptual and linguistic information during categorization and learning (**REFS**), here we take first steps in a deliberately different approach. We separate computations over images and words, and then comparing the overlap in the similarity among items that these systems deduce. Using a set of highly familiar and common words and concepts from a large infant corpus, we compare the output of an image analysis, and a word co-occurrence analysis for these same items. We use algorithms that learn feature representations without hand engineering, purely as a byproduct of their particular (and separate) training objectives (e.g. natural language processing or object recognition in images). Comparing the representations these algorithms learn, we gain a window into the structure of visual and semantic forms. 
 
 # Methods
+## Items
+The 27 items (i.e. words and images) analyzed here were selected due to their high frequency in infants' early visual and linguistic input, aggregated as part of the SEEDLingS project, which gathered longitudinal audio and video data of infants' home environments from 6-17 months [@bergelson2016seedlings; @bergelson2016seedlingsdatabrary]. We describe this larger study in brief, simply to relay how the items we analyze were chosen; the details of this larger study are not critical to the present work. In the larger study, 44 infants were tested every other month (from 6-18 months) on common nouns, using a looking-while-listening eyetracking design in which two images are shown on a screen, and one is named. The words for these experiments were chosen by dint of being high frequency or well known across infants in other samples (e.g. Brent Corpus, WordBank **ADD REFS**), or by being one of the top 10 concrete nouns heard in each infants' own home audio and video recordings in the preceding two months. 
 
+The images displayed when these words were tested were chosen from a library of prototypical images of a given word (e.g. dog), along with images of infants' own versions of the items, as seen in their home videos (e.g. a given infants' cat, specific bottle, etc.). To enter the current analysis, images had to occur 9 or more times in this image library of high frequency concrete nouns **add M(SD) R for images and words in allbasiclevel**. Thus, the words and images used here were highly common across our 500+ daylong audio-recordings and 500+ hourlong video-recordings from 44 infants, thus providing an ecologicallyvalid item-set for present modeling purposes.
+
+The images for these 27 items used to derive category vectors in the image analysis below were all 960x960pixel images of a single object on a gray background. All items correspond to words found on WordBank [@frank2017wordbank], a compilation of the MacArthur-Bates Communicative Development Inventory, which we use as a proxy for age of acquisition below **add ref fenson & dale**. 
+
+## Vector Representations
 We generate two sets of vector representations for a common set of words first learned by most infants. The first set of vectors are taken from a pretrained set of GloVe representations [@pennington2014glove], a modern distributional semantic vector space model. The second set is taken from the final layer activations of a pretrained image recognition model, Google's Inception V3 convolutional neural network [@szegedy2016rethinking]. Both of these representations are what's refered to as "embeddings". They map objects from one medium (e.g. images or words) into a metric space where distances between points can be computed and function as a measure of similarity between objects. 
 
+### Word Vectors
+### Image Vectors
 In the case of our word vectors, the GloVe algorithm instantiates the distributional hypothesis, which proposes that words which co-occur with each other share similar meaning [@firth1957synopsis; @harris1954distributional], and by capturing the covariance of tokens in large text corpora, you capture some aspect of their semantic structure. The image embeddings, on the other hand, are taken from the final layer of activations in a convolutional neural network, whose objective function tunes network parameters in service of object recognition, where the loss function is computed in reference to a set of labeled training images [@ILSVRC15]. The final layer of this network encodes the most abstract and integrated visual features, serving as the basis for classification into 1000 different classes. 
 
 ## Defining a prototypical image
@@ -87,7 +101,7 @@ $$
 
 Our $d(x, y)$ is not a metric in the strict sense, but is less susceptible to differences in $L^2$ norm influencing our measure of similarity, as is the case with the Euclidean distance. These differences in magnitude between vectors can be the product of frequency effects in the training data, and the cosine similarity corrects for this. 
 
-The image inputs we use are all 960x960 images of a single object on a gray background. These images were chosen by virtue of their presence in infants' early linguistic environment, aggregated as part of the SEEDLingS project, which gathered longitudinal audio and video data of infants' home environments [@bergelson2016seedlings; @bergelson2016seedlingsdatabrary]. We arrive at a set of 27 unique words, selected on the basis of having at least 9 unique images with which to determine the most prototypical. The more images we have of any given category, the more robust our measure of category variance in image vector space, resulting in more representative category vectors.  These are all words found on WordBank [@frank2017wordbank], a compilation of the MacArthur-Bates Communicative Development Inventory, which we use as our proxy for age of acquisition. By studying the behavior of these developmentally salient objects, our analysis is able to speak to the statistical structure of those objects which infants will be most readily contending with. 
+
 
 ## Comparing spaces 
 
@@ -95,15 +109,30 @@ After we have our two sets of vectors (i.e. those from word vector space and tho
 
 # Results
 
-```{r animate_corrs, echo=F}
-animate_corr <- cor.test(subset(combo, animate=="animate")$cos_word, subset(combo, animate=="animate")$cos_img, conf.int=T)
+```{r img_word_corrs, echo=F}
+#eb you'll want to use tidy to reference elements of the cor.test output, e.g.
+#i alsoput all the stats into this chunk, removed from graph chunk below
+pairwise_corr <- cor.test(combo$cos_img, combo$cos_word, conf.int=T) %>% tidy()
+animate_corr <- cor.test(subset(combo, animate=="animate")$cos_word, subset(combo, animate=="animate")$cos_img, conf.int=T)%>% tidy()
 #eb confint: -.28 to .032, p = .12
-not_anim_corr <- cor.test(subset(combo, animate=="inanimate")$cos_word, subset(combo, animate=="inanimate")$cos_img, conf.int=T)
+not_anim_corr <- cor.test(subset(combo, animate=="inanimate")$cos_word, subset(combo, animate=="inanimate")$cos_img, conf.int=T)%>% tidy()
 #eb confint: .24-.49, p=.0000017
-mixed_corr <- cor.test(subset(combo, animate=="mixed")$cos_word, subset(combo, animate=="mixed")$cos_img, conf.int=T)
+mixed_corr <- cor.test(subset(combo, animate=="mixed")$cos_word, subset(combo, animate=="mixed")$cos_img, conf.int=T)%>% tidy()
 
 not_anim_corr_string <- sprintf("($R = %0.2f$, $p < %1.2g$)", not_anim_corr$estimate, not_anim_corr$p.value)
+```
 
+```{r overlap_stats, echo = F, results = "hide"}
+
+shapiro.test(overlap_ratios$overlap_ratio)#almost normal
+wilcox.test(overlap_ratios$overlap_ratio)# significantly different from chance
+#even with correction, both animate and animate overlaps>0, not different from each other
+wilcox.test(subset(overlap_ratios, animate==F)$overlap_ratio)
+wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio)
+wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio,
+            subset(overlap_ratios, animate==F)$overlap_ratio)
+#ggplot(overlap_ratios, aes(overlap_ratio, fill = animate))+
+#  geom_histogram(binwidth=.15, position = "stack")
 ```
 
 We find that pairwise cosine distances between objects in word vector space correlate with those same pairwise distances in the image vector space (see Figure \ref{fig:pairwise-corr}). If we partition the set of inter-word distances into those that are either animate-animate, inanimate-inanimate, or mixed, we find that the pairs of distances between inanimate objects significantly correlate across our two spaces `r not_anim_corr_string`, while the other two pairings do not (see Figure \ref{fig:pairwise-corr-animate-vs-not}). 
@@ -116,7 +145,7 @@ We also examined the degree to which our set of 27 words shared overlapping neig
 
 
 ```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=5, fig.width=3.4}
-ggplot(combo, aes(cos_word, cos_img, color = word))+
+ggplot(combo, aes(cos_word, cos_img))+
   geom_point(size=3, shape =1)+
   geom_smooth(method="lm", aes(group=1), show.legend=F)+
   geom_smooth(method="lm", aes(group=1), se=F)+ # this second line is to trick ggplot into not putting the gray fill in the boxes in the legend (coming from the standard error in the first line)
@@ -132,18 +161,14 @@ ggplot(combo, aes(cos_word, cos_img, color = word))+
         legend.key = element_rect(fill = 'white', size = 0.1)
         )
 
-pairwise_corr <- cor.test(combo$cos_img, combo$cos_word)
-
 cap <- sprintf("Relative cosine distance between points in word embedding space correlates with relative distance in image embedding space ($R = %0.2f$, $p < %1.2g$). Graph contains all pairwise distances for every word.", pairwise_corr$estimate, pairwise_corr$p.value)
 ```
 
 
 ```{r pairwise-corr-animate-vs-not, echo = F, fig.cap=cap, fig.width=3.4, fig.height=1.7}
 
-#eb confint: -.12 to .09, p = .80
-#eb hey so this is good: even if you correct for 3 comparisons, the inanimate correlation is robust, and it's CI does not overlap with the others.
 combo %>%
-  ggplot(aes(cos_word, cos_img, color = word))+
+  ggplot(aes(cos_word, cos_img))+
   geom_point(size=2, shape = 1)+
     stat_smooth(method = "lm", aes(group=1))+theme_bw()+
     facet_wrap(~factor(animate, levels=c("animate", "inanimate", "mixed"), labels=c("Animate", "Inanimate", "Mixed")), dir="v", nrow = 1)+
