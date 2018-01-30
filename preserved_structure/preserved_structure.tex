@@ -53,6 +53,7 @@
 
 \usepackage{lipsum}
 \usepackage[utf8]{inputenc}
+\usepackage[export]{adjustbox}
 
 \author{{\large \bf Andrei Amatuni} \\ \texttt{andrei.amatuni@duke.edu} \\ Department of Psychology \\ Duke University \And {\large \bf Elika Bergelson} \\ \texttt{elika.bergelson@duke.edu} \\ Department of Psychology \\ Duke University}
 
@@ -111,11 +112,12 @@ of information interface in mental representations, and to what degree
 they interact. In our current study we examine the degree of interaction
 between representations learned by two different algorithms which
 operate on apparently dissimilar inputs, namely images and text. These
-algorithms learn feature representations as an unsupervised byproduct of
-their particular training objectives, which are completely divorced from
-one another and which may themselves be supervised. The features they
-learn serve as the basis for their subsequent use towards practical ends
-(e.g.~machine translation or object recognition in images).
+algorithms learn feature representations without hand engineering,
+purely as a byproduct of their particular training objectives. These
+training objectives are completely divorced from one another. The
+features that these algorithms learn are then used to serve their unique
+practical ends (e.g.~machine translation or object recognition in
+images).
 
 \section{Methods}\label{methods}
 
@@ -173,9 +175,10 @@ d(x, y) = 1 - \frac{x\cdot y}{\|x\|\|y\|}
 
 Our \(d(x, y)\) is not a metric in the strict sense, but is less
 susceptible to differences in \(L^2\) norm influencing our measure of
-similarity, as is the case with the Euclidean distance. These magnitude
-difference can be the product of frequency effects in the training data,
-and the cosine similarity corrects for this.
+similarity, as is the case with the Euclidean distance. These
+differences in magnitude between vectors can be the product of frequency
+effects in the training data, and the cosine similarity corrects for
+this.
 
 The image inputs we use are all 960x960 images of a single object on a
 gray background. These images were chosen by virtue of their presence in
@@ -223,28 +226,39 @@ inter-word distances into those that are either animate-animate,
 inanimate-inanimate, or mixed, we find that the pairs of distances
 between inanimate objects significantly correlate across our two spaces
 (\(R = 0.38\), \(p < 1.7e-07\)), while the other two pairings do not
-(see Figure \ref{fig:pairwise-corr-animate-vs-not}). We expect that
-those classes of objects which preserve their structure between
-representations more strongly would result in earlier object-referent
-mappings. This is because inferences about object-referent mappings
-conditioned on both visual and semantic features would be more stable
-compared to those cases where the two representations vary
-independently. For example, an object that is both round (i.e.~visual
-feature) and tends to roll (i.e.~semantic feature) would be more salient
-as a distinct entity than an object whose visual features are entirely
-uninformative about its functional or semantic qualities.
+(see Figure \ref{fig:pairwise-corr-animate-vs-not}).
+
+We expect that those classes of objects which preserve their structure
+between representations more strongly would result in earlier
+object-referent mappings. This is because inferences about
+object-referent mappings conditioned on both visual and semantic
+features would be more stable compared to those cases where the two
+representations vary independently. For example, an object that is both
+round (i.e.~visual feature) and tends to roll (i.e.~semantic feature)
+would be more salient as a distinct entity than an object whose visual
+features are entirely uninformative about its functional or semantic
+qualities.
 
 In our current analysis the class of objects which displays stronger
 structure preservation (within class) are the inanimate objects. When we
-partition our set of 27 words into animate and inanimates and plot their
-relative AoA, we find a noticable though insignificant preference for
-inanimates (see Figures \ref{fig:animacy-aoa-prod} and
-\ref{fig:animacy-aoa-comp}). The choice to partition our set into these
-two categories is to a degree arbitrary, and we have no reason to
-believe infants would learn one class of objects earlier than the other.
-Our current analysis is offered purely as an exploratory exercise,
-suggesting that perhaps partitions along other taxonomic or associative
-lines may provide insight in future investigations.
+partition our set of 27 words into animates and inanimates and plot
+their relative AoA, we find a noticeable though insignificant preference
+for inanimates, as expected (see Figures
+\ref{fig:animacy-aoa-prod-graph} and \ref{fig:animacy-aoa-comp-graph}).
+The choice to partition our set into these two categories is to a degree
+arbitrary, and we have no reason to believe infants would learn one
+class of objects earlier than the other. Our current analysis is offered
+purely as an exploratory exercise, suggesting that perhaps partitions
+along other taxonomic or associative lines may provide insight in future
+investigations.
+
+We also examined the degree to which our set of 27 words shared
+overlapping neighbors in the two vector spaces (see Table
+\ref{tbl:overlap-table}). We defined a neighbor as all the points with
+distance less than -1 standard deviation from the mean distance for each
+word. With this normalized neighborhood threshold, we find that the
+majority of our words have at least 1 neighbor which is shared across
+representational spaces.
 
 \begin{CodeChunk}
 \begin{figure}[tb]
@@ -258,46 +272,87 @@ lines may provide insight in future investigations.
 \end{figure}
 \end{CodeChunk}
 
+\begin{table}
+\centering
+\includegraphics[max size={\columnwidth}{0.7\textheight}]{data/overlap_table_formatted.png}
+\caption{Overlaps between closest objects in image vector space and word vector space. Neighbors are defined as those other objects which are less than -1 SD from the mean distance for any given word. Those neighbors that are marked red are shared between image and vector spaces. The overlap ratio is the number of shared neighbors across vector spaces divided by the total unique neighbors between the two spaces.}
+\label{tbl:overlap-table}
+\end{table}
+
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/animacy-aoa-prod-1} \caption[By-month AoA of animates vs]{By-month AoA of animates vs. inanimates using child production data}\label{fig:animacy-aoa-prod}
+\includegraphics{figs/animacy-aoa-prod-graph-1} \caption[AoA for animates vs inanimates (using child production data) collapsed over month]{AoA for animates vs inanimates (using child production data) collapsed over month}\label{fig:animacy-aoa-prod-graph}
 \end{figure}
 \end{CodeChunk}
 
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/animacy-aoa-comp-1} \caption[By-month AoA of animates vs]{By-month AoA of animates vs. inanimates using child comprehension data}\label{fig:animacy-aoa-comp}
-\end{figure}
-\end{CodeChunk}
-
-\begin{CodeChunk}
-\begin{figure}[tb]
-\includegraphics{figs/animacy_aoa_overall-1} \caption[AoA for animates vs inanimates collapsed over month]{AoA for animates vs inanimates collapsed over month}\label{fig:animacy_aoa_overall1}
-\end{figure}
-\begin{figure}[tb]
-\includegraphics{figs/animacy_aoa_overall-2} \caption[AoA for animates vs inanimates collapsed over month]{AoA for animates vs inanimates collapsed over month}\label{fig:animacy_aoa_overall2}
-\end{figure}
-\begin{figure}[tb]
-\includegraphics{figs/animacy_aoa_overall-3} \caption[AoA for animates vs inanimates collapsed over month]{AoA for animates vs inanimates collapsed over month}\label{fig:animacy_aoa_overall3}
-\end{figure}
-\begin{figure}[tb]
-\includegraphics{figs/animacy_aoa_overall-4} \caption[AoA for animates vs inanimates collapsed over month]{AoA for animates vs inanimates collapsed over month}\label{fig:animacy_aoa_overall4}
+\includegraphics{figs/animacy-aoa-comp-graph-1} \caption[AoA for animates vs inanimates (using child comprehension data) collapsed over month]{AoA for animates vs inanimates (using child comprehension data) collapsed over month}\label{fig:animacy-aoa-comp-graph}
 \end{figure}
 \end{CodeChunk}
 
 \section{Discussion}\label{discussion}
 
+We've reported a significant correspondence between representations
+learned by two different algorithms operating over seemingly unrelated
+inputs (i.e.~visual and linguistic). What is most noteworthy here is
+that the only immediate common ground between these representations are
+the real life objects they both aim to model. This draws us into
+questions concerning the nature of similarity and the multifaceted
+character of information which is revealed by objects in the real world.
+The notion that we can make inferences about one aspect of an object
+given another aspect, is not surprising or controversial. However, the
+fact that we can make these bi-directional inferences using aspects
+traditionally treated as being orthogonal, is noteworthy. This is
+particularly the case given the enormous dimensionality of our feature
+spaces, and the fact that these algorithms are placed under no pressure
+to find homologous representations.
+
+Through what metrics can a learning algorithm, or indeed a human,
+establish gradations of likeness? Are these necessarily the same metrics
+which form the basis of category boundaries? These are fundamental
+questions which have enjoyed a long history in the field (Edelman, 1998;
+Hahn, Chater, \& Richardson, 2003; Kemp, Bernstein, \& Tenenbaum, 2005;
+Shepard \& Chipman, 1970; Tversky, 1977). While our current work is not
+sufficient to support a specific mechanism responsible for the observed
+regularity, it might be indicative of the special role of invariance,
+given that the unifying thread between our algorithms and inputs are the
+common objects they represent. Underneath the diversity of visual
+statistics and token distributions lie stable entities in the world
+which, by virtue of their invariant actuality, give rise to regularity
+across measurements at different vantage points (i.e.~modalities), an
+idea dating back to Helmhotlz (1878).
+
+We find in our current work that this quality of invariance is
+differentially present across different classes of entities, namely
+animate vs.~inanimate objects. However, this is conditioned on the
+particular algorithms we've investigated here, and our extensions into
+human performance with our AoA anlysis did not show a significant
+sensitivity to this difference. This could suggest a number things. The
+first is that humans might not discover the regularities that these
+algorithms do. Or it could be that our current class partitioning does
+not provide sufficient contrast in invariance to register human AoA
+differences. Or it could be that regularity is not a determining factor
+in ease of acquisition. Of these three, the last is least likely to be
+the case.
+
 \section{Conclusion}\label{conclusion}
+
+We find evidence of an interaction between visual and semantic features
+learned by two distinct machine learning algorithms which operate over
+drastically different inputs, and are trained in the service of
+seemingly unrelated ends. This interaction is indicative of conserved
+structure between these two supposedly independent sources of
+information (i.e.~visual and functional). If humans are sensitive to
+this relationship, as these algorithms seem to be, we expect that those
+classes of object which are more strongly invariant across feature
+spaces would be more easily learned by infants. We find a noticeable
+though insignificant relationship between this property and AoA in our
+current partitioning scheme (animates vs.~inanimates).
 
 \section{Acknowledgements}\label{acknowledgements}
 
-Place acknowledgments (including funding information) in a section at
-the end of the paper.
-
-(Gelman \& Markman, 1986, Tversky (1977), Kemp, Bernstein, \& Tenenbaum
-(2005), Hahn, Chater, \& Richardson (2003), Pennington et al. (2014),
-Szegedy et al. (2016), Firth (1957), Harris (1954), Russakovsky et al.
-(2015))
+We thank the SEEDLingS team, and NIH DP5-OD019812.
 
 \section{References}\label{references}
 
@@ -311,6 +366,10 @@ Bergelson, E. (2016a). Bergelson seedlings homebank corpus.
 \hypertarget{ref-bergelson2016seedlingsdatabrary}{}
 Bergelson, E. (2016b). SEEDLingS corpus. Retrieved January 26, 2018,
 from \url{https://nyu.databrary.org/volume/228}
+
+\hypertarget{ref-edelman1998representation}{}
+Edelman, S. (1998). Representation is representation of similarities.
+\emph{Behavioral and Brain Sciences}, \emph{21}(4), 449--467.
 
 \hypertarget{ref-firth1957synopsis}{}
 Firth, J. R. (1957). A synopsis of linguistic theory, 1930-1955.
@@ -332,6 +391,10 @@ transformation. \emph{Cognition}, \emph{87}(1), 1--32.
 \hypertarget{ref-harris1954distributional}{}
 Harris, Z. S. (1954). Distributional structure. \emph{Word},
 \emph{10}(2-3), 146--162.
+
+\hypertarget{ref-helmholtz1878facts}{}
+Helmholtz, H. (1878). The facts of perception. \emph{Selected Writings
+of Hermann Helmholtz}, 1--15.
 
 \hypertarget{ref-james2013principles}{}
 James, W. (1890). \emph{The principles of psychology}. Henry Holt;
@@ -377,6 +440,11 @@ Russakovsky, O., Deng, J., Su, H., Krause, J., Satheesh, S., Ma, S.,
 \ldots{} Fei-Fei, L. (2015). ImageNet Large Scale Visual Recognition
 Challenge. \emph{International Journal of Computer Vision (IJCV)},
 \emph{115}(3), 211--252. \url{http://doi.org/10.1007/s11263-015-0816-y}
+
+\hypertarget{ref-shepard1970second}{}
+Shepard, R. N., \& Chipman, S. (1970). Second-order isomorphism of
+internal representations: Shapes of states. \emph{Cognitive Psychology},
+\emph{1}(1), 1--17.
 
 \hypertarget{ref-szegedy2016rethinking}{}
 Szegedy, C., Vanhoucke, V., Ioffe, S., Shlens, J., \& Wojna, Z. (2016).

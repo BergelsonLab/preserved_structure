@@ -6,6 +6,7 @@ document-params: "10pt, letterpaper"
 header-includes:
    - \usepackage{lipsum}
    - \usepackage[utf8]{inputenc}
+   - \usepackage[export]{adjustbox}
 
 author-information: > 
     \author{{\large \bf Andrei Amatuni} \\ \texttt{andrei.amatuni@duke.edu} \\ Department of Psychology \\ Duke University
@@ -62,7 +63,7 @@ wb_comp <- read_csv("data/wordbank_comprehension.csv") %>%
 
 Infants are presented with a challenge to carve the world into distinct lexical entities in the process of learning their first language. They're provided with little supervision while mapping a territory which William James [-@james2013principles] dubbed a "great blooming, buzzing confusion". How they determine which aspects of the world to attend to in service of this goal, is an area of ongoing research [@mareschal2001categorization]. Different features of objects and their environments are varyingly informative with regards to object segmentation and category structure. Some researchers have suggested that categorization is along fundamentally perceptual grounds and that only later in development is conceptual knowledge incorporated into these nascent perceptual categories [@quinn2000emergence; @quinn1997reexamination; @quinn2000understanding]. Others suggest that there are in fact two distinct processes at work, such that perceptual categories are computed automatically by the sensory systems, while conceptual categories are independently formed through conscious action [@mandler2000perceptual]. Träuble and Pauen [-@trauble2007role] provide evidence of functional information (regarding the animacy of objects) influencing early category judgements. Gelman and Markman [-@gelman1986categories] explicitly set these two sources of category cues against each other (i.e. functional vs. perceptual), in hopes of discovering which holds greater influence in infant categorization behavior. 
 
-The degree to which these two sources of information are separable is an important open question. Any model which hopes to explain the mechanics of human categorization must address how these seemingly disparate forms of information interface in mental representations, and to what degree they interact. In our current study we examine the degree of interaction between representations learned by two different algorithms which operate on apparently dissimilar inputs, namely images and text. These algorithms learn feature representations as an unsupervised byproduct of their particular training objectives, which are completely divorced from one another and which may themselves be supervised. The features they learn serve as the basis for their subsequent use towards practical ends (e.g. machine translation or object recognition in images).
+The degree to which these two sources of information are separable is an important open question. Any model which hopes to explain the mechanics of human categorization must address how these seemingly disparate forms of information interface in mental representations, and to what degree they interact. In our current study we examine the degree of interaction between representations learned by two different algorithms which operate on apparently dissimilar inputs, namely images and text. These algorithms learn feature representations without hand engineering, purely as a byproduct of their particular training objectives. These training objectives are completely divorced from one another. The features that these algorithms learn are then used to serve their unique practical ends (e.g. machine translation or object recognition in images).
 
 # Methods
 
@@ -84,7 +85,7 @@ $$
 d(x, y) = 1 - \frac{x\cdot y}{\|x\|\|y\|}
 $$
 
-Our $d(x, y)$ is not a metric in the strict sense, but is less susceptible to differences in $L^2$ norm influencing our measure of similarity, as is the case with the Euclidean distance. These magnitude difference can be the product of frequency effects in the training data, and the cosine similarity corrects for this. 
+Our $d(x, y)$ is not a metric in the strict sense, but is less susceptible to differences in $L^2$ norm influencing our measure of similarity, as is the case with the Euclidean distance. These differences in magnitude between vectors can be the product of frequency effects in the training data, and the cosine similarity corrects for this. 
 
 The image inputs we use are all 960x960 images of a single object on a gray background. These images were chosen by virtue of their presence in infants' early linguistic environment, aggregated as part of the SEEDLingS project, which gathered longitudinal audio and video data of infants' home environments [@bergelson2016seedlings; @bergelson2016seedlingsdatabrary]. We arrive at a set of 27 unique words, selected on the basis of having at least 9 unique images with which to determine the most prototypical. The more images we have of any given category, the more robust our measure of category variance in image vector space, resulting in more representative category vectors.  These are all words found on WordBank [@frank2017wordbank], a compilation of the MacArthur-Bates Communicative Development Inventory, which we use as our proxy for age of acquisition. By studying the behavior of these developmentally salient objects, our analysis is able to speak to the statistical structure of those objects which infants will be most readily contending with. 
 
@@ -105,9 +106,13 @@ not_anim_corr_string <- sprintf("($R = %0.2f$, $p < %1.2g$)", not_anim_corr$esti
 
 ```
 
-We find that pairwise cosine distances between objects in word vector space correlate with those same pairwise distances in the image vector space (see Figure \ref{fig:pairwise-corr}). If we partition the set of inter-word distances into those that are either animate-animate, inanimate-inanimate, or mixed, we find that the pairs of distances between inanimate objects significantly correlate across our two spaces `r not_anim_corr_string`, while the other two pairings do not (see Figure \ref{fig:pairwise-corr-animate-vs-not}). We expect that those classes of objects which preserve their structure between representations more strongly would result in earlier object-referent mappings. This is because inferences about object-referent mappings conditioned on both visual and semantic features would be more stable compared to those cases where the two representations vary independently. For example, an object that is both round (i.e. visual feature) and tends to roll (i.e. semantic feature) would be more salient as a distinct entity than an object whose visual features are entirely uninformative about its functional or semantic qualities. 
+We find that pairwise cosine distances between objects in word vector space correlate with those same pairwise distances in the image vector space (see Figure \ref{fig:pairwise-corr}). If we partition the set of inter-word distances into those that are either animate-animate, inanimate-inanimate, or mixed, we find that the pairs of distances between inanimate objects significantly correlate across our two spaces `r not_anim_corr_string`, while the other two pairings do not (see Figure \ref{fig:pairwise-corr-animate-vs-not}). 
 
-In our current analysis the class of objects which displays stronger structure preservation (within class) are the inanimate objects. When we partition our set of 27 words into animate and inanimates and plot their relative AoA, we find a noticable though insignificant preference for inanimates (see Figures \ref{fig:animacy-aoa-prod} and \ref{fig:animacy-aoa-comp}). The choice to partition our set into these two categories is to a degree arbitrary, and we have no reason to believe infants would learn one class of objects earlier than the other. Our current analysis is offered purely as an exploratory exercise, suggesting that perhaps partitions along other taxonomic or associative lines may provide insight in future investigations. 
+We expect that those classes of objects which preserve their structure between representations more strongly would result in earlier object-referent mappings. This is because inferences about object-referent mappings conditioned on both visual and semantic features would be more stable compared to those cases where the two representations vary independently. For example, an object that is both round (i.e. visual feature) and tends to roll (i.e. semantic feature) would be more salient as a distinct entity than an object whose visual features are entirely uninformative about its functional or semantic qualities. 
+
+In our current analysis the class of objects which displays stronger structure preservation (within class) are the inanimate objects. When we partition our set of 27 words into animates and inanimates and plot their relative AoA, we find a noticeable though insignificant preference for inanimates, as expected (see Figures \ref{fig:animacy-aoa-prod-graph} and \ref{fig:animacy-aoa-comp-graph}). The choice to partition our set into these two categories is to a degree arbitrary, and we have no reason to believe infants would learn one class of objects earlier than the other. Our current analysis is offered purely as an exploratory exercise, suggesting that perhaps partitions along other taxonomic or associative lines may provide insight in future investigations. 
+
+We also examined the degree to which our set of 27 words shared overlapping neighbors in the two vector spaces (see Table \ref{tbl:overlap-table}). We defined a neighbor as all the points with distance less than -1 standard deviation from the mean distance for each word. With this normalized neighborhood threshold, we find that the majority of our words have at least 1 neighbor which is shared across representational spaces.
 
 
 ```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=5, fig.width=3.4}
@@ -118,6 +123,8 @@ ggplot(combo, aes(cos_word, cos_img, color = word))+
   theme_bw()+
   xlab("Cosine Word")+
   ylab("Cosine Image")+
+  xlim(0.2,0.80)+
+  ylim(0.2,0.80)+
   theme(legend.position="bottom", 
         legend.title = element_blank(), 
         legend.text = element_text(size=7), 
@@ -131,7 +138,7 @@ cap <- sprintf("Relative cosine distance between points in word embedding space 
 ```
 
 
-```{r pairwise-corr-animate-vs-not, echo = F, fig.cap=cap, fig.width=3.4}
+```{r pairwise-corr-animate-vs-not, echo = F, fig.cap=cap, fig.width=3.4, fig.height=1.7}
 
 #eb confint: -.12 to .09, p = .80
 #eb hey so this is good: even if you correct for 3 comparisons, the inanimate correlation is robust, and it's CI does not overlap with the others.
@@ -142,24 +149,20 @@ combo %>%
     facet_wrap(~factor(animate, levels=c("animate", "inanimate", "mixed"), labels=c("Animate", "Inanimate", "Mixed")), dir="v", nrow = 1)+
     xlab("Cosine Word")+
     ylab("Cosine Image")+
+    xlim(0.2,0.80)+
+    ylim(0.2,0.80)+
     theme(legend.position="none")
     
 cap <- sprintf("Inanimate objects display a significantly stronger correlation when mapping across vector spaces, meaning that they preserve their within-class structural relationships more reliabily across these two spaces. Animate and mixed distances do not correlate. Each graph contains all pairwise distances between objects that are either a) both animate ($R = %0.2f$, $p < %1.2g$), b) both inanimate ($R = %0.2f$, $p < %1.2g$), or c) mixed animate-to-inanimate ($R = %0.2f$, $p < %1.2g$)", animate_corr$estimate, animate_corr$p.value, not_anim_corr$estimate, not_anim_corr$p.value, mixed_corr$estimate, mixed_corr$p.value)
     
 ```
 
-
-<!-- ```{r overlap_table, results="asis"} -->
-<!-- n <- 100 -->
-<!-- x <- rnorm(n) -->
-<!-- y <- 2*x + rnorm(n) -->
-<!-- out <- lm(y ~ x) -->
-
-<!-- tab1 <- xtable::xtable(summary(out)$coef, digits=c(0, 2, 2, 1, 2),  -->
-<!--                       caption = "This table prints across one column.") -->
-
-<!-- print(tab1, type="latex", comment = F, table.placement = "H") -->
-<!-- ``` -->
+\begin{table}
+\centering
+\includegraphics[max size={\columnwidth}{0.7\textheight}]{data/overlap_table_formatted.png}
+\caption{Overlaps between closest objects in image vector space and word vector space. Neighbors are defined as those other objects which are less than -1 SD from the mean distance for any given word. Those neighbors that are marked red are shared between image and vector spaces. The overlap ratio is the number of shared neighbors across vector spaces divided by the total unique neighbors between the two spaces.}
+\label{tbl:overlap-table}
+\end{table}
 
 ```{r animacy_aoa, echo=F}
 wb_prod_long <- wb_prod %>% 
@@ -168,89 +171,50 @@ wb_comp_long <- wb_comp %>%
   gather(`8`:`18`, value = 'mean_prop_comp', key = "month")
 ```
 
-```{r animacy-aoa-prod, echo=F, fig.height=4, fig.width=3.1, fig.cap = cap}
-#each month sep
-ggplot(wb_prod_long, aes(x = animate, y = mean_prop_prod, color = animate))+
-  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")+
-  facet_wrap(~month, scales = "free_y")+
-  theme_bw()+
-  theme(legend.position = "bottom",
-        axis.text.x=element_blank())
-cap <- "By-month AoA of animates vs. inanimates using child production data"
-```
 
-```{r animacy-aoa-comp, echo=F, fig.height=4, fig.width=3.1, fig.cap = cap}
-ggplot(wb_comp_long, aes(x = animate, y = mean_prop_comp, color = animate))+
-  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")+
-  facet_wrap(~month, scales = "free_y")+
-  theme_bw()+
-  theme(legend.position = "bottom",
-        axis.text.x=element_blank())
-cap <- "By-month AoA of animates vs. inanimates using child comprehension data"
-```
-
-```{r animacy_aoa_overall, echo=F, fig.height=2, fig.cap = cap}
+```{r animacy_aoa_overall, echo=F}
 wb_prod_long_allmonths <- wb_prod_long %>% 
   group_by(definition, animate) %>% 
   summarise(overall_prop_prod = mean(mean_prop_prod))
 wb_comp_long_allmonths <- wb_comp_long %>% 
   group_by(definition, animate) %>% 
   summarise(overall_prop_comp = mean(mean_prop_comp))
+```
 
+```{r animacy-aoa-prod-graph, fig.height=2, fig.cap = cap}
 #1 datapoint going into error bars per word 
 ggplot(wb_prod_long_allmonths,aes(x = animate , y = overall_prop_prod, color=animate))+
   theme_bw()+
   theme(axis.text.x=element_blank())+
   stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
+
+cap <- "AoA for animates vs inanimates (using child production data) collapsed over month"
+```
+
+```{r animacy-aoa-comp-graph, fig.height=2, fig.cap = cap}
 ggplot(wb_comp_long_allmonths,aes(x = animate , y = overall_prop_comp, color=animate))+
   theme_bw()+
   theme(axis.text.x=element_blank())+
   stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
 
-# 1 datapoint going into error bars per word per month
-ggplot(wb_prod_long,aes(x = animate , y = mean_prop_prod, color=animate))+
-  theme_bw()+
-  theme(axis.text.x=element_blank())+
-  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
-
-# [aa] the bars on this graph don't overlap. is that worth noting?
-ggplot(wb_comp_long,aes(x = animate , y = mean_prop_comp, color=animate))+
-  theme_bw()+
-  theme(axis.text.x=element_blank())+
-  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
-
-cap <- "AoA for animates vs inanimates collapsed over month"
-
-#stats
-#at the word level with month collapsed, data are normally dist:
-# shapiro.test(wb_prod_long_allmonths$overall_prop_prod)
-# shapiro.test(wb_comp_long_allmonths$overall_prop_comp)
-#not so with month kept in the dataset
-# qplot(wb_prod_long$mean_prop_prod)
-# qplot(wb_comp_long$mean_prop_comp) # [aa] comprehension behaves differently
-# shapiro.test(wb_prod_long$mean_prop_prod)
-# shapiro.test(wb_comp_long$mean_prop_comp)
-
-#no diff in overall prop prod for animate vs. inanimate
-# t.test(subset(wb_prod_long_allmonths, animate =="animate")$overall_prop_prod,
-#        subset(wb_prod_long_allmonths, animate =="inanimate")$overall_prop_prod)
-# 
-# t.test(subset(wb_comp_long_allmonths, animate =="animate")$overall_prop_comp,
-#        subset(wb_comp_long_allmonths, animate =="inanimate")$overall_prop_comp)
+cap <- "AoA for animates vs inanimates (using child comprehension data) collapsed over month"
 ```
 
 # Discussion
 
+We've reported a significant correspondence between representations learned by two different algorithms operating over seemingly unrelated inputs (i.e. visual and linguistic). What is most noteworthy here is that the only immediate common ground between these representations are the real life objects they both aim to model. This draws us into questions concerning the nature of similarity and the multifaceted character of information which is revealed by objects in the real world. The notion that we can make inferences about one aspect of an object given another aspect, is not surprising or controversial. However, the fact that we can make these bi-directional inferences using aspects traditionally treated as being orthogonal, is noteworthy. This is particularly the case given the enormous dimensionality of our feature spaces, and the fact that these algorithms are placed under no pressure to find homologous representations.
+
+Through what metrics can a learning algorithm, or indeed a human, establish gradations of likeness? Are these necessarily the same metrics which form the basis of category boundaries? These are fundamental questions which have enjoyed a long history in the field [@shepard1970second; @tversky1977features; @kemp2005generative; @hahn2003similarity; @edelman1998representation]. While our current work is not sufficient to support a specific mechanism responsible for the observed regularity, it might be indicative of the special role of invariance, given that the unifying thread between our algorithms and inputs are the common objects they represent. Underneath the diversity of visual statistics and token distributions lie stable entities in the world which, by virtue of their invariant actuality, give rise to regularity across measurements at different vantage points (i.e. modalities), an idea dating back to Helmhotlz [-@helmholtz1878facts].
+
+We find in our current work that this quality of invariance is differentially present across different classes of entities, namely animate vs. inanimate objects. However, this is conditioned on the particular algorithms we've investigated here, and our extensions into human performance with our AoA anlysis did not show a significant sensitivity to this difference. This could suggest a number things. The first is that humans might not discover the regularities that these algorithms do. Or it could be that our current class partitioning does not provide sufficient contrast in invariance to register human AoA differences. Or it could be that regularity is not a determining factor in ease of acquisition. Of these three, the last is least likely to be the case.
 
 # Conclusion
 
+We find evidence of an interaction between visual and semantic features learned by two distinct machine learning algorithms which operate over drastically different inputs, and are trained in the service of seemingly unrelated ends. This interaction is indicative of conserved structure between these two supposedly independent sources of information (i.e. visual and functional). If humans are sensitive to this relationship, as these algorithms seem to be, we expect that those classes of object which are more strongly invariant across feature spaces would be more easily learned by infants. We find a noticeable though insignificant relationship between this property and AoA in our current partitioning scheme (animates vs. inanimates).
 
 # Acknowledgements
 
-Place acknowledgments (including funding information) in a section at
-the end of the paper.
-
-[@gelman1986categories, @tversky1977features, @kemp2005generative, @hahn2003similarity, @pennington2014glove, @szegedy2016rethinking, @firth1957synopsis, @harris1954distributional, @ILSVRC15]
+We thank the SEEDLingS team, and NIH DP5-OD019812.
 
 # References 
 
