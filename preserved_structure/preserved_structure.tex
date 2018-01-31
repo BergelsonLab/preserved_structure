@@ -54,7 +54,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[export]{adjustbox}
 
-\author{{\large \bf Andrei Amatuni, Elika Bergelson} \\ \texttt{\{andrei.amatuni, elika.bergelson\}@duke.edu} \\ 417 Chapel Dr. Durham, NC 27708 USA \\ Department of Psychology and Neuroscience \\ Duke University}
+\author{{\large \bf Andrei Amatuni, Estelle He, Elika Bergelson} \\ \texttt{\{andrei.amatuni, estelle.he, elika.bergelson\}@duke.edu} \\ 417 Chapel Dr. Durham, NC 27708 USA \\ Department of Psychology and Neuroscience \\ Duke University}
 
 \begin{document}
 
@@ -257,29 +257,29 @@ Github\footnote{\url{https://github.com/BergelsonLab/preserved_structure}}.
 \subsection{Comparing spaces}\label{comparing-spaces}
 
 Having computed our two sets of vectors (i.e.~those from word vector
-space and those from image vector space), we can compare all the
-pairwise distances between objects, both within a single space and
-across the two. When comparing across the two spaces, a correlation in
-pairwise distances implies that inter-object distances have been
-conserved. For example, if ``dog'' and ``cat'' are close together in
-word space and mutually far apart from ``chair'' and ``table'' in that
-same space, maintaining this relationship for all pairwise distances in
-the \textit{other} vector space means that the global inter-object
-structure is preserved across this mapping, despite being in radically
-different spaces, both in terms of dimensionality (300 for words, and
-2048 for images in our case) and by virtue of using completely different
-algorithms and inputs to establish the vector representations for
-objects. So while their absolute locations might have been radically
-transformed, this correlation would be a measure of the
-\textit{degree of invariance} in their positioning relative to each
-other.
+space and those from image vector space, hereafter word-space and
+image-space, respectively), we can compare all the pairwise distances
+between objects, both within a single space and across the two. When
+comparing across the two spaces, a correlation in pairwise distances
+implies that inter-object distances have been conserved. For example, if
+``dog'' and ``cat'' are close together in word space and mutually far
+apart from ``chair'' and ``table'' in that same space, maintaining this
+relationship for all pairwise distances in the \textit{other} vector
+space means that the global inter-object structure is preserved across
+this mapping, despite being in radically different spaces, both in terms
+of dimensionality (300 for words, and 2048 for images in our case) and
+by virtue of using completely different algorithms and inputs to
+establish the vector representations for objects. So while their
+absolute locations might have been radically transformed, this
+correlation would be a measure of the \textit{degree of invariance} in
+their positioning relative to each other.
 
 \section{Results}\label{results}
 
 To test whether image- and word-based similarity converged for this set
 of 27 items, we conducted several analyses. First, we tested whether the
-pairwise cosine distances for all items in word vector space correlated
-with those same pairwise distances in the image vector space (see Figure
+pairwise cosine distances for all items in word-space correlated with
+those same pairwise distances in the image-space (see Figure
 \ref{fig:pairwise-corr}). Indeed, we find a significant correlation
 among the 351 pairs of distances ((\(R = 0.30\), \(p < 1.5e-08\))).
 \footnote{since distances are identical for cat-dog and dog-cat, and since we omit an item's distance to itself (0), there are (27*27-27)/2) comparisons}
@@ -292,8 +292,8 @@ whose distance to this 'target \textbf{say something clear here} was
 considered a neighbor. With this normalized neighborhood threshold, we
 find that the majority of items have at least 1 neighbor which is shared
 across representational spaces. Within word-space, items had on average
-3.29 neighbors, Range 1-5. Within Image-space, items had 2.51 neighbors,
-Range 0-6.
+3.29 neighbors, range 1-5. Within image-space, items had 2.51 neighbors,
+range 0-6.
 
 We find that neighbor `overlap' across the spaces (i.e.~how many of the
 neighbors overlapped, divided by how many neighbors there were) is
@@ -301,7 +301,7 @@ significantly greater than 0 (Mean Overlap XX, p\textless{} XX by
 Wilcoxon test). This complements the correlational analysis, showing not
 just that the distances for any given pair tended to have similar values
 in image-space and word-space, but that the \emph{most} similar
-words/images for each of the 27 items also were consistent across these
+words/images for each of the 27 items were also consistent across these
 spaces.
 
 \subsubsection{Animacy}\label{animacy}
@@ -376,14 +376,14 @@ datasets) may provide insight in future investigations.
 
     Pearson's product-moment correlation
 
-data:  wb_prod_long_allmonths$overall_prop_prod and wb_prod_long_allmonths$overlap_count
-t = -2.5555, df = 25, p-value = 0.01707
+data:  wb_prod_long_allmonths$overall_prop_prod and wb_prod_long_allmonths$overlapratio
+t = -1.1886, df = 25, p-value = 0.2458
 alternative hypothesis: true correlation is not equal to 0
 95 percent confidence interval:
- -0.7119793 -0.0907839
+ -0.5619026  0.1630735
 sample estimates:
        cor 
--0.4550974 
+-0.2312724 
 \end{CodeOutput}
 
 \includegraphics{figs/animacy_aoa_overall-1} \begin{CodeOutput}
