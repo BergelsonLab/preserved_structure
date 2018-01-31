@@ -155,7 +155,7 @@ In our current analysis the class of objects which displays stronger structure p
 ```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=5, fig.width=3.4}
 ggplot(combo, aes(cos_word, cos_img))+
   geom_point(size=3, shape =1)+
-  geom_smooth(method="lm", aes(group=1), show.legend=F)+
+  geom_smooth(method="lm", aes(group=1), show.legend=F, fill ="red", alpha = .7)+
   geom_smooth(method="lm", aes(group=1), se=F)+ # this second line is to trick ggplot into not putting the gray fill in the boxes in the legend (coming from the standard error in the first line)
   theme_bw()+
   xlab("Cosine Word")+
@@ -178,7 +178,7 @@ cap <- sprintf("Relative cosine distance between points in word embedding space 
 combo %>%
   ggplot(aes(cos_word, cos_img))+
   geom_point(size=2, shape = 1)+
-    stat_smooth(method = "lm", aes(group=1))+theme_bw()+
+    stat_smooth(method = "lm", aes(group=1),  fill ="red", alpha = .7)+theme_bw()+
     facet_wrap(~factor(animate, levels=c("animate", "inanimate", "mixed"), labels=c("Animate", "Inanimate", "Mixed")), dir="v", nrow = 1)+
     xlab("Cosine Word")+
     ylab("Cosine Image")+
