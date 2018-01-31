@@ -88,78 +88,93 @@ vector space models; semantic similarity; word learning
 
 Infants are presented with a challenge to carve the world into distinct
 lexical entities in the process of learning their first language.
-They're provided with little supervision while mapping a territory which
-William James (1890) dubbed a ``great blooming, buzzing confusion''. How
-they determine which aspects of the world to attend to in service of
-this goal, is an area of ongoing research (Mareschal \& Quinn, 2001).
-Different features of objects and their environments are varyingly
-informative with regards to object segmentation and category structure.
-Some researchers have suggested that categorization is along
-fundamentally perceptual grounds and that only later in development is
-conceptual knowledge incorporated into these nascent perceptual
-categories (Quinn \& Eimas, 1997, 2000; Quinn, Johnson, Mareschal,
-Rakison, \& Younger, 2000). Others suggest that there are in fact two
-distinct processes at work, such that perceptual categories are computed
-automatically by the sensory systems, while conceptual categories are
-independently formed through conscious action (Mandler, 2000). Träuble
-and Pauen (2007) provide evidence of functional information (regarding
-the animacy of objects) influencing early category judgements. Gelman
-and Markman (1986) explicitly set these two sources of category cues
-against each other (i.e.~functional vs.~perceptual), and find that
-preschoolers can override perceptual overlap in reasoning about
-functional similarity, in natural kinds. \textbf{add some smith, waxman
-refs}
+They're provided with little supervision while mapping a territory that
+William James (1890) famously dubbed a ``great blooming, buzzing
+confusion''. How they determine which aspects of the world to attend to
+in service of this goal is an area of ongoing research and debate
+(Mareschal \& Quinn, 2001). Relatedly, features of objects and their
+environments are varyingly informative with regards to object
+segmentation and category structure. Some researchers have suggested
+that categorization is along fundamentally perceptual grounds and that
+only later in development is conceptual knowledge incorporated into
+these nascent perceptual categories (Quinn \& Eimas, 1997, 2000; Quinn,
+Johnson, Mareschal, Rakison, \& Younger, 2000). Others suggest that
+there are in fact two distinct processes at work, such that perceptual
+categories are computed automatically by the sensory systems, while
+conceptual categories are independently formed through conscious action
+(Mandler, 2000). Träuble and Pauen (2007) provide evidence of functional
+information (regarding the animacy of objects) influencing early
+category judgements. Gelman and Markman (1986) explicitly set these two
+sources of category cues against each other (i.e.~functional
+vs.~perceptual), and find that preschoolers can override perceptual
+overlap in reasoning about functional similarity, in natural kinds.
+\textbf{add some smith, waxman refs}
 
 The degree to which conceptual and perceptual information are separable,
 both in early learning, and in adult experts, is an important open
 question. Any model which hopes to explain the mechanics of human
 categorization must address how these potentially disparate
 information-sources interface in mental representations, and to what
-degree they interact. While evidence from human learners suggests they
+degree they interact. Indeed, evidence from human learners suggests they
 integrate perceptual and linguistic information during categorization
-and learning (\textbf{REFS}), here we take first steps in a deliberately
-different approach. We separate computations over images and words, and
-then compare the overlap in the similarity among items that these
-systems deduce. Using a set of highly familiar and common words and
-concepts from a large infant corpus, we compare the output of an image
-analysis, and a word co-occurrence analysis for these same items. We use
-algorithms that learn feature representations without hand engineering,
-purely as a byproduct of their particular (and separate) training
-objectives (e.g.~natural language processing or object recognition in
-images). Comparing the representations these algorithms learn, we gain a
-window into the structure of visual and semantic forms.
+and learning (\textbf{REFS e.g.~some of ref 12-19 in Waxman and Gelman
+2009}). Here we take first steps in a deliberately different approach.
+We separate computations over images and words, and then compare the
+overlap in the similarity among items that these systems deduce. Using a
+set of highly familiar and common words and concepts from a large infant
+corpus, we compare the output of an image analysis, and a word
+co-occurrence analysis for these same items. We use algorithms that
+learn feature representations without hand engineering, purely as a
+byproduct of their particular (and separate) training objectives
+(e.g.~natural language processing or object recognition in images).
+Comparing the representations these algorithms learn, we gain a window
+into the structure of visual and semantic forms.
+
+Delineating the differences between words, concepts, and categories in
+the abstract, and the processes underlying identifying, understanding,
+or comparing particular instances of them in the world is not trivial.
+For present purposes, we stick to concrete, `basic level' nouns that are
+early-acquired, since our underlying question concerns how such words
+are learned. We assume that nouns refer to concepts, which have
+categorical boundaries (such that cats are not in the `dog' category),
+while acknowledging that multiple nouns can refer to a given concept,
+and different concepts can be called to mind by a given word. We further
+assume that specific instances of words in natural language production,
+and specific images of the concept a word picks out are both used by
+learners to inform their understanding of what the word means, and what
+the category boundaries of the concept are. Hereafter we use the term
+`item' to refer to the words/concepts we examine.
 
 \section{Methods}\label{methods}
 
 \subsection{Items}\label{items}
 
-The 27 items (i.e.~words and images) analyzed here were selected due to
-their high frequency in infants' early visual and linguistic input,
-aggregated as part of the SEEDLingS project, which gathered longitudinal
-audio and video data of infants' home environments from 6-17 months
-(Bergelson, 2016a, 2016b). We describe this larger study in brief,
-simply to relay how the items we analyze were chosen; the details of
-this larger study are not critical to the present work. In the larger
-study, 44 infants were tested every other month (from 6-18 months) on
-common nouns, using a looking-while-listening eyetracking design in
-which two images are shown on a screen, and one is named. The words for
-these experiments were chosen by dint of being high frequency or well
-known across infants in other samples (e.g.~Brent Corpus, WordBank
-\textbf{BRENT \& SISKIND 2001}(Frank, Braginsky, Yurovsky, \& Marchman,
-2017)), or by being one of the top 10 concrete nouns heard in each
-infants' own home audio and video recordings in the preceding two
-months.
+The 27 items analyzed here were selected due to their high frequency in
+infants' early visual and linguistic input, aggregated as part of the
+SEEDLingS project, which gathered longitudinal audio and video data of
+infants' home environments from 6-17 months (Bergelson, 2016a, 2016b).
+We describe this larger study in brief, simply to relay how the items we
+analyze were chosen; the details of this larger study are not critical
+to the present work. In the larger study, 44 infants were tested every
+other month (from 6-18 months) on common nouns, using a
+looking-while-listening eyetracking design in which two images are shown
+on a screen, and one is named. The words for these experiments were
+chosen by dint of being high frequency or well known across infants in
+other samples (e.g.~Brent Corpus, WordBank \textbf{BRENT \& SISKIND
+2001}(Frank, Braginsky, Yurovsky, \& Marchman, 2017)), or by being one
+of the top 10 concrete nouns heard in each infants' own home audio and
+video recordings in the preceding two months.
 
 The images displayed when these words were tested were chosen from a
 library of prototypical images of a given word (e.g.~dog), along with
 images of infants' own versions of the items, as seen in their home
 videos (e.g.~a given infant's cat, specific bottle, etc.). To enter the
 current analysis, images had to occur 9 or more times in this image
-library of high frequency concrete nouns \textbf{add M(SD) R for images
-and words in allbasiclevel}. Thus, the words and images used here were
-highly common across our 500+ daylong audio-recordings and 500+ hourlong
-video-recordings from 44 infants, providing an ecologically-valid
-item-set for present modeling purposes.
+library of high frequency concrete nouns \textbf{add M(SD) R for \#
+images and \# basic level tokens in allbasiclevel}. Thus, the words and
+images used here were highly common across our 500+ daylong
+audio-recordings and 500+ hourlong video-recordings from 44 infants,
+providing an ecologically-valid item-set for present modeling purposes.
 
 The images of the 27 items used to derive average category image-vectors
 were all 960x960pixel photos of a single object on a gray background.
@@ -267,10 +282,8 @@ of 27 items, we conducted several analyses. First, we tested whether the
 pairwise cosine distances for all items in word vector space correlated
 with those same pairwise distances in the image vector space (see Figure
 \ref{fig:pairwise-corr}). Indeed, we find a significant correlation
-among the 351 pairs of distances (since distances are identical for
-cat-dog and dog-cat, and since distance with itself is 0, there are
-(27*27-27)/2) comparisons;(\(R = 0.30\), \(p < 1.5e-08\))).
-\footnote{we present Pearson correlations above in keeping with the linear fits depicted on the figures; all reported significance patterns are identical using Spearman's $\rho$.}
+among the 351 pairs of distances ((\(R = 0.30\), \(p < 1.5e-08\))).
+\footnote{since distances are identical for cat-dog and dog-cat, and since we omit an item's distance to itself (0), there are (27*27-27)/2) comparisons}
 
 Next, we examined the degree to which our set of 27 words shared
 overlapping neighbors in the two vector spaces (see Table
@@ -283,14 +296,14 @@ across representational spaces. Within word-space, items had on average
 XX neighbors, Range XX-XX. Within Image-space, items had XX neighbors,
 Range XX-XX.
 
-If we compute neighbor `overlap' across the spaces (i.e.~how many of the
-neighbors overlapped, divided by how many neighbors there were) we find
-that the overlap is significantly greater than 0 (Mean Overlap XX,
-p\textless{} XX by Wilcoxon test). This complements the correlational
-analysis, showing not just that the distances for any given pair tended
-to have similar values in image-space and word-space, but that most
-similar words/images for each of the 27 items also were consistent
-across these spaces.
+We find that neighbor `overlap' across the spaces (i.e.~how many of the
+neighbors overlapped, divided by how many neighbors there were) is
+significantly greater than 0 (Mean Overlap XX, p\textless{} XX by
+Wilcoxon test). This complements the correlational analysis, showing not
+just that the distances for any given pair tended to have similar values
+in image-space and word-space, but that the \emph{most} similar
+words/images for each of the 27 items also were consistent across these
+spaces.
 
 \subsubsection{Animacy}\label{animacy}
 
@@ -300,19 +313,19 @@ and semantic/syntactic property, we conducted a set of exploratory
 analyses to examine animacy effects among our 27 items (of which half
 were animates, see Table \ref{tbl:overlap-table}). We first partitioned
 the set of inter-word distances into those that are either
-animate-animate (e.g.~dog-giraffe, n=xx), inanimate-inanimate
-(e.g.~truck-bottle, n=xx), or mixed (e.g.~dog-bottle, n=xx), and again
-tested for correlations between image and word distances. We find that
-the overall correlation across our items appears stronger for inanimate
-pairs, which significantly correlated across our two spaces
-(\(R = 0.38\), \(p < 0.00024\)), even adjusting the significance
-threshold to .05/3 for this exploration. Correlations within animate and
-mixed item-pairs were not significantly different from change, though
-this may be expected with this relatively small set of items (see Figure
-\ref{fig:pairwise-corr-animate-vs-not}).
+animate-animate (e.g.~dog-giraffe, \textbf{n=xx}), inanimate-inanimate
+(e.g.~truck-bottle, \textbf{n=xx}), or mixed (e.g.~dog-bottle,
+\textbf{n=xx}), and again tested for correlations between image and word
+distances. We find that the overall correlation across our items appears
+stronger for inanimate pairs, which significantly correlated across our
+two spaces (\(R = 0.38\), \(p < 0.00024\)), even adjusting the
+significance threshold to .05/3 for this exploration. Correlations
+within animate and mixed item-pairs were not significantly different
+from chance, though this may be expected with this relatively small set
+of items (see Figure \ref{fig:pairwise-corr-animate-vs-not}).
 
-To examine whether the animate/inanimate distinction mapped onto early
-learning of these items, we looked at their relative rates of
+To furher probe whether the animate/inanimate distinction mapped onto
+early learning of these items, we looked at their relative rates of
 acquisition in WordBank (Frank et al., 2017). Given that the inanimate
 items showed the strongest correlation across spaces, we predicted that
 these items may be learned earlier than the animates. That is, in
@@ -327,67 +340,102 @@ round (i.e.~visual feature) and tends to partake in rolling events
 an object whose visual features are entirely uninformative about its
 functional or semantic qualities.
 
-In our current analysis the class of objects which displays stronger
-structure preservation (within class) are the inanimate objects. When we
-partition our set of 27 words into animates and inanimates and plot
-their relative rates of acquisition (averaging across 8-18 months for
-the MCDI-Words and Gestures as a comprehension proxie, and 16-30 months
-from MCDI-Words and Sentences as a production proxie), we find a trend
+Here, the sub-group of objects which displayed stronger structure
+preservation (within class) are the inanimate objects. When we partition
+our set of 27 words into animates and inanimates and compare their
+relative rates of acquisition (averaging across 8-18 months for the
+MCDI-Words and Gestures as a comprehension proxie, and 16-30 months from
+MCDI-Words and Sentences as a production proxie), we find a trend
 towards higher knowledge for inanimates, though this difference was not
 significant (see Figures \ref{fig:animacy-aoa-prod-graph} and
 \ref{fig:animacy-aoa-comp-graph}). While this initial exploration did
 not reveal notable mappings between acquisition timelines and image-word
 space correlations, we feel that further investigation (using larger
-item-sets) may provide insight in future investigations.
+datasets) may provide insight in future investigations.
 
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/pairwise-corr-1} \caption[Relative cosine distance between points in word embedding space correlates with relative distance in image embedding space ($R = 0.30$, $p < 1.5e-08$)]{Relative cosine distance between points in word embedding space correlates with relative distance in image embedding space ($R = 0.30$, $p < 1.5e-08$). Graph contains all pairwise distances for every word.}\label{fig:pairwise-corr}
+\includegraphics{figs/pairwise-corr-1} \caption[Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), for every item pair]{Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), for every item pair. Fitted line reflects linear fit with SE;the correlation is significant ($R = 0.30$, $p < 1.5e-08$).}\label{fig:pairwise-corr}
 \end{figure}
 \end{CodeChunk}
 
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/pairwise-corr-animate-vs-not-1} \caption[Inanimate objects display a significantly stronger correlation when mapping across vector spaces, meaning that they preserve their within-class structural relationships more reliabily across these two spaces]{Inanimate objects display a significantly stronger correlation when mapping across vector spaces, meaning that they preserve their within-class structural relationships more reliabily across these two spaces. Animate and mixed distances do not correlate. Each graph contains all pairwise distances between objects that are either a) both animate ($R = -0.13$, $p < 0.27$), b) both inanimate ($R = 0.38$, $p < 0.00024$), or c) mixed animate-to-inanimate ($R = -0.01$, $p < 0.86$)}\label{fig:pairwise-corr-animate-vs-not}
+\includegraphics{figs/pairwise-corr-animate-vs-not-1} \caption[Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), separated by pair-type (animate, inanimate, and mixed).Fitted line reflects linear fit with SE]{Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), separated by pair-type (animate, inanimate, and mixed).Fitted line reflects linear fit with SE. Each graph contains all pairwise distances between objects that are either a) both animate ($R = -0.13$, $p < 0.27$), b) both inanimate ($R = 0.38$, $p < 0.00024$), or c) mixed animate-to-inanimate ($R = -0.01$, $p < 0.86$)}\label{fig:pairwise-corr-animate-vs-not}
 \end{figure}
 \end{CodeChunk}
 
 \begin{table}
 \centering
 \includegraphics[max size={\columnwidth}{0.7\textheight}]{data/overlap_table_formatted2.png}
-\caption{Overlaps between closest objects in image vector space and word vector space. Neighbors are defined as those other objects which are less than -1 SD from the mean distance for any given word. Those neighbors that are marked red are shared between image and vector spaces. The overlap ratio is the number of shared neighbors across vector spaces divided by the total unique neighbors between the two spaces.}
+\caption{Neighbors in image- and word-vector space. Neighbors in bold and red are shared between across spaces; italicised words are image-neighbors only, underlined words are word-neighbors only. Overlap ratio reflects shared neighbors over total neighbors. See text for details.}
 \label{tbl:overlap-table}
 \end{table}
 
 \begin{CodeChunk}
+\begin{CodeOutput}
+
+    Pearson's product-moment correlation
+
+data:  wb_prod_long_allmonths$overall_prop_prod and numneighbors
+t = -2.5555, df = 25, p-value = 0.01707
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.7119793 -0.0907839
+sample estimates:
+       cor 
+-0.4550974 
+\end{CodeOutput}
+
+\includegraphics{figs/animacy_aoa_overall-1} \begin{CodeOutput}
+
+    Pearson's product-moment correlation
+
+data:  wb_comp_long_allmonths$overall_prop_comp and numneighbors
+t = -2.746, df = 25, p-value = 0.01102
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.7281842 -0.1240567
+sample estimates:
+      cor 
+-0.481377 
+\end{CodeOutput}
+
+\includegraphics{figs/animacy_aoa_overall-2} \end{CodeChunk}
+
+\begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/animacy-aoa-prod-graph-1} \caption[AoA for animates vs inanimates (using child production data) collapsed over month]{AoA for animates vs inanimates (using child production data) collapsed over month}\label{fig:animacy-aoa-prod-graph}
+\includegraphics{figs/animacy-aoa-prod-graph-1} \caption[Word knowledge for animates vs]{Word knowledge for animates vs. inanimates (production data left, comprehension data right, estimated from WordBank) collapsed over month. See text for details}\label{fig:animacy-aoa-prod-graph}
 \end{figure}
 \end{CodeChunk}
 
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/animacy-aoa-comp-graph-1} \caption[AoA for animates vs inanimates (using child comprehension data) collapsed over month]{AoA for animates vs inanimates (using child comprehension data) collapsed over month}\label{fig:animacy-aoa-comp-graph}
+\includegraphics{figs/animacy-aoa-comp-graph-1} \caption[Word knowledge for animates vs inanimates (using child comprehension data) collapsed over month]{Word knowledge for animates vs inanimates (using child comprehension data) collapsed over month}\label{fig:animacy-aoa-comp-graph}
 \end{figure}
 \end{CodeChunk}
 
-\section{\texorpdfstring{Discussion \textbf{Eb got to
-here}}{Discussion Eb got to here}}\label{discussion-eb-got-to-here}
+\section{Discussion}\label{discussion}
 
-We've reported a significant correspondence between representations
-learned by two different algorithms operating over seemingly unrelated
-inputs (i.e.~visual and linguistic). What is most noteworthy here is
-that the only immediate common ground between these representations are
-the real life objects they both aim to model. This draws us into
-questions concerning the nature of similarity and the multifaceted
-character of information which is revealed by objects in the real world.
+The results above revealed a significant correspondence between
+representations learned by two different algorithms operating over
+inputs in two fundamentally different encoding formats (i.e.~visual and
+linguistic). We find that not only are the relative distances among
+these 27 common, early-learned items correlated across word- and
+image-vector space, but that even at the item-level, the `closest' words
+in both spaces overlap as well. What is most noteworthy here is that the
+only immediate common ground between these representations are the real
+life concepts they both aim to model. This is particularly notable given
+the enormous dimensionality of our feature spaces, and the fact that
+these algorithms are placed under no pressure to find homologous
+representations.
+
 The notion that we can make inferences about one aspect of an object
-given another aspect, is not surprising or controversial. However, the
-fact that we can make these bi-directional inferences using aspects
-traditionally treated as being orthogonal, is noteworthy. This is
-particularly the case given the enormous dimensionality of our feature
-spaces, and the fact that these algorithms are placed under no pressure
-to find homologous representations.
+given another aspect, is not surprising or controversial. Rather than
+considering multiple dimensions of an word or concept at once, as real
+learners must, here we show that even with the experiences parcelled out
+separately into visual and linguistic spaces, what count as `similar' is
+conserved.
 
 Through what metrics can a learning algorithm, or indeed a human,
 establish gradations of likeness? Are these necessarily the same metrics
@@ -404,7 +452,8 @@ which, by virtue of their invariant actuality, give rise to regularity
 across measurements at different vantage points (i.e.~modalities), an
 idea dating back to Helmholtz (1878).
 
-We find in our current work that this quality of invariance is
+While in principle, the animacy dimension may have been a fruitful
+ground We find in our current work that this quality of invariance is
 differentially present across different classes of entities, namely
 animate vs.~inanimate objects. However, this is conditioned on the
 particular algorithms we've investigated here, and our extensions into
