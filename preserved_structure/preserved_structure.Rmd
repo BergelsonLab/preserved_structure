@@ -12,7 +12,7 @@ author-information: >
 
 abstract: 
     "Certain concepts, words, and images are intuitively more similar than others (dog vs. cat, dog vs. spoon), though quantifying such similarity is notoriously tricky. Indeed, this kind of computation is likely a critical part of learning the category boundaries for words within a given language. Here, we use a set of items (n= 27, e.g. 'dog') that are highly common in young infants'input, and use both image-based and word-based algorithms to independently compute similarity among these items. We find two key results. First, the pair-wise item similarities derived within image-space and word co-occurrence-space are correlated, suggesting evidence of preserved structure among these extremely different representational formats. Second, the 'closest' neighbors for each item computed within each space overlap significantly. We further discuss the potential role of animacy in a set of exploratory analyses. We conclude that this approach, which does not rely on human ratings of similarity, may nevertheless reflect  stable within-class structure across these two spaces. We speculate that such invariance, in turn, might aid in lexical acquisition, by serving as an informative marker of category boundaries."
-    
+
 keywords:
     "vector space models; semantic similarity; word learning"
     
@@ -87,7 +87,7 @@ In the case of our word vectors, the GloVe algorithm instantiates the distributi
 
 ### Image Vectors
 
-The image embeddings, on the other hand, are taken from the final layer of activations in a convolutional neural network, whose objective function tunes network parameters in service of object recognition, where the loss function is computed in reference to a set of labeled training images [@ILSVRC15]. The final layer of this network encodes the most abstract and integrated visual features, serving as the basis for classification into 1000 different classes. 
+The image embeddings are taken from the final layer of activations in a convolutional neural network, whose objective function tunes network parameters in service of object recognition, where the loss function is computed in reference to a set of labeled training images [@ILSVRC15]. The final layer of this network encodes the most abstract and integrated visual features, serving as the basis for classification into 1000 different classes. 
 
 ## Defining a prototypical image
 In the case of word vectors, each word is assigned a unique point in a common vector space. Different images containing objects of the same type, on the other hand, will have varying vector representations after passing through the layers of a neural network. This presents a problem in comparing the two forms of representation. We must first define the most prototypical (or average) image vector for any given category of object.
