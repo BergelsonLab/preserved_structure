@@ -222,11 +222,6 @@ wb_prod_long <- wb_prod %>%
   gather(`16`:`30`, value = 'mean_prop_prod', key = "month")
 wb_comp_long <- wb_comp %>% 
   gather(`8`:`18`, value = 'mean_prop_comp', key = "month")
-```
-
-
-```{r animacy_aoa_overall, echo=F}
-#EB HEY THIS MIGHT BE PRETTY COOL
 wb_prod_long_allmonths <- wb_prod_long %>% 
   group_by(definition, animate) %>% 
   summarise(overall_prop_prod = mean(mean_prop_prod)) %>% 
@@ -240,44 +235,34 @@ wb_comp_long_allmonths <- wb_comp_long %>%
   left_join(neighbor_counts) %>% 
   mutate(totalneighbors = image_count+word_count+overlap_count,
          overlapratio = overlap_count/totalneighbors)
+```
 
-prod_overlap_corr <- cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlapratio, conf.int=T) %>% tidy()
+
+```{r animacy_aoa_overall, echo=F}
+prod_overlap_corr <- cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlap_count, conf.int=T) %>% tidy()
 comp_overlap_corr <- cor.test(wb_comp_long_allmonths$overall_prop_comp, wb_comp_long_allmonths$overlap_count, conf.int=T) %>% tidy()
 
 wb_all<- wb_comp_long_allmonths %>% 
   left_join(wb_prod_long_allmonths) %>% 
-  gather(c(overall_prop_comp, overall_prop_prod), value = prop_kids, key = comp_prod )
+  gather(c(overall_prop_comp, overall_prop_prod), value = prop_kids, key = comp_prod ) %>% 
+  mutate(comp_prod = fct_recode(comp_prod,
+    "production" = "overall_prop_prod",
+    "comprehension" = "overall_prop_comp"
+  ))
 
 ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
   geom_point()+
   geom_text_repel(aes(label = definition))+
   facet_wrap(~comp_prod, scales = "free_y")+
   stat_smooth(method = "lm")+
-  theme_bw()+
-  guides(colour = "none")
+  theme_bw(base_size = 10)+
+  guides(colour = "none")+
+  xlab("# of overlap neighbors")+
+  ylab("prop. word knowledge")
 
-
+cap <- "Proportion of children in WordBank reported to understand (left, averaged over 8-18 months) or produce (right, averaged over 16-30 months) the 27 items, as a function of how many overlapping neighbors (i.e. image- and word-based neighbors) they have. Line indicates linear fit with SE confidence band."
 ```
 
-```{r animacy-aoa-prod-graph, fig.height=2, fig.cap = cap}
-#1 datapoint going into error bars per word 
-ggplot(wb_prod_long_allmonths,aes(x = animate , y = overall_prop_prod, color=animate))+
-  theme_bw()+
-  theme(axis.text.x=element_blank())+
-  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
-
-cap <- "Word knowledge for animates vs. inanimates (production data left, comprehension data right, estimated from WordBank) collapsed over month. See text for details"
-# this should be the caption for the combo fig
-```
-
-```{r animacy-aoa-comp-graph, fig.height=2, fig.cap = cap}
-ggplot(wb_comp_long_allmonths,aes(x = animate , y = overall_prop_comp, color=animate))+
-  theme_bw()+
-  theme(axis.text.x=element_blank())+
-  stat_summary(fun.data=mean_cl_boot, geom = "pointrange")
-
-cap <- "Word knowledge for animates vs inanimates (using child comprehension data) collapsed over month"
-```
 
 # Discussion
 The results above revealed a significant correspondence between representations learned by two different algorithms operating over inputs in two fundamentally different encoding formats (i.e. visual and linguistic). We find that not only are the relative distances among these 27 common, early-learned items correlated across word- and image-space, but that even at the item-level, the 'closest' words in both spaces overlap as well. What is most noteworthy here is that the only immediate common ground between these representations are the real life concepts they both aim to model. This is particularly notable given the enormous dimensionality of our feature spaces, and the fact that these algorithms are placed under no pressure to find homologous representations.
