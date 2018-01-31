@@ -8,3 +8,4 @@
 *.json
 *.npy
 preserved_structure/python/.ipynb_checkpoints
+preserved_structure/data/all_basiclevel.csv
