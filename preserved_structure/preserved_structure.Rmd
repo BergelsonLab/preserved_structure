@@ -33,6 +33,7 @@ library(xtable)
 library(tidyverse)
 library(ggpubr)
 library(broom)
+library(ggrepel)
 ```
 
 ```{r preliminary_data_loading}
@@ -231,11 +232,6 @@ wb_prod_long_allmonths <- wb_prod_long %>%
   mutate(totalneighbors = image_count+word_count+overlap_count,
          overlapratio = overlap_count/totalneighbors)
 
-cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlapratio)
-ggplot(wb_prod_long_allmonths, aes(overall_prop_prod, overlap_count,color = factor(definition)))+
-  geom_point()+
-  stat_smooth(method = "lm", aes(group  =1))
-
 wb_comp_long_allmonths <- wb_comp_long %>% 
   group_by(definition, animate) %>% 
   summarise(overall_prop_comp = mean(mean_prop_comp)) %>% 
@@ -243,10 +239,20 @@ wb_comp_long_allmonths <- wb_comp_long %>%
   mutate(totalneighbors = image_count+word_count+overlap_count,
          overlapratio = overlap_count/totalneighbors)
 
-cor.test(wb_comp_long_allmonths$overall_prop_comp, wb_comp_long_allmonths$overlap_count)
-ggplot(wb_comp_long_allmonths, aes(overall_prop_comp, overlap_count,color = factor(definition)))+
+prod_overlap_corr <- cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlapratio, conf.int=T) %>% tidy()
+comp_overlap_corr <- cor.test(wb_comp_long_allmonths$overall_prop_comp, wb_comp_long_allmonths$overlap_count, conf.int=T) %>% tidy()
+
+wb_all<- wb_comp_long_allmonths %>% 
+  left_join(wb_prod_long_allmonths) %>% 
+  gather(c(overall_prop_comp, overall_prop_prod), value = prop_kids, key = comp_prod )
+
+ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
   geom_point()+
-  stat_smooth(method = "lm", aes(group  =1))
+  geom_text_repel(aes(label = definition))+
+  facet_wrap(~comp_prod, scales = "free_y")+
+  stat_smooth(method = "lm")+
+  theme_bw()+
+  guides(colour = "none")
 
 
 ```
