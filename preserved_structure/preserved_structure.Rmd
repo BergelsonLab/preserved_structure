@@ -62,6 +62,8 @@ overlap_ratios <- read_csv("data/overlap_ratios.csv") %>%
 # fix water picture in img space
 neighbor_counts <- read_csv("python/neighbor_counts.csv") %>% 
   rename(definition = word)
+
+stimuli_counts <- read_csv("python/stimuli_counts.csv")
 ```
 
 
@@ -77,7 +79,7 @@ Delineating the differences between words, concepts, and categories in the abstr
 
 The 27 items analyzed here were selected due to their high frequency in infants' early visual and linguistic input, aggregated as part of the SEEDLingS project, which gathered longitudinal audio and video data of infants' home environments from 6-17 months [@bergelson2016seedlings; @bergelson2016seedlingsdatabrary]. We describe this larger study in brief, simply to relay how the items we analyze were chosen; the details of this larger study are not critical to the present work. In the larger study, 44 infants were tested every other month (from 6-18 months) on common nouns, using a looking-while-listening eyetracking design in which two images are shown on a screen, and one is named. The words for these experiments were chosen by dint of being high frequency or well known across infants in other samples (e.g. Brent Corpus, WordBank [@brent2001role@frank2017wordbank]), or by being one of the top 10 concrete nouns heard in each infants' own home audio and video recordings in the preceding two months. 
 
-The images displayed when these words were tested were chosen from a library of prototypical images of a given word (e.g. dog), along with images of infants' own versions of the items, as seen in their home videos (e.g. a given infant's cat, specific bottle, etc.). To enter the current analysis, images had to occur 9 or more times in this image library of high frequency concrete nouns **add M(SD) R for # images and # basic level tokens in allbasiclevel**. Thus, the words and images used here were highly common across our 500+ daylong audio-recordings and 500+ hourlong video-recordings from 44 infants,  providing an ecologically-valid item-set for present modeling purposes.
+The images displayed when these words were tested were chosen from a library of prototypical images of a given word (e.g. dog), along with images of infants' own versions of the items, as seen in their home videos (e.g. a given infant's cat, specific bottle, etc.). To enter the current analysis, images had to occur 9 or more times in this image library of high frequency concrete nouns (image counts: mean=`r round(mean(stimuli_counts$num_images), 2)`, sd=`r round(sd(stimuli_counts$num_images), 2)`, word frequency: mean=`r round(mean(stimuli_counts$bl_freq), 2)`, sd=`r round(sd(stimuli_counts$bl_freq), 2)`). Thus, the words and images used here were highly common across our 500+ daylong audio-recordings and 500+ hourlong video-recordings from 44 infants,  providing an ecologically-valid item-set for present modeling purposes.
 
 The images of the 27 items used to derive average category image-vectors were all 960x960pixel photos of a single object on a gray background. All items correspond to words found on WordBank [@frank2017wordbank], a compilation of the MacArthur-Bates Communicative Development Inventory, which we use as a proxy for age of acquisition below [@dale1996lexical].
 
