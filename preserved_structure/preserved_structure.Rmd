@@ -227,9 +227,11 @@ wb_comp_long <- wb_comp %>%
 wb_prod_long_allmonths <- wb_prod_long %>% 
   group_by(definition, animate) %>% 
   summarise(overall_prop_prod = mean(mean_prop_prod)) %>% 
-  left_join(neighbor_counts)
+  left_join(neighbor_counts) %>% 
+  mutate(totalneighbors = image_count+word_count+overlap_count,
+         overlapratio = overlap_count/totalneighbors)
 
-cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlap_count)
+cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlapratio)
 ggplot(wb_prod_long_allmonths, aes(overall_prop_prod, overlap_count,color = factor(definition)))+
   geom_point()+
   stat_smooth(method = "lm", aes(group  =1))
@@ -237,7 +239,9 @@ ggplot(wb_prod_long_allmonths, aes(overall_prop_prod, overlap_count,color = fact
 wb_comp_long_allmonths <- wb_comp_long %>% 
   group_by(definition, animate) %>% 
   summarise(overall_prop_comp = mean(mean_prop_comp)) %>% 
-  left_join(neighbor_counts)
+  left_join(neighbor_counts) %>% 
+  mutate(totalneighbors = image_count+word_count+overlap_count,
+         overlapratio = overlap_count/totalneighbors)
 
 cor.test(wb_comp_long_allmonths$overall_prop_comp, wb_comp_long_allmonths$overlap_count)
 ggplot(wb_comp_long_allmonths, aes(overall_prop_comp, overlap_count,color = factor(definition)))+
