@@ -69,16 +69,16 @@ given language. Here, we use a set of items (n= 27, e.g. `dog') that are
 highly common in young infants' input, and use both image-based and
 word-based algorithms to independently compute similarity among these
 items. We find two key results. First, the pair-wise item similarities
-derived within image-space and word co-occurrence-space are correlated,
-suggesting evidence of preserved structure among these extremely
-different representational formats. Second, the `closest' neighbors for
-each item computed within each space overlap significantly. We further
-discuss the potential role of animacy in a set of exploratory analyses.
-We conclude that this approach, which does not rely on human ratings of
-similarity, may nevertheless reflect stable within-class structure
-across these two spaces. We speculate that such invariance, in turn,
-might aid in lexical acquisition, by serving as an informative marker of
-category boundaries.
+derived within image feature space and semantic feature-space are
+correlated, suggesting evidence of preserved structure among these
+extremely different representational formats. Second, the `closest'
+neighbors for each item computed within each space overlap
+significantly. We further discuss the potential role of animacy in a set
+of exploratory analyses. We conclude that this approach, which does not
+rely on human ratings of similarity, may nevertheless reflect stable
+within-class structure across these two spaces. We speculate that such
+invariance, in turn, might aid in lexical acquisition, by serving as an
+informative marker of category boundaries.
 
 \textbf{Keywords:}
 vector space models; semantic similarity; word learning
@@ -208,7 +208,7 @@ pretrained by the GloVe authors on the Common Crawl corpus with 42
 billion tokens, resulting in 300 dimensional vectors for 1.9 million
 unique words\footnote{\url{https://nlp.stanford.edu/projects/glove/}}.
 Such vectors have shown promise in modeling early semantic networks
-(Amatuni \& Bergelson, 2017). Thus, in word-vector space (hereafter
+(Amatuni \& Bergelson, 2017). Thus, in word vector space (hereafter
 word-space), each of our 27 items is represented as a 300-dimensional
 vector, with each word assigned a unique point in a common vector space.
 
@@ -228,7 +228,7 @@ the layers of a neural network. This presents a problem in comparing the
 two forms of representation. We must first define the most prototypical
 (or average) image vector for any given category of object, which will
 generate our 2048-dimensional representation for each of the 27 items,
-in image-vector space (hereafter image-space).
+in image vector space (hereafter image-space).
 
 Given a set of images \(S_c\) containing objects belonging to a single
 category \(c\) (e.g.~cat, dog, chair), we define our prototypical vector
@@ -256,23 +256,22 @@ Github\footnote{\url{https://github.com/BergelsonLab/preserved_structure}}.
 
 \subsection{Comparing spaces}\label{comparing-spaces}
 
-Having computed our two sets of vectors (i.e.~those from word vector
-space and those from image vector space), we can compare all the
-pairwise distances between objects, both within a single space and
-across the two. When comparing across the two spaces, a correlation in
-pairwise distances implies that inter-object distances have been
-conserved. For example, if ``dog'' and ``cat'' are close together in
-word space and mutually far apart from ``chair'' and ``table'' in that
-same space, maintaining this relationship for all pairwise distances in
-the \textit{other} vector space means that the global inter-object
-structure is preserved across this mapping, despite being in radically
-different spaces, both in terms of dimensionality (300 for words, and
-2048 for images in our case) and by virtue of using completely different
-algorithms and inputs to establish the vector representations for
-objects. So while their absolute locations might have been radically
-transformed, this correlation would be a measure of the
-\textit{degree of invariance} in their positioning relative to each
-other.
+Having computed our two sets of vectors (i.e.~those from word-space and
+those from image-space), we can compare all the pairwise distances
+between objects, both within a single space and across the two. When
+comparing across the two spaces, a correlation in pairwise distances
+implies that inter-object distances have been conserved. For example, if
+``dog'' and ``cat'' are close together in word space and mutually far
+apart from ``chair'' and ``table'' in that same space, maintaining this
+relationship for all pairwise distances in the \textit{other} vector
+space means that the global inter-object structure is preserved across
+this mapping, despite being in radically different spaces, both in terms
+of dimensionality (300 for words, and 2048 for images in our case) and
+by virtue of using completely different algorithms and inputs to
+establish the vector representations for objects. So while their
+absolute locations might have been radically transformed, this
+correlation would be a measure of the \textit{degree of invariance} in
+their positioning relative to each other.
 
 \section{Results}\label{results}
 
@@ -367,7 +366,7 @@ datasets) may provide insight in future investigations.
 \begin{table}
 \centering
 \includegraphics[max size={\columnwidth}{0.7\textheight}]{data/overlap_table_formatted2.png}
-\caption{Neighbors in image- and word-vector space. Neighbors in bold and red are shared between across spaces; italicised words are image-neighbors only, underlined words are word-neighbors only. Overlap ratio reflects shared neighbors over total neighbors. See text for details.}
+\caption{Neighbors in image- and word-space. Neighbors in bold and red are shared between across spaces; italicised words are image-neighbors only, underlined words are word-neighbors only. Overlap ratio reflects shared neighbors over total neighbors. See text for details.}
 \label{tbl:overlap-table}
 \end{table}
 
@@ -421,8 +420,8 @@ representations learned by two different algorithms operating over
 inputs in two fundamentally different encoding formats (i.e.~visual and
 linguistic). We find that not only are the relative distances among
 these 27 common, early-learned items correlated across word- and
-image-vector space, but that even at the item-level, the `closest' words
-in both spaces overlap as well. What is most noteworthy here is that the
+image-space, but that even at the item-level, the `closest' words in
+both spaces overlap as well. What is most noteworthy here is that the
 only immediate common ground between these representations are the real
 life concepts they both aim to model. This is particularly notable given
 the enormous dimensionality of our feature spaces, and the fact that
