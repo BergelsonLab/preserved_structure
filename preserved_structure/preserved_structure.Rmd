@@ -196,7 +196,7 @@ cap <- sprintf("Inanimate objects display a significantly stronger correlation w
 \begin{table}
 \centering
 \includegraphics[max size={\columnwidth}{0.7\textheight}]{data/overlap_table_formatted2.png}
-\caption{Overlaps between closest objects in image vector space and word vector space. Neighbors are defined as those other objects which are less than -1 SD from the mean distance for any given word. Those neighbors that are marked red are shared between image and vector spaces. The overlap ratio is the number of shared neighbors across vector spaces divided by the total unique neighbors between the two spaces.}
+\caption{Overlaps between closest objects in image vector space and word vector space. Neighbors are defined as those other objects which are less than -1 SD from the mean distance for any given word. Those neighbors that are marked red are shared between image and vector spaces. The overlap ratio is the number of shared neighbors across vector spaces divided by the total unique neighbors between the two spaces. Italicized words only qualified as neighbors in the image space, while those that are underlined only qualify in the word space.}
 \label{tbl:overlap-table}
 \end{table}
 
