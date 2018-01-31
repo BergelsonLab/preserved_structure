@@ -183,20 +183,24 @@ similarity between objects.
 
 \subsubsection{Word Vectors}\label{word-vectors}
 
-\subsubsection{Image Vectors}\label{image-vectors}
-
 In the case of our word vectors, the GloVe algorithm instantiates the
 distributional hypothesis, which proposes that words which co-occur with
 each other share similar meaning (Firth, 1957; Harris, 1954), and by
 capturing the covariance of tokens in large text corpora, you capture
-some aspect of their semantic structure. The image embeddings, on the
-other hand, are taken from the final layer of activations in a
-convolutional neural network, whose objective function tunes network
-parameters in service of object recognition, where the loss function is
-computed in reference to a set of labeled training images (Russakovsky
-et al., 2015). The final layer of this network encodes the most abstract
-and integrated visual features, serving as the basis for classification
-into 1000 different classes.
+some aspect of their semantic structure. We use the set of vectors
+pretrained by the GloVe authors on the Common Crawl corpus with 42
+billion tokens, resulting in 300 dimensional vectors for 1.9 million
+unique words\footnote{\url{https://nlp.stanford.edu/projects/glove/}}.
+
+\subsubsection{Image Vectors}\label{image-vectors}
+
+The image embeddings, on the other hand, are taken from the final layer
+of activations in a convolutional neural network, whose objective
+function tunes network parameters in service of object recognition,
+where the loss function is computed in reference to a set of labeled
+training images (Russakovsky et al., 2015). The final layer of this
+network encodes the most abstract and integrated visual features,
+serving as the basis for classification into 1000 different classes.
 
 \subsection{Defining a prototypical
 image}\label{defining-a-prototypical-image}
@@ -230,7 +234,9 @@ susceptible to differences in \(L^2\) norm influencing our measure of
 similarity, as is the case with the Euclidean distance. These
 differences in magnitude between vectors can be the product of frequency
 effects in the training data, and the cosine similarity corrects for
-this.
+this. Our code used for generating these vectors and for the subsequent
+analysis can be found on
+Github\footnote{\url{https://github.com/BergelsonLab/preserved_structure}}.
 
 \subsection{Comparing spaces}\label{comparing-spaces}
 
