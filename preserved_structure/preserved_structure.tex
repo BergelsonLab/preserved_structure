@@ -149,6 +149,7 @@ the category boundaries of the concept are. Hereafter we use the term
 
 \subsection{Items}\label{items}
 
+<<<<<<< HEAD
 The 27 items analyzed here were selected due to their high frequency in
 infants' early visual and linguistic input, aggregated as part of the
 SEEDLingS project, which gathered longitudinal audio and video data of
@@ -164,6 +165,23 @@ other samples (e.g.~Brent Corpus, WordBank \textbf{BRENT \& SISKIND
 2001}(Frank, Braginsky, Yurovsky, \& Marchman, 2017)), or by being one
 of the top 10 concrete nouns heard in each infants' own home audio and
 video recordings in the preceding two months.
+=======
+The 27 items (i.e.~words and images) analyzed here were selected due to
+their high frequency in infants' early visual and linguistic input,
+aggregated as part of the SEEDLingS project, which gathered longitudinal
+audio and video data of infants' home environments from 6-17 months (E.
+Bergelson, 2016a, 2016b). We describe this larger study in brief, simply
+to relay how the items we analyze were chosen; the details of this
+larger study are not critical to the present work. In the larger study,
+44 infants were tested every other month (from 6-18 months) on common
+nouns, using a looking-while-listening eyetracking design in which two
+images are shown on a screen, and one is named. The words for these
+experiments were chosen by dint of being high frequency or well known
+across infants in other samples (e.g.~Brent Corpus, WordBank (Brent \&
+Siskind, 2001; Frank, Braginsky, Yurovsky, \& Marchman, 2017)), or by
+being one of the top 10 concrete nouns heard in each infants' own home
+audio and video recordings in the preceding two months.
+>>>>>>> 27cc435bbff6582309355697b1ad71427bdd14b6
 
 The images displayed when these words were tested were chosen from a
 library of prototypical images of a given word (e.g.~dog), along with
@@ -208,10 +226,9 @@ pretrained by the GloVe authors on the Common Crawl corpus with 42
 billion tokens, resulting in 300 dimensional vectors for 1.9 million
 unique words\footnote{\url{https://nlp.stanford.edu/projects/glove/}}.
 Such vectors have shown promise in modeling early semantic networks
-\textbf{shameless ref to our last year cogsci paper}. Thus, in
-word-vector space, each of our 27 items is represented as a
-300-dimensional vector, with each word assigned a unique point in a
-common vector space. \textbf{confirm that my paraphrase is ok}
+(Amatuni \& Bergelson, 2017). Thus, in word-vector space, each of our 27
+items is represented as a 300-dimensional vector, with each word
+assigned a unique point in a common vector space.
 
 \subsubsection{Image Vectors}\label{image-vectors}
 
@@ -293,9 +310,10 @@ whose distance to this 'target \textbf{say something clear here} was
 considered a neighbor. With this normalized neighborhood threshold, we
 find that the majority of items have at least 1 neighbor which is shared
 across representational spaces. Within word-space, items had on average
-XX neighbors, Range XX-XX. Within Image-space, items had XX neighbors,
-Range XX-XX.
+3.29 neighbors, Range 1-5. Within Image-space, items had 2.51 neighbors,
+Range 0-6.
 
+<<<<<<< HEAD
 We find that neighbor `overlap' across the spaces (i.e.~how many of the
 neighbors overlapped, divided by how many neighbors there were) is
 significantly greater than 0 (Mean Overlap XX, p\textless{} XX by
@@ -304,15 +322,26 @@ just that the distances for any given pair tended to have similar values
 in image-space and word-space, but that the \emph{most} similar
 words/images for each of the 27 items also were consistent across these
 spaces.
+=======
+If we compute neighbor `overlap' across the spaces (i.e.~how many of the
+neighbors overlapped, divided by how many neighbors there were) we find
+that the overlap is significantly greater than 0 (Mean Overlap XX,
+p\textless{} XX by Wilcoxon test). This complements the correlational
+analysis, showing not just that the distances for any given pair tended
+to have similar values in image-space and word-space, but that
+\textit{the most similar} words/images for each of the 27 items were
+also consistent across these spaces.
+>>>>>>> 27cc435bbff6582309355697b1ad71427bdd14b6
 
 \subsubsection{Animacy}\label{animacy}
 
 Given that infants are generally drawn to faces from an early age
-\textbf{ref frank et al paper }, and that animacy is a robust linguistic
+(Frank, Vul, \& Johnson, 2009), and that animacy is a robust linguistic
 and semantic/syntactic property, we conducted a set of exploratory
 analyses to examine animacy effects among our 27 items (of which half
 were animates, see Table \ref{tbl:overlap-table}). We first partitioned
 the set of inter-word distances into those that are either
+<<<<<<< HEAD
 animate-animate (e.g.~dog-giraffe, \textbf{n=xx}), inanimate-inanimate
 (e.g.~truck-bottle, \textbf{n=xx}), or mixed (e.g.~dog-bottle,
 \textbf{n=xx}), and again tested for correlations between image and word
@@ -326,6 +355,21 @@ of items (see Figure \ref{fig:pairwise-corr-animate-vs-not}).
 
 To furher probe whether the animate/inanimate distinction mapped onto
 early learning of these items, we looked at their relative rates of
+=======
+animate-animate (e.g.~dog-giraffe, n=xx), inanimate-inanimate
+(e.g.~truck-bottle, n=xx), or mixed (e.g.~dog-bottle, n=xx), and again
+tested for correlations between image and word distances. We find that
+the overall correlation across our items appears stronger for inanimate
+pairs, which significantly correlated across our two spaces
+(\(R = 0.38\), \(p < 0.00024\)), even adjusting the significance
+threshold to .05/3 for this exploration. Correlations within animate and
+mixed item-pairs were not significantly different from chance, though
+this may be expected with this relatively small set of items (see Figure
+\ref{fig:pairwise-corr-animate-vs-not}).
+
+To examine whether the animate/inanimate distinction mapped onto early
+learning of these items, we looked at their relative rates of
+>>>>>>> 27cc435bbff6582309355697b1ad71427bdd14b6
 acquisition in WordBank (Frank et al., 2017). Given that the inanimate
 items showed the strongest correlation across spaces, we predicted that
 these items may be learned earlier than the animates. That is, in
@@ -368,7 +412,11 @@ datasets) may provide insight in future investigations.
 \begin{table}
 \centering
 \includegraphics[max size={\columnwidth}{0.7\textheight}]{data/overlap_table_formatted2.png}
+<<<<<<< HEAD
 \caption{Neighbors in image- and word-vector space. Neighbors in bold and red are shared between across spaces; italicised words are image-neighbors only, underlined words are word-neighbors only. Overlap ratio reflects shared neighbors over total neighbors. See text for details.}
+=======
+\caption{Overlaps between closest objects in image vector space and word vector space. Neighbors are defined as those other objects which are less than -1 SD from the mean distance for any given word. The overlap ratio is the number of shared neighbors across vector spaces divided by the total unique neighbors between the two spaces. Those neighbors that are marked red are shared between image and vector spaces. Italicized words only qualified as neighbors in the image space, while those that are underlined only qualify in the word space. Neighbors are sorted in increasing zcore order within their respective group (i.e. overlapping, just image, just word).}
+>>>>>>> 27cc435bbff6582309355697b1ad71427bdd14b6
 \label{tbl:overlap-table}
 \end{table}
 
@@ -489,6 +537,11 @@ We thank the SEEDLingS team, and NIH DP5-OD019812.
 \setlength{\parindent}{-0.1in} \setlength{\leftskip}{0.125in} \noindent
 
 \hypertarget{refs}{}
+\hypertarget{ref-amatuni2017semantic}{}
+Amatuni, A., \& Bergelson. (2017). Semantic networks generated from
+early linguistic input. In \emph{Proceedings of the 39th annual
+conference of the cognitive science society} (pp. 1538--1543).
+
 \hypertarget{ref-bergelson2016seedlings}{}
 Bergelson, E. (2016a). Bergelson seedlings homebank corpus.
 \url{http://doi.org/10.21415/T5PK6D}
@@ -496,6 +549,11 @@ Bergelson, E. (2016a). Bergelson seedlings homebank corpus.
 \hypertarget{ref-bergelson2016seedlingsdatabrary}{}
 Bergelson, E. (2016b). SEEDLingS corpus. Retrieved January 26, 2018,
 from \url{https://nyu.databrary.org/volume/228}
+
+\hypertarget{ref-brent2001role}{}
+Brent, M. R., \& Siskind, J. M. (2001). The role of exposure to isolated
+words in early vocabulary development. \emph{Cognition}, \emph{81}(2),
+B33--B44.
 
 \hypertarget{ref-dale1996lexical}{}
 Dale, P. S., \& Fenson, L. (1996). Lexical development norms for young
@@ -514,6 +572,11 @@ Firth, J. R. (1957). A synopsis of linguistic theory, 1930-1955.
 Frank, M. C., Braginsky, M., Yurovsky, D., \& Marchman, V. A. (2017).
 Wordbank: An open repository for developmental vocabulary data.
 \emph{Journal of Child Language}, \emph{44}(3), 677--694.
+
+\hypertarget{ref-frank2009development}{}
+Frank, M. C., Vul, E., \& Johnson, S. P. (2009). Development of infants'
+attention to faces during the first year. \emph{Cognition},
+\emph{110}(2), 160--170.
 
 \hypertarget{ref-gelman1986categories}{}
 Gelman, S. A., \& Markman, E. M. (1986). Categories and induction in
