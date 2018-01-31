@@ -59,6 +59,8 @@ wb_comp <- read_csv("data/wordbank_comprehension.csv") %>%
 overlap_ratios <- read_csv("data/overlap_ratios.csv") %>% 
   mutate(animate = ifelse(word %in% animate, T, F))
 # fix water picture in img space
+neighbor_counts <- read_csv("python/neighbor_counts.csv") %>% 
+  rename(definition = word)
 ```
 
 
@@ -224,22 +226,24 @@ wb_comp_long <- wb_comp %>%
 #EB HEY THIS MIGHT BE PRETTY COOL
 wb_prod_long_allmonths <- wb_prod_long %>% 
   group_by(definition, animate) %>% 
-  summarise(overall_prop_prod = mean(mean_prop_prod))
-numneighbors <- c(1,0,0,2,0,0,2,1,0,0,2,1,0,1,0,2,2,1,3,1,3,1,0,0,1,1,1)
+  summarise(overall_prop_prod = mean(mean_prop_prod)) %>% 
+  left_join(neighbor_counts)
 
-cor.test(wb_prod_long_allmonths$overall_prop_prod, numneighbors)
-
-qplot(wb_prod_long_allmonths$overall_prop_prod, numneighbors)+
-  geom_text(label = wb_prod_long_allmonths$definition)+
-  stat_smooth(method = "lm")
+cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlap_count)
+ggplot(wb_prod_long_allmonths, aes(overall_prop_prod, overlap_count,color = factor(definition)))+
+  geom_point()+
+  stat_smooth(method = "lm", aes(group  =1))
 
 wb_comp_long_allmonths <- wb_comp_long %>% 
   group_by(definition, animate) %>% 
-  summarise(overall_prop_comp = mean(mean_prop_comp))
-cor.test(wb_comp_long_allmonths$overall_prop_comp, numneighbors)
-qplot(wb_comp_long_allmonths$overall_prop_comp, numneighbors)+
-  geom_text(label = wb_prod_long_allmonths$definition)+
-  stat_smooth(method = "lm")
+  summarise(overall_prop_comp = mean(mean_prop_comp)) %>% 
+  left_join(neighbor_counts)
+
+cor.test(wb_comp_long_allmonths$overall_prop_comp, wb_comp_long_allmonths$overlap_count)
+ggplot(wb_comp_long_allmonths, aes(overall_prop_comp, overlap_count,color = factor(definition)))+
+  geom_point()+
+  stat_smooth(method = "lm", aes(group  =1))
+
 
 ```
 
