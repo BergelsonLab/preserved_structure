@@ -162,7 +162,40 @@ We find that neighbor 'overlap' across the spaces (i.e. how many of the neighbor
 #Connecting with Learnability
 While some degree of convergence across image and word spaces is to be expected given that these are two different manifestations of the same underlying concept/word/item, we next queried whether this invariance related to learnability. We hypothesized that words with more overlapping neighbors would be harder for children to learn, since both the visual and linguistic spaces they occur in are more 'cluttered.' To test this, we looked at the relative rates of acquisition of our 27 items in WordBank [@frank2017wordbank], using the 6945 children's data from English. Since we did not have firm predictions about specific ages, or of tradeoffs between comprehension and production, we used both. That is, we used comprehension norms (from MCDI-Words and Gestures, averaging over 8-18 months) and production norms (from MCDI-Words and Sentences, averaging over 16-30 months). 
 
-We found that the number of overlapping neighbors a given word had was negatively correlated with the proportion of children who were reported to understand the word (**stats**) and produce the word (**stats**); see Figure \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping neighbors are later-learned (or put otherwise, known but fewer children) than words with fewer overlapping neighbors. To test whether this was specific to overlap, we examined the number of image-only, word-only, and total neighbors; none of these measures correlated with word knowledge (all p>.05).
+
+```{r overlap-aoa, echo=F}
+wb_prod_long <- wb_prod %>% 
+  gather(`16`:`30`, value = 'mean_prop_prod', key = "month")
+wb_comp_long <- wb_comp %>% 
+  gather(`8`:`18`, value = 'mean_prop_comp', key = "month")
+wb_prod_long_allmonths <- wb_prod_long %>% 
+  group_by(definition, animate) %>% 
+  summarise(overall_prop_prod = mean(mean_prop_prod)) %>% 
+  left_join(neighbor_counts) %>% 
+  mutate(totalneighbors = image_count+word_count+overlap_count,
+         overlapratio = overlap_count/totalneighbors)
+
+wb_comp_long_allmonths <- wb_comp_long %>% 
+  group_by(definition, animate) %>% 
+  summarise(overall_prop_comp = mean(mean_prop_comp)) %>% 
+  left_join(neighbor_counts) %>% 
+  mutate(totalneighbors = image_count+word_count+overlap_count,
+         overlapratio = overlap_count/totalneighbors)
+
+prod_overlap_corr <- cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlap_count, conf.int=T) %>% tidy()
+comp_overlap_corr <- cor.test(wb_comp_long_allmonths$overall_prop_comp, wb_comp_long_allmonths$overlap_count, conf.int=T) %>% tidy()
+
+wb_all<- wb_comp_long_allmonths %>% 
+  left_join(wb_prod_long_allmonths) %>% 
+  gather(c(overall_prop_comp, overall_prop_prod), value = prop_kids, key = comp_prod ) %>% 
+  mutate(comp_prod = fct_recode(comp_prod,
+    "production" = "overall_prop_prod",
+    "comprehension" = "overall_prop_comp"
+  ))
+
+```
+
+We found that the number of overlapping neighbors a given word had was negatively correlated with the proportion of children who were reported to understand the word (R=`r round(comp_overlap_corr$estimate, 2)`, p < `r round(comp_overlap_corr$p.value, 2)`) and produce the word (R=`r round(prod_overlap_corr$estimate, 2)`, p < `r round(prod_overlap_corr$p.value, 2)`); see Figure \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping neighbors are later-learned (or put otherwise, known but fewer children) than words with fewer overlapping neighbors. To test whether this was specific to overlap, we examined the number of image-only, word-only, and total neighbors; none of these measures correlated with word knowledge (all p>.05).
 
 
 ```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=5, fig.width=3.4}
@@ -210,39 +243,11 @@ cap <- sprintf("Relative cosine distance between points in word embedding space 
 \label{tbl:overlap-table}
 \end{table}
 
-```{r overlap-aoa, echo=F}
-wb_prod_long <- wb_prod %>% 
-  gather(`16`:`30`, value = 'mean_prop_prod', key = "month")
-wb_comp_long <- wb_comp %>% 
-  gather(`8`:`18`, value = 'mean_prop_comp', key = "month")
-wb_prod_long_allmonths <- wb_prod_long %>% 
-  group_by(definition, animate) %>% 
-  summarise(overall_prop_prod = mean(mean_prop_prod)) %>% 
-  left_join(neighbor_counts) %>% 
-  mutate(totalneighbors = image_count+word_count+overlap_count,
-         overlapratio = overlap_count/totalneighbors)
 
-wb_comp_long_allmonths <- wb_comp_long %>% 
-  group_by(definition, animate) %>% 
-  summarise(overall_prop_comp = mean(mean_prop_comp)) %>% 
-  left_join(neighbor_counts) %>% 
-  mutate(totalneighbors = image_count+word_count+overlap_count,
-         overlapratio = overlap_count/totalneighbors)
-
-```
 
 
 ```{r overlap-aoa-graphs, echo=F, fig.cap = cap}
-prod_overlap_corr <- cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlap_count, conf.int=T) %>% tidy()
-comp_overlap_corr <- cor.test(wb_comp_long_allmonths$overall_prop_comp, wb_comp_long_allmonths$overlap_count, conf.int=T) %>% tidy()
 
-wb_all<- wb_comp_long_allmonths %>% 
-  left_join(wb_prod_long_allmonths) %>% 
-  gather(c(overall_prop_comp, overall_prop_prod), value = prop_kids, key = comp_prod ) %>% 
-  mutate(comp_prod = fct_recode(comp_prod,
-    "production" = "overall_prop_prod",
-    "comprehension" = "overall_prop_comp"
-  ))
 
 ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
   geom_point()+
