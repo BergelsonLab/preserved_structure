@@ -206,17 +206,17 @@ which we use as a proxy for age of acquisition below (Dale \& Fenson,
 
 \subsection{Vector Representations}\label{vector-representations}
 
-We generate two sets of vector representations for a common set of
-early-learned items. The first set of vectors are taken from a
-pretrained set of GloVe representations (Pennington, Socher, \& Manning,
-2014), a modern distributional semantic vector space model. The second
-set is taken from the final layer activations of a pretrained image
-recognition model, Google's Inception V3 convolutional neural network
-(Szegedy, Vanhoucke, Ioffe, Shlens, \& Wojna, 2016). Both of these
-representations are generally referred to as ``embeddings''. They map
-objects from one medium (e.g.~images or words) into a metric space where
-distances between points can be computed and function as a measure of
-similarity between objects.
+We generate two sets of vector representations for these early-learned
+items. The first set of vectors are taken from a pretrained set of GloVe
+representations (Pennington, Socher, \& Manning, 2014), a modern
+distributional semantic vector space model. The second set is taken from
+the final layer activations of a pretrained image recognition model,
+Google's Inception V3 convolutional neural network (Szegedy, Vanhoucke,
+Ioffe, Shlens, \& Wojna, 2016). Both of these representations are
+generally referred to as ``embeddings''. They map objects from one
+medium (e.g.~images or words) into a metric space where distances
+between points can be computed and function as a measure of similarity
+between objects.
 
 \subsubsection{Word Vectors}\label{word-vectors}
 
@@ -231,8 +231,8 @@ unique words\footnote{\url{https://nlp.stanford.edu/projects/glove/}}.
 Such vectors have shown promise in modeling early semantic networks
 (Amatuni \& Bergelson, 2017). Thus, in word vector space (hereafter
 word-space), each of our 27 items is represented as a 300-dimensional
-vector, with each word assigned a unique point in a common vector space.
-\footnote{While the Common Crawl corpus is best-suited to our goal of modelling 'how words behave' writ large, we also conducted the analyses below with vectors trained on the North American English CHILDES corpora (MacWhinney, 2000), which is $\sim$4000x smaller. We observe the same qualitative patterns with both corpora.}
+vector, with each word assigned a unique point in a common vector
+space\footnote{While the Common Crawl corpus is best-suited to our goal of modelling 'how words behave' writ large, we also conducted the analyses below with vectors trained on the North American English CHILDES corpora (MacWhinney, 2000), which is $\sim$4000x smaller. We observe the same qualitative patterns with both corpora.}.
 
 \subsubsection{Image Vectors}\label{image-vectors}
 
@@ -311,8 +311,8 @@ of 27 items, we conducted several analyses. First, we tested whether the
 pairwise cosine distances for all items in word-space correlated with
 those same pairwise distances in the image-space (see Figure
 \ref{fig:pairwise-corr}). Indeed, we find a significant correlation
-among the 351 pairs of distances (\(R = 0.30\), \(p < 1.5e-08\)).
-\footnote{since distances are identical for cat-dog and dog-cat, and since we omit an item's distance to itself (0), there are (27*27-27)/2) pairs of distances. For simplicty, we report Pearson's R and plot a linear fit on Figure 1, but note that non-parametric correlations (e.g. Spearman's $\rho$) reveal the same pattern.}
+among the 351 pairs of distances (\(R = 0.30\),
+\(p < 1.5e-08\))\footnote{since distances are identical for cat-dog and dog-cat, and since we omit an item's distance to itself (0), there are (27*27-27)/2) pairs of distances. For simplicty, we report Pearson's R and plot a linear fit on Figure 1, but note that non-parametric correlations (e.g. Spearman's $\rho$) reveal the same pattern.}.
 
 Next, we examined the degree to which our set of 27 words shared
 overlapping `neighbors' in the two vector spaces (see Table
