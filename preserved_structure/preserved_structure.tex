@@ -63,22 +63,23 @@
 \begin{abstract}
 Certain concepts, words, and images are intuitively more similar than
 others (dog vs.~cat, dog vs.~spoon), though quantifying such similarity
-is notoriously tricky. Indeed, this kind of computation is likely a
+is notoriously difficult. Indeed, this kind of computation is likely a
 critical part of learning the category boundaries for words within a
 given language. Here, we use a set of items (n= 27, e.g. `dog') that are
-highly common in young infants' input, and use both image-based and
+highly common in young infants' input, and use both image- and
 word-based algorithms to independently compute similarity among these
-items. We find two key results. First, the pair-wise item similarities
-derived within image feature space and semantic feature-space are
-correlated, suggesting evidence of preserved structure among these
-extremely different representational formats. Second, the `closest'
-neighbors for each item computed within each space overlap
-significantly. We further discuss the potential role of animacy in a set
-of exploratory analyses. We conclude that this approach, which does not
-rely on human ratings of similarity, may nevertheless reflect stable
-within-class structure across these two spaces. We speculate that such
-invariance, in turn, might aid in lexical acquisition, by serving as an
-informative marker of category boundaries.
+items. We find three key results. First, the pair-wise item similarities
+derived within image-space and word-space are correlated, suggesting
+evidence of preserved structure among these extremely different
+representational formats. Second, the closest `neighbors' for each item,
+within each space, showed significant overlap (e.g.~both image- and
+word-space found `egg' as a neighbor of `apple')). Third, items with the
+most overlapping neighbors are later-learned by infants and toddlers. We
+conclude that this approach, which does not rely on human ratings of
+similarity, may nevertheless reflect stable within-class structure
+across these two spaces. We speculate that such invariance, in turn,
+might aid in lexical acquisition, by serving as an informative marker of
+category boundaries.
 
 \textbf{Keywords:}
 vector space models; semantic similarity; word learning
@@ -108,7 +109,6 @@ category judgements. Gelman and Markman (1986) explicitly set these two
 sources of category cues against each other (i.e.~functional
 vs.~perceptual), and find that preschoolers can override perceptual
 overlap in reasoning about functional similarity, in natural kinds.
-\textbf{add some smith, waxman refs}
 
 The degree to which conceptual and perceptual information are separable,
 both in early learning, and in adult experts, is an important open
@@ -122,18 +122,19 @@ and learning (\textbf{REFS e.g.~some of ref 12-19 in Waxman and Gelman
 We separate computations over images and words, and then compare the
 overlap in the similarity among items that these systems deduce. Using a
 set of highly familiar and common words and concepts from a large infant
-corpus, we compare the output of an image analysis, and a word
-co-occurrence analysis for these same items. We use algorithms that
-learn feature representations without hand engineering, purely as a
-byproduct of their particular (and separate) training objectives
-(e.g.~natural language processing or object recognition in images).
-Comparing the representations these algorithms learn, we gain a window
-into the structure of visual and semantic forms.
+corpus, we compare the output of an image-based similarity analysis, and
+a word co-occurrence similarity analysis for these same items. We use
+algorithms that learn feature representations without hand engineering,
+purely as a byproduct of their particular (and separate) training
+objectives (e.g.~natural language processing or object recognition in
+images). Comparing the representations these algorithms learn, we gain a
+window into the structure of visual and semantic forms.
 
-Delineating the differences between words, concepts, and categories in
-the abstract, and the processes underlying identifying, understanding,
-or comparing particular instances of them in the world is not trivial.
-For present purposes, we stick to concrete, `basic level' nouns that are
+The terminlogy in this area of research can be challenging. Delineating
+the differences between words, concepts, and categories in the abstract,
+and the processes underlying identifying, understanding, or comparing
+particular instances of them in the world is not trivial. For present
+purposes, we stick to concrete, `basic level' nouns that are
 early-acquired, since our underlying question concerns how such words
 are learned. We assume that nouns refer to concepts, which have
 categorical boundaries (such that cats are not in the `dog' category),
@@ -144,6 +145,24 @@ and specific images of the concept a word picks out are both used by
 learners to inform their understanding of what the word means, and what
 the category boundaries of the concept are. Hereafter we use the term
 `item' to refer to the words/concepts we examine.
+
+Intuitively, word similarity and image similarity are likely to overlap
+to some degree, since they describe the same underlying entity. Here we
+explore whether the similarity spaces generated by two disparate
+algorithms give rise to \emph{similar} similarities among our
+high-frequency items. If they do, it lends credence to the notion of an
+underlying invariance across representational formats that is capturable
+by these models. We further examine whether the same close items are
+picked out within these two spaces. One might imagine that the
+properties that render images similar and words similar are different
+enough that the overlap will be minimal; in contrast, high overlap would
+again suggest a true invariance being captured by both word- and
+image-tokens, as measured here. Finally, we examine whether having more
+neighbors within word- and image-space influences early learning. Given
+that similarity makes word-learning and category-learning more difficult
+(Rosch \& Lloyd, 1978,Stager \& Werker (1997)), we hypothesize that
+items with more neighbors will be later-learned (or put otherwise, known
+by fewer children of a given age.)
 
 \section{Methods}\label{methods}
 
@@ -211,6 +230,7 @@ Such vectors have shown promise in modeling early semantic networks
 (Amatuni \& Bergelson, 2017). Thus, in word vector space (hereafter
 word-space), each of our 27 items is represented as a 300-dimensional
 vector, with each word assigned a unique point in a common vector space.
+\footnote{While the Common Crawl corpus is best-suited to our goal of modelling 'how words behave' writ large, we also conducted the analyses below with vectors trained on the North American English CHILDES corpora (which is **XX**x smaller). We observe the same qualitative patterns with both corpora.}
 
 \subsubsection{Image Vectors}\label{image-vectors}
 
@@ -281,7 +301,7 @@ pairwise cosine distances for all items in word-space correlated with
 those same pairwise distances in the image-space (see Figure
 \ref{fig:pairwise-corr}). Indeed, we find a significant correlation
 among the 351 pairs of distances ((\(R = 0.30\), \(p < 1.5e-08\))).
-\footnote{since distances are identical for cat-dog and dog-cat, and since we omit an item's distance to itself (0), there are (27*27-27)/2) pairs of distances}
+\footnote{since distances are identical for cat-dog and dog-cat, and since we omit an item's distance to itself (0), there are (27*27-27)/2) pairs of distances. For simplicty, we report Pearson's R and plot a linear fit on Figure 1, but note that non-parametric correlations (e.g. Spearman's $\rho$) reveal the same pattern.}
 
 Next, we examined the degree to which our set of 27 words shared
 overlapping neighbors in the two vector spaces (see Table
@@ -336,12 +356,6 @@ correlated with word knowledge (all p\textgreater{}.05).
 \end{figure}
 \end{CodeChunk}
 
-\begin{CodeChunk}
-\begin{figure}[tb]
-\includegraphics{figs/pairwise-corr-animate-vs-not-1} \caption[Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), separated by pair-type (animate, inanimate, and mixed).Fitted line reflects linear fit with SE]{Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), separated by pair-type (animate, inanimate, and mixed).Fitted line reflects linear fit with SE. Each graph contains all pairwise distances between objects that are either a) both animate ($R = -0.13$, $p < 0.27$), b) both inanimate ($R = 0.38$, $p < 0.00024$), or c) mixed animate-to-inanimate ($R = -0.01$, $p < 0.86$)}\label{fig:pairwise-corr-animate-vs-not}
-\end{figure}
-\end{CodeChunk}
-
 \begin{table}
 \centering
 \includegraphics[max size={\columnwidth}{0.7\textheight}]{data/overlap_table_formatted2.png}
@@ -372,8 +386,8 @@ The notion that we can make inferences about one aspect of an object
 given another aspect, is not surprising or controversial. Rather than
 considering multiple dimensions of an word or concept at once, as real
 learners must, here we show that even with the experiences parcelled out
-separately into visual and linguistic spaces, what count as `similar' is
-conserved.
+separately into visual and linguistic spaces, what counts as `similar'
+is conserved to some degree.
 
 Through what metrics can a learning algorithm, or indeed a human,
 establish gradations of likeness? Are these necessarily the same metrics
@@ -388,35 +402,44 @@ common objects they represent. Underneath the diversity of visual
 statistics and token distributions lie stable entities in the world
 which, by virtue of their invariant actuality, give rise to regularity
 across measurements at different vantage points (i.e.~modalities), an
-idea dating back to Helmholtz (1878).
+idea dating back to Helmholtz (1878). That said, many things that `go
+together' are not visually similar, but rather have hiearchical,
+functional, or associative relations (e.g.~carrot/vegetable,
+skateboard/board, carrot/bunny, respetively). What we suggest here is
+that perhaps among early-learned words, the doubled influence of visual
+\emph{and} linguistic similarity slows early learning. Indeed, such an
+account is in keeping with infant and toddler research that finds that
+for displays of semantically-similar items, word comprehension is
+reduced (\textbf{add refs Bergelson \& Aslin2017; Arias Trejo \&
+Plunkett, 2010)}.
 
-While in principle, the animacy dimension may have been a fruitful
-ground We find in our current work that this quality of invariance is
-differentially present across different classes of entities, namely
-animate vs.~inanimate objects. However, this is conditioned on the
-particular algorithms we've investigated here, and our extensions into
-human performance with our AoA anlysis did not show a significant
-sensitivity to this difference. This could suggest a number things. The
-first is that humans might not discover the regularities that these
-algorithms do. Or it could be that our current class partitioning does
-not provide sufficient contrast in invariance to register human AoA
-differences. Or it could be that regularity is not a determining factor
-in ease of acquisition. Of these three, the last is least likely to be
-the case.
+The results here provide in-principle proofs that vector space models of
+words and images can fruitfully be combined and linked to early language
+and concept learning. Indeed, our approach could readily be extended to
+examine properties known to be relevant to early learning like animacy,
+shape, and color \textbf{refs}. Indeed, in an exploratory analyses with
+these items, we find that splitting item-pairs into animate, inanimate,
+and mixed categories suggests that the image- and word-based correlation
+is particularly strong for the inanimate items, though with only 27
+items, further conclusions are as-yet unwarranted. However, one can
+imagine that in a larger database of childrens' visual and linguistic
+experiences, tests of overlapping similarity may provide fruitful
+leverage for predicting age of acquisition across the early vocabulary.
 
 \section{Conclusion}\label{conclusion}
 
-We find evidence of an interaction between visual and semantic features
-learned by two distinct machine learning algorithms which operate over
+We find evidence of links between visual and semantic features learned
+by two distinct machine learning algorithms which operate over
 drastically different inputs, and are trained in the service of
-seemingly unrelated ends. This interaction is indicative of conserved
-structure between these two supposedly independent sources of
-information (i.e.~visual and functional). If humans are sensitive to
-this relationship, as these algorithms seem to be, we expect that those
-classes of object which are more strongly invariant across feature
-spaces would be more easily learned by infants. We find a noticeable
-though insignificant relationship between this property and AoA in our
-current partitioning scheme (animates vs.~inanimates).
+seemingly unrelated ends. These links suggest conserved structure
+between these two separable sources of information (i.e.~visual and
+linguistic). Indeed, it seems that not only do these algorithms converge
+on which words are `closer' in similarity, within a group of oft-heard
+and seen concrete nouns, but human learners too are sensitive to these
+overlapping cross-word relationships. While the process that created the
+word- and image-vector spaces we examine here is certainly not cognitive
+viable, our approach provides promising new avenues for uncovering
+cross-representational influences on early word and concept learning.
 
 \section{Acknowledgements}\label{acknowledgements}
 
@@ -518,6 +541,9 @@ Quinn, P. C., Johnson, M. H., Mareschal, D., Rakison, D. H., \& Younger,
 B. A. (2000). Understanding early categorization: One process or two?
 \emph{Infancy}, \emph{1}(1), 111--122.
 
+\hypertarget{ref-rosch1978cognition}{}
+Rosch, E., \& Lloyd, B. B. (1978). Cognition and categorization.
+
 \hypertarget{ref-ILSVRC15}{}
 Russakovsky, O., Deng, J., Su, H., Krause, J., Satheesh, S., Ma, S.,
 \ldots{} Fei-Fei, L. (2015). ImageNet Large Scale Visual Recognition
@@ -528,6 +554,11 @@ Challenge. \emph{International Journal of Computer Vision (IJCV)},
 Shepard, R. N., \& Chipman, S. (1970). Second-order isomorphism of
 internal representations: Shapes of states. \emph{Cognitive Psychology},
 \emph{1}(1), 1--17.
+
+\hypertarget{ref-stager1997infants}{}
+Stager, C. L., \& Werker, J. F. (1997). Infants listen for more phonetic
+detail in speech perception than in word-learning tasks. \emph{Nature},
+\emph{388}(6640), 381.
 
 \hypertarget{ref-szegedy2016rethinking}{}
 Szegedy, C., Vanhoucke, V., Ioffe, S., Shlens, J., \& Wojna, Z. (2016).
