@@ -118,20 +118,6 @@ Having computed our two sets of vectors (i.e. those from word-space and those fr
 ```{r img_word_corrs, echo=F}
 pairwise_corr <- cor.test(combo$cos_img, combo$cos_word, conf.int=T) %>% tidy()
 
-# #an confint: -.33 to .10, p = .27
-# animate_corr <- cor.test(subset(combo, animate=="animate")$cos_word, 
-#                          subset(combo, animate=="animate")$cos_img, conf.int=T)%>%
-#   tidy()
-# #not_an confint: .18 to .54, p=.00024
-# not_anim_corr <- cor.test(subset(combo, animate=="inanimate")$cos_word, 
-#                           subset(combo, animate=="inanimate")$cos_img, conf.int=T)%>% 
-#   tidy()
-# #mixed_confint -.16 to.13, p=.86
-# mixed_corr <- cor.test(subset(combo, animate=="mixed")$cos_word, 
-#                        subset(combo, animate=="mixed")$cos_img, conf.int=T)%>% 
-#   tidy()
-# 
-# not_anim_corr_string <- sprintf("($R = %0.2f$, $p < %1.2g$)", not_anim_corr$estimate, not_anim_corr$p.value)
 pairwise_corr_string <- sprintf("$R = %0.2f$, $p < %1.2g$", pairwise_corr$estimate, pairwise_corr$p.value)
 ```
 
@@ -144,8 +130,7 @@ wilcox.test(subset(overlap_ratios, animate==F)$overlap_ratio)
 wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio)
 wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio,
             subset(overlap_ratios, animate==F)$overlap_ratio)
-#ggplot(overlap_ratios, aes(overlap_ratio, fill = animate))+
-#  geom_histogram(binwidth=.15, position = "stack")
+
 ```
 
 
@@ -213,22 +198,6 @@ wb_all<- wb_comp_long_allmonths %>%
 
 We found that the number of overlapping neighbors a given word had was negatively correlated with the proportion of children who were reported to understand the word (R=`r round(comp_overlap_corr$estimate, 2)`, p = `r round(comp_overlap_corr$p.value, 2)`) and produce the word (R=`r round(prod_overlap_corr$estimate, 2)`, p = `r round(prod_overlap_corr$p.value, 2)`); see Figure \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping neighbors are later-learned (or put otherwise, known but fewer children) than words with fewer overlapping neighbors. To test whether this was specific to overlap, we examined the number of image-only and word-only neighbors (see Table \ref{tbl:overlap-table})); these measures did not correlate with word knowledge (all p>.05).
 
-```{r pairwise-corr-animate-vs-not, echo = F, fig.cap=cap, fig.width=3.4, fig.height=1.7}
-# 
-# combo %>%
-#   ggplot(aes(cos_word, cos_img))+
-#   geom_point(size=2, shape = 1)+
-#     stat_smooth(method = "lm", aes(group=1),  fill ="red", alpha = .7)+theme_bw()+
-#     facet_wrap(~factor(animate, levels=c("animate", "inanimate", "mixed"), labels=c("Animate", "Inanimate", "Mixed")), dir="v", nrow = 1)+
-#     xlab("Cosine Word")+
-#     ylab("Cosine Image")+
-#     xlim(0.2,0.80)+
-#     ylim(0.2,0.80)+
-#     theme(legend.position="none")
-#     
-# cap <- sprintf("Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), separated by pair-type (animate, inanimate, and mixed).Fitted line reflects linear fit with SE. Each graph contains all pairwise distances between objects that are either a) both animate ($R = %0.2f$, $p < %1.2g$), b) both inanimate ($R = %0.2f$, $p < %1.2g$), or c) mixed animate-to-inanimate ($R = %0.2f$, $p < %1.2g$)", animate_corr$estimate, animate_corr$p.value, not_anim_corr$estimate, not_anim_corr$p.value, mixed_corr$estimate, mixed_corr$p.value)
-#put r and p on panel and delete from caption    
-```
 
 \begin{table}
 \centering
@@ -242,7 +211,7 @@ We found that the number of overlapping neighbors a given word had was negativel
 
 ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
   geom_point()+
-  geom_text_repel(aes(label = definition), size=3.5)+
+  geom_text_repel(aes(label = definition), size=2.8)+
   facet_wrap(~comp_prod, scales = "free_y")+
   stat_smooth(method = "lm")+
   theme_bw(base_size = 10)+
@@ -260,11 +229,11 @@ The notion that we can make inferences about one aspect of an object given anoth
 
 Through what metrics can a learning algorithm, or indeed a human, establish gradations of likeness? Are these necessarily the same metrics which form the basis of category boundaries? These are fundamental questions which have enjoyed a long history in the field [@shepard1970second; @tversky1977features; @kemp2005generative; @hahn2003similarity; @edelman1998representation]. While our current work is not sufficient to support a specific mechanism responsible for the observed regularity, it might be indicative of the special role of invariance, given that the unifying thread between our algorithms and inputs are the common objects they represent. Underneath the diversity of visual statistics and token distributions lie stable entities in the world which, by virtue of their invariant actuality, give rise to regularity across measurements at different vantage points (i.e. modalities), an idea dating back to Helmholtz [-@helmholtz1878facts]. Recent work examining the mechanics of generalization in deep neural networks lends modern information theoretic support to this notion [@shwartz2017opening; @achille2017emergence]. That said, many things that 'go together' are not visually similar, but rather have hiearchical, functional, or associative relations (e.g. carrot/vegetable, skateboard/board, carrot/bunny, respetively). Indeed, while concrete nouns are an appropriate target for these current analyses, given their demonstrably early age of acquisition [@dale1996lexical], further work with more abstract words (nouns and beyond) would likely be fruitful. 
 
-In principle, one would expect that words with greater invariance across different representational dimensions would be learned earlier. I.e. visibly round objects appear in sentences about rolling, and these sorts of correlated cue have been shown to aid the child learner [yoshida2005linguistic]. Our WordBank-based analysis speaks to this, highlighting that when the space is cluttered along both visual and linguistic dimensions, learning is slowed. Indeed, such an account is in keeping with infant and toddler research that finds that for displays of semantically-similar items, word comprehension is reduced [@bergelson2017nature; @arias2010effects].
+In principle, one would expect that words with greater invariance across different representational dimensions would be learned earlier, since those representations which vary independently between spaces would be more difficult to make category inferences about. In the most difficult case, visual features would be entirely uninformative about functional or semantic qualities, and an otherwise useful cue for categorization is lost. This is in contrast with a scenario where, for example, visibly round objects appear in sentences about rolling. These sorts of correlated cues have been shown to aid the child learner [@yoshida2005linguistic]. Our WordBank-based analysis speaks to this, highlighting that when the space is cluttered along both visual and linguistic dimensions, learning is slowed. Indeed, such an account is in keeping with infant and toddler research that finds that for displays of semantically-similar items, word comprehension is reduced [@bergelson2017nature; @arias2010effects].
 <!-- [eb] feel free to reword/add/etc. (see comment in slack)-->
 <!-- [aa] regarding the second to last sentence ^ - i dont think this is what we're finding. what we find most explicitly is that **cluttering** within the shared neighbor space slows learning. for this to have any effect on learning to begin with, then the use of the invariance must be a cue for learning in the first place, and what we find is the cluttering interrupts this otherwise informative regularity. ideally we would have found an AoA effect **supporting** learning in order to then contrast it with how cluttering then interrupts it, but we dont have it (if the animacy numbers came out nicer, that would have been a really clear story). I think we rephrase this to include the currently commented out section starting "That is, in principle, one would expect that", and say something like "we speculate this might be an effect you would find (where strength of invariance helps learning, as described in the commented out section, we unfortunately didn't find this effect in current work) which could be interupted by the cluttering effect that we've reported, future work needed." I think that narrative would tie together all the aspects of what we do report in this paper into a much more cohesive narrative. -->
 
-The results here provide in-principle proof that vector space models of words and images can fruitfully be combined and linked to early language and concept learning. Indeed, our approach could readily be extended to examine properties known to be relevant to early learning like animacy, shape, and color [e.g., frank2009development;landau1992syntactic]. Indeed, in an exploratory analyses with these items, we find that splitting item-pairs into animate, inanimate, and mixed categories suggests that the image- and word-based correlation is particularly strong for the inanimate items, though with only 27 items, further conclusions are as-yet unwarranted. However, one can imagine that in a larger database of childrens' visual and linguistic experiences, tests of overlapping similarity may provide fruitful leverage for predicting age of acquisition across the early vocabulary.
+The results here provide in-principle proof that vector space models of words and images can fruitfully be combined and linked to early language and concept learning. Our approach could readily be extended to examine properties known to be relevant to early learning like animacy, shape, and color (e.g. Frank, Vul, & Johnson [-@frank2009development], Landau, Smith, & Jones [-@landau1992syntactic]). Indeed, in an exploratory analyses with these items, we find that splitting item-pairs into animate, inanimate, and mixed categories suggests that the image- and word-based correlation is particularly strong for the inanimate items, though with only 27 items, further conclusions are as-yet unwarranted. However, one can imagine that in a larger database of childrens' visual and linguistic experiences, tests of overlapping similarity and relative degrees of within-class structure conservation may provide fruitful leverage for predicting age of acquisition across the early vocabulary.
 
 <!-- ###Animacy -->
 <!-- Given that infants are generally drawn to faces from an early age [@frank2009development], and that animacy is a robust linguistic and semantic/syntactic property, we conducted a set of exploratory analyses to examine animacy effects among our 27 items (of which half were animates, see Table \ref{tbl:overlap-table}). We first partitioned the set of inter-word distances into those that are either animate-animate (e.g. dog-giraffe, **n=xx**), inanimate-inanimate (e.g. truck-bottle, **n=xx**), or mixed (e.g. dog-bottle, **n=xx**), and again tested for correlations between image and word distances. We find that the overall correlation across our items appears stronger for inanimate pairs, which significantly correlated across our two spaces r not_anim_corr_string, even adjusting the significance threshold to .05/3 for this exploration. Correlations within animate and mixed item-pairs were not significantly different from chance, though this may be expected with this relatively small set of items. -->
@@ -273,7 +242,7 @@ The results here provide in-principle proof that vector space models of words an
 
 <!-- Here, the sub-group of objects which displayed stronger structure preservation (within class) are the inanimate objects. When we partition our set of 27 words into animates and inanimates and compare their relative rates of acquisition (averaging across 8-18 months for the MCDI-Words and Gestures as a comprehension proxie, and 16-30 months from MCDI-Words and Sentences as a production proxie), we find a trend towards higher knowledge for inanimates, though this difference was not significant (see Figures \ref{fig:animacy-aoa-prod-graph} and \ref{fig:animacy-aoa-comp-graph}). While this initial exploration did not reveal notable mappings between acquisition timelines and image-word space correlations, we feel that further investigation (using larger datasets) may provide insight in future investigations.  -->
 # Conclusion
-We find evidence of links between visual and semantic features learned by two distinct machine learning algorithms which operate over drastically different inputs, and are trained in the service of seemingly unrelated ends. These links suggest conserved structure between these two separable sources of information (i.e. visual and linguistic). Indeed, it seems that not only do these algorithms converge on which words are 'closer' in similarity, within a group of oft-heard and seen concrete nouns, but human learners too are sensitive to these overlapping cross-word relationships. The process that created the word- and image-spaces we examine here is certainly not meant to be cognitively plausible. Nevertheless, our results suggest that this vector-space approach can be tied to language acquistion, and provides promising new avenues for uncovering cross-representational influences on early word and concept learning.
+We find evidence of links between visual and semantic features learned by two distinct machine learning algorithms which operate over drastically different inputs, and are trained in the service of seemingly unrelated ends. These links suggest conserved structure between these two separable sources of information (i.e. visual and linguistic). Indeed, it seems that not only do these algorithms converge on which words are 'closer' in similarity, within a group of oft-heard and seen concrete nouns, but that human learners are sensitive to these overlapping cross-word relationships as well. The process that created the word- and image-spaces we examine here is certainly not meant to be cognitively plausible. Nevertheless, our results suggest that this vector-space approach can be tied to language acquistion, and provides promising new avenues for uncovering cross-representational influences on early word and concept learning.
 
 # Acknowledgements
 
