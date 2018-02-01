@@ -264,15 +264,15 @@ If \(x\) and \(y\) are vectors in space \(U\), products of images in
 
 \[
  \hat{x}_c = \operatorname*{arg\,min}_{x\in U} \sum_{y\in U} d(x, y)
-\] We define our \(d(x, y)\) to be the cosine similarity measure:
+\] We define our \(d(x, y)\) to be the cosine distance measure:
 
 \[
 d(x, y) = 1 - \frac{x\cdot y}{\|x\|\|y\|}
 \]
 
-Our \(d(x, y)\) is not a metric in the strict sense, but is less
-susceptible to differences in \(L^2\) norm influencing our measure of
-similarity, unlike Euclidean distance. Thus in principle, cosine
+Our \(d(x, y)\) is not a distance function in the strict sense, but is
+less susceptible to differences in \(L^2\) norm influencing our measure
+of similarity, unlike Euclidean distance. Thus in principle, cosine
 similarity corrects for frequency effects in training data. All code
 used for generating these vectors and for the subsequent analysis can be
 found on
@@ -293,7 +293,7 @@ this mapping. This is despite being in radically different spaces, both
 in terms of dimensionality (300 for words, and 2048 for images in our
 case) and by virtue of using completely different algorithms and inputs
 to establish the vector representations for objects. So while their
-absolute locations might have been radically transformed, this
+absolute locations might have been radially transformed, this
 correlation (and related computations) would be a measure of the
 \textit{degree of invariance} in their positioning relative to each
 other.

@@ -104,16 +104,16 @@ Given a set of images $S_c$ containing objects belonging to a single category $c
 $$
  \hat{x}_c = \operatorname*{arg\,min}_{x\in U} \sum_{y\in U} d(x, y)
 $$
-We define our $d(x, y)$ to be the cosine similarity measure:
+We define our $d(x, y)$ to be the cosine distance measure:
 
 $$
 d(x, y) = 1 - \frac{x\cdot y}{\|x\|\|y\|}
 $$
 
-Our $d(x, y)$ is not a metric in the strict sense, but is less susceptible to differences in $L^2$ norm influencing our measure of similarity, unlike Euclidean distance. Thus in principle, cosine similarity corrects for frequency effects in training data. All code used for generating these vectors and for the subsequent analysis can be found on Github\footnote{\url{https://github.com/BergelsonLab/preserved_structure}}.
+Our $d(x, y)$ is not a distance function in the strict sense, but is less susceptible to differences in $L^2$ norm influencing our measure of similarity, unlike Euclidean distance. Thus in principle, cosine similarity corrects for frequency effects in training data. All code used for generating these vectors and for the subsequent analysis can be found on Github\footnote{\url{https://github.com/BergelsonLab/preserved_structure}}.
 
 ## Comparing spaces 
-Having computed our two sets of vectors (i.e. those from word-space and those from image-space), we can compare all the pairwise distances between objects, both within a single space and across the two. When comparing across the two spaces, a correlation in pairwise distances implies that inter-object distances have been conserved. For example, if "dog" and "cat" are close together in word space and mutually far apart from "chair" and "table" in that same space, maintaining this relationship for all pairwise distances in the \textit{other} vector space means that the global inter-object structure is preserved across this mapping. This is despite being in radically different spaces, both in terms of dimensionality (300 for words, and 2048 for images in our case) and by virtue of using completely different algorithms and inputs to establish the vector representations for objects. So while their absolute locations might have been radically transformed, this correlation (and related computations) would be a measure of the \textit{degree of invariance} in their positioning relative to each other. 
+Having computed our two sets of vectors (i.e. those from word-space and those from image-space), we can compare all the pairwise distances between objects, both within a single space and across the two. When comparing across the two spaces, a correlation in pairwise distances implies that inter-object distances have been conserved. For example, if "dog" and "cat" are close together in word space and mutually far apart from "chair" and "table" in that same space, maintaining this relationship for all pairwise distances in the \textit{other} vector space means that the global inter-object structure is preserved across this mapping. This is despite being in radically different spaces, both in terms of dimensionality (300 for words, and 2048 for images in our case) and by virtue of using completely different algorithms and inputs to establish the vector representations for objects. So while their absolute locations might have been radially transformed, this correlation (and related computations) would be a measure of the \textit{degree of invariance} in their positioning relative to each other. 
 
 ```{r img_word_corrs, echo=F}
 pairwise_corr <- cor.test(combo$cos_img, combo$cos_word, conf.int=T) %>% tidy()
