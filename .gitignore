@@ -9,3 +9,4 @@
 *.npy
 preserved_structure/python/.ipynb_checkpoints
 preserved_structure/data/all_basiclevel.csv
+preserved_structure/tex_out
