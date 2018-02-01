@@ -207,10 +207,10 @@ We found that the number of overlapping neighbors a given word had was negativel
 \end{table}
 
 
-```{r overlap-aoa-graphs, echo=F, fig.cap = cap, fig.width = 3.5}
+```{r overlap-aoa-graphs, echo=F, fig.cap = cap, fig.width = 3.5, fig.height=2.5}
 
 ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
-  geom_point()+
+  geom_point(shape=1)+
   geom_text_repel(aes(label = definition), size=2.8)+
   facet_wrap(~comp_prod, scales = "free_y")+
   stat_smooth(method = "lm")+
