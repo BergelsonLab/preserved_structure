@@ -117,18 +117,19 @@ categorization must address how these potentially disparate
 information-sources interface in mental representations, and to what
 degree they interact. Indeed, evidence from human learners suggests they
 integrate perceptual and linguistic information during categorization
-and learning (\textbf{REFS e.g.~some of ref 12-19 in Waxman and Gelman
-2009}). Here we take first steps in a deliberately different approach.
-We separate computations over images and words, and then compare the
-overlap in the similarity among items that these systems deduce. Using a
-set of highly familiar and common words and concepts from a large infant
-corpus, we compare the output of an image-based similarity analysis, and
-a word co-occurrence similarity analysis for these same items. We use
-algorithms that learn feature representations without hand engineering,
-purely as a byproduct of their particular (and separate) training
-objectives (e.g.~natural language processing or object recognition in
-images). Comparing the representations these algorithms learn, we gain a
-window into the structure of visual and semantic forms.
+and learning (Colunga \& Smith, 2005; Sloutsky, 2003; Sloutsky, Lo, \&
+Fisher, 2001). Here we take first steps in a deliberately different
+approach. We separate computations over images and words, and then
+compare the overlap in the similarity among items that these systems
+deduce. Using a set of highly familiar and common words and concepts
+from a large infant corpus, we compare the output of an image-based
+similarity analysis, and a word co-occurrence similarity analysis for
+these same items. We use algorithms that learn feature representations
+without hand engineering, purely as a byproduct of their particular (and
+separate) training objectives (e.g.~natural language processing or
+object recognition in images). Comparing the representations these
+algorithms learn, we gain a window into the structure of visual and
+semantic forms.
 
 The terminlogy in this area of research can be challenging. Delineating
 the differences between words, concepts, and categories in the abstract,
@@ -297,6 +298,12 @@ correlation (and related computations) would be a measure of the
 \textit{degree of invariance} in their positioning relative to each
 other.
 
+\begin{CodeChunk}
+\begin{figure}[tb]
+\includegraphics{figs/pairwise-corr-1} \caption[Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), for every item pair]{Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), for every item pair. Fitted line reflects linear fit with SE;the correlation is significant ($R = 0.30$, $p < 1.5e-08$).}\label{fig:pairwise-corr}
+\end{figure}
+\end{CodeChunk}
+
 \section{Results}\label{results}
 
 To test whether image- and word-based similarity converged for this set
@@ -349,6 +356,7 @@ MCDI-Words and Sentences, averaging over 16-30 months).
 
 We found that the number of overlapping neighbors a given word had was
 negatively correlated with the proportion of children who were reported
+<<<<<<< HEAD
 to understand the word (R=-0.48, p \textless{} 0.01) and produce the
 word (R=-0.46, p \textless{} 0.02); see Figure
 \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping
@@ -363,6 +371,15 @@ correlate with word knowledge (all p\textgreater{}.05).
 \includegraphics{figs/pairwise-corr-1} \caption[Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), for every item pair]{Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), for every item pair. Fitted line reflects linear fit with SE;the correlation is significant ($R = 0.30$, $p < 1.5e-08$).}\label{fig:pairwise-corr}
 \end{figure}
 \end{CodeChunk}
+=======
+to understand the word (R=-0.48, p = 0.011017) and produce the word
+(R=-0.46, p = 0.017069); see Figure \ref{fig:overlap-aoa-graphs}. That
+is, words with more overlapping neighbors are later-learned (or put
+otherwise, known but fewer children) than words with fewer overlapping
+neighbors. To test whether this was specific to overlap, we examined the
+number of image-only, word-only, and total neighbors; none of these
+measures correlated with word knowledge (all p\textgreater{}.05).
+>>>>>>> f660d5143bff0c6519f34869f78c57398c5e898a
 
 \begin{table}
 \centering
@@ -471,8 +488,6 @@ We thank the SEEDLingS team, and NIH DP5-OD019812.
 
 \section{References}\label{references}
 
-(MacWhinney, 2000)
-
 \setlength{\parindent}{-0.1in} \setlength{\leftskip}{0.125in} \noindent
 
 \hypertarget{refs}{}
@@ -509,6 +524,11 @@ in 6-mo-olds. \emph{Proceedings of the National Academy of Sciences},
 Brent, M. R., \& Siskind, J. M. (2001). The role of exposure to isolated
 words in early vocabulary development. \emph{Cognition}, \emph{81}(2),
 B33--B44.
+
+\hypertarget{ref-colunga2005lexicon}{}
+Colunga, E., \& Smith, L. B. (2005). From the lexicon to expectations
+about kinds: A role for associative learning. \emph{Psychological
+Review}, \emph{112}(2), 347.
 
 \hypertarget{ref-dale1996lexical}{}
 Dale, P. S., \& Fenson, L. (1996). Lexical development norms for young
@@ -604,6 +624,17 @@ internal representations: Shapes of states. \emph{Cognitive Psychology},
 \hypertarget{ref-shwartz2017opening}{}
 Shwartz-Ziv, R., \& Tishby, N. (2017). Opening the black box of deep
 neural networks via information. \emph{arXiv Preprint arXiv:1703.00810}.
+
+\hypertarget{ref-sloutsky2003role}{}
+Sloutsky, V. M. (2003). The role of similarity in the development of
+categorization. \emph{Trends in Cognitive Sciences}, \emph{7}(6),
+246--251.
+
+\hypertarget{ref-sloutsky2001much}{}
+Sloutsky, V. M., Lo, Y.-F., \& Fisher, A. V. (2001). How much does a
+shared name make things similar? Linguistic labels, similarity, and the
+development of inductive inference. \emph{Child Development},
+\emph{72}(6), 1695--1709.
 
 \hypertarget{ref-stager1997infants}{}
 Stager, C. L., \& Werker, J. F. (1997). Infants listen for more phonetic
