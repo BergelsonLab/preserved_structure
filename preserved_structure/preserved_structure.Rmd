@@ -211,10 +211,11 @@ We found that the number of overlapping neighbors a given word had was negativel
 
 ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
   geom_point(shape=1)+
-  geom_text_repel(aes(label = definition), size=2.8)+
+  geom_text_repel(aes(label = definition), size=2.6, force=4)+
   facet_wrap(~comp_prod, scales = "free_y")+
   stat_smooth(method = "lm")+
   theme_bw(base_size = 10)+
+  theme(axis.title=element_text(size=7))+
   guides(colour = "none")+
   xlab("# of overlapping neighbors")+
   ylab("prop. word knowledge")
