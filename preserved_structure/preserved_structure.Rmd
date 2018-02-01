@@ -124,7 +124,7 @@ pairwise_corr_string <- sprintf("$R = %0.2f$, $p < %1.2g$", pairwise_corr$estima
 ```{r overlap_stats, echo = F, results = "hide"}
 
 shapiro.test(overlap_ratios$overlap_ratio)#almost normal
-wilcox.test(overlap_ratios$overlap_ratio)# significantly different from chance
+overlap_wilcox <- wilcox.test(overlap_ratios$overlap_ratio)# significantly different from chance
 #even with correction, both animate and animate overlaps>0, not different from each other
 wilcox.test(subset(overlap_ratios, animate==F)$overlap_ratio)
 wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio)
@@ -157,9 +157,9 @@ cap <- sprintf("Relative cosine distance between points in word embedding space 
 # Results
 To test whether image- and word-based similarity converged for this set of 27 items, we conducted several analyses. First, we tested whether the pairwise cosine distances for all items in word-space correlated with those same pairwise distances in the image-space (see Figure \ref{fig:pairwise-corr}). Indeed, we find a significant correlation among the 351 pairs of distances (`r pairwise_corr_string`). \footnote{since distances are identical for cat-dog and dog-cat, and since we omit an item's distance to itself (0), there are (27*27-27)/2) pairs of distances. For simplicty, we report Pearson's R and plot a linear fit on Figure 1, but note that non-parametric correlations (e.g. Spearman's $\rho$) reveal the same pattern.}
 
-Next, we examined the degree to which our set of 27 words shared overlapping 'neighbors' in the two vector spaces (see Table \ref{tbl:overlap-table}). We defined neighbor by first determining the mean similarity distance between each item and the 26 other items. Any items whose distance to this target had a zscore of less than -1 was considered a neighbor. Within word-space, items had on average `r round(mean(neighbor_counts$word_count), 2)` neighbors (SD=`r round(sd(neighbor_counts$word_count), 2)` , R=`r min(neighbor_counts$word_count)`-`r max(neighbor_counts$word_count)`). Within image-space, items had 2.51 neighbors (SD=`r round(sd(neighbor_counts$image_count), 2)`, R=`r min(neighbor_counts$image_count)`-`r max(neighbor_counts$image_count)`).
+Next, we examined the degree to which our set of 27 words shared overlapping 'neighbors' in the two vector spaces (see Table \ref{tbl:overlap-table}). We defined neighbor by first determining the mean similarity distance between each item and the 26 other items. Any items whose distance to this target had a zscore of less than -1 was considered a neighbor. Within word-space, items had on average `r round(mean(neighbor_counts$word_count), 2)` neighbors ($SD=`r round(sd(neighbor_counts$word_count), 2)`$ , $R=`r min(neighbor_counts$word_count)`-`r max(neighbor_counts$word_count)`)$. Within image-space, items had 2.51 neighbors ($SD=`r round(sd(neighbor_counts$image_count), 2)`$, $R=`r min(neighbor_counts$image_count)`-`r max(neighbor_counts$image_count)`$).
 
-We next tested whether both spaces picked out overlapping neighbors (e.g. whether the neighbor of 'cat' in image-space overlapped with the neighbors of 'cat' in word-space, see Table \ref{tbl:overlap-table}). The majority of items have at least 1 neighbor which is shared across representational spaces. To quantify this overlap, we computed 'overlap' ratios, which measured how many of the neighbors overlapped, divided by how many neighbors there were. Overlap was significantly greater than 0 **(Mean(SD) Overlap XX, p< XX** by Wilcoxon test). This complements the correlational analysis, showing not just that the distances for any given pair tended to have similar values in image-space and word-space, but that the *most* similar words/images (i.e. each item's neighbors) were also consistent across these spaces.
+We next tested whether both spaces picked out overlapping neighbors (e.g. whether the neighbor of 'cat' in image-space overlapped with the neighbors of 'cat' in word-space, see Table \ref{tbl:overlap-table}). The majority of items have at least 1 neighbor which is shared across representational spaces. To quantify this overlap, we computed 'overlap' ratios, which measured how many of the neighbors overlapped, divided by how many neighbors there were. Overlap was significantly greater than 0 ($mean=`r round(mean(overlap_ratios$overlap_ratio), 2)`$, $SD=`r round(sd(overlap_ratios$overlap_ratio), 2)`$, $p=`r sprintf("%f", overlap_wilcox$p.value)`$ by Wilcoxon test). This complements the correlational analysis, showing not just that the distances for any given pair tended to have similar values in image-space and word-space, but that the *most* similar words/images (i.e. each item's neighbors) were also consistent across these spaces.
 
 #Connecting with Learnability
 While some degree of convergence across image and word spaces is to be expected given that these are two different manifestations of the same underlying concept/word/item, we next queried whether this invariance related to learnability. We hypothesized that words with more overlapping neighbors would be harder for children to learn, since both the visual and linguistic spaces they occur in are more 'cluttered.' To test this, we looked at the relative rates of acquisition of our 27 items in WordBank [@frank2017wordbank], using the 6945 children's data from English. Since we did not have clear predictions about specific ages, or of tradeoffs between comprehension and production, we used both. That is, we used comprehension norms (from MCDI-Words and Gestures, averaging over 8-18 months) and production norms (from MCDI-Words and Sentences, averaging over 16-30 months). 
@@ -196,7 +196,7 @@ wb_all<- wb_comp_long_allmonths %>%
 
 ```
 
-We found that the number of overlapping neighbors a given word had was negatively correlated with the proportion of children who were reported to understand the word (R=`r round(comp_overlap_corr$estimate, 2)`, p = `r round(comp_overlap_corr$p.value, 2)`) and produce the word (R=`r round(prod_overlap_corr$estimate, 2)`, p = `r round(prod_overlap_corr$p.value, 2)`); see Figure \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping neighbors are later-learned (or put otherwise, known but fewer children) than words with fewer overlapping neighbors. To test whether this was specific to overlap, we examined the number of image-only and word-only neighbors (see Table \ref{tbl:overlap-table})); these measures did not correlate with word knowledge (all p>.05).
+We found that the number of overlapping neighbors a given word had was negatively correlated with the proportion of children who were reported to understand the word ($R=`r round(comp_overlap_corr$estimate, 2)`$, $p = `r round(comp_overlap_corr$p.value, 2)`$) and produce the word ($R=`r round(prod_overlap_corr$estimate, 2)`$, $p = `r round(prod_overlap_corr$p.value, 2)`$); see Figure \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping neighbors are later-learned (or put otherwise, known but fewer children) than words with fewer overlapping neighbors. To test whether this was specific to overlap, we examined the number of image-only and word-only neighbors (see Table \ref{tbl:overlap-table})); these measures did not correlate with word knowledge (all $p > .05$).
 
 
 \begin{table}
@@ -249,14 +249,6 @@ We find evidence of links between visual and semantic features learned by two di
 We thank the SEEDLingS team, and NIH DP5-OD019812.
 
 # References 
-
-<!-- [@macwhinney2000childes] -->
-
-<!-- 
-****************************************************************
-^ REMEMBER TO DELETE THIS REFERENCE IN THE FINAL LATEX VERSION
-****************************************************************
--->
 
 
 ```{r}
