@@ -151,7 +151,7 @@ ggplot(combo, aes(cos_word, cos_img))+
         legend.key = element_rect(fill = 'white', size = 0.1)
         )
 
-cap <- sprintf("Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), for every item pair. Fitted line reflects linear fit with SE;the correlation is significant ($R = %0.2f$, $p < %1.2g$).", pairwise_corr$estimate, pairwise_corr$p.value)
+cap <- sprintf("Relative cosine distance between points in word embedding space (x-axis) and image embedding space (y-axis), for every item pair. Fitted line reflects linear fit with SE ($R = %0.2f$, $p < %1.2g$).", pairwise_corr$estimate, pairwise_corr$p.value)
 ```
 
 # Results
@@ -207,11 +207,11 @@ We found that the number of overlapping neighbors a given word had was negativel
 \end{table}
 
 
-```{r overlap-aoa-graphs, echo=F, fig.cap = cap, fig.width = 3.5, fig.height=2.5}
+```{r overlap-aoa-graphs, echo=F, fig.cap = cap, fig.width = 3.5, fig.height=3.2}
 
 ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
   geom_point(shape=1)+
-  geom_text_repel(aes(label = definition), size=2.6, force=4)+
+  geom_text_repel(aes(label = definition), size=2.4, force=2)+
   facet_wrap(~comp_prod, scales = "free_y")+
   stat_smooth(method = "lm")+
   theme_bw(base_size = 10)+
@@ -220,7 +220,7 @@ ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
   xlab("# of overlapping neighbors")+
   ylab("prop. word knowledge")
 
-cap <- "Proportion of children in WordBank reported to understand (left, averaged over 8-18 months) or produce (right, averaged over 16-30 months) the 27 items, as a function of how many overlapping neighbors (i.e. in both image- and word-space) they have. Line indicates linear fit with SE confidence band."
+cap <- "Proportion of children in WordBank reported to understand (left, averaged over 8-18 months) or produce (right, averaged over 16-30 months) the 27 items, as a function of how many overlapping neighbors they have (i.e. in both image- and word-space). Lines indicates linear fit with SE confidence bands (both R$>$-.45, p$<$.05)."
 ```
 
 # Discussion
@@ -239,7 +239,7 @@ We find evidence of links between visual and linguistic features learned by two 
 
 # Acknowledgements
 
-We thank the SEEDLingS and Bergelson Lab teams, Dave Kleinschmidt and Eric Bigelow for fruitful discussion, and NIH DP5-OD019812.
+We thank the SEEDLingS and Bergelson Lab teams, and Eric Bigelow for fruitful discussion, and NIH DP5-OD019812.
 
 # References 
 
