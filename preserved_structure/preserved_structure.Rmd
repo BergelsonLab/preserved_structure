@@ -222,7 +222,7 @@ wb_all<- wb_comp_long_allmonths %>%
 
 ```
 
-We found that the number of overlapping neighbors a given word had was negatively correlated with the proportion of children who were reported to understand the word (R=`r round(comp_overlap_corr$estimate, 2)`, p < `r round(comp_overlap_corr$p.value, 2)`) and produce the word (R=`r round(prod_overlap_corr$estimate, 2)`, p < `r round(prod_overlap_corr$p.value, 2)`); see Figure \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping neighbors are later-learned (or put otherwise, known but fewer children) than words with fewer overlapping neighbors. To test whether this was specific to overlap, we examined the number of image-only, word-only, and total neighbors; none of these measures correlated with word knowledge (all p>.05).
+We found that the number of overlapping neighbors a given word had was negatively correlated with the proportion of children who were reported to understand the word (R=`r round(comp_overlap_corr$estimate, 2)`, p = `r comp_overlap_corr$p.value`) and produce the word (R=`r round(prod_overlap_corr$estimate, 2)`, p = `r prod_overlap_corr$p.value`); see Figure \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping neighbors are later-learned (or put otherwise, known but fewer children) than words with fewer overlapping neighbors. To test whether this was specific to overlap, we examined the number of image-only, word-only, and total neighbors; none of these measures correlated with word knowledge (all p>.05).
 
 
 
