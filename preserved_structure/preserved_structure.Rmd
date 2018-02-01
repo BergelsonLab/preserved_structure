@@ -265,7 +265,7 @@ ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
   stat_smooth(method = "lm")+
   theme_bw(base_size = 10)+
   guides(colour = "none")+
-  xlab("# of overlap neighbors")+
+  xlab("# of overlapping neighbors")+
   ylab("prop. word knowledge")
 
 cap <- "Proportion of children in WordBank reported to understand (left, averaged over 8-18 months) or produce (right, averaged over 16-30 months) the 27 items, as a function of how many overlapping neighbors (i.e. in both image- and word-space) they have. Line indicates linear fit with SE confidence band."
