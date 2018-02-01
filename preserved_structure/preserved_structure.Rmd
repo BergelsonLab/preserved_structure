@@ -156,7 +156,7 @@ wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio,
 ```
 
 
-```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=5, fig.width=3.4}
+```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=4, fig.width=3.4}
 ggplot(combo, aes(cos_word, cos_img))+
   geom_point(size=3, shape =1)+
   geom_smooth(method="lm", aes(group=1), show.legend=F, fill ="red", alpha = .7)+
