@@ -308,13 +308,13 @@ among the 351 pairs of distances ((\(R = 0.30\), \(p < 1.5e-08\))).
 Next, we examined the degree to which our set of 27 words shared
 overlapping neighbors in the two vector spaces (see Table
 \ref{tbl:overlap-table}). We defined `neighbor' by first determining the
-mean similarity between each item and the 26 other items. Any items
-whose distance to this 'target \textbf{say something clear here} was
+mean similarity distance between each item and the 26 other items. Any
+items whose distance to this target had a zscore of less than -1 was
 considered a neighbor. With this normalized neighborhood threshold, we
 find that the majority of items have at least 1 neighbor which is shared
 across representational spaces. Within word-space, items had on average
-3.29 neighbors (R=1-5). Within image-space, items had 2.51 neighbors
-(R=0-6). \textbf{add SD, e.g. (SD=XX, R=0-6)}
+3.3 neighbors (SD=1.27 , R=1-5). Within image-space, items had 2.51
+neighbors (SD=1.6, R=0-6).
 
 We find that neighbor `overlap' across the spaces (i.e.~how many of the
 neighbors overlapped, divided by how many neighbors there were) is
@@ -407,17 +407,17 @@ statistics and token distributions lie stable entities in the world
 which, by virtue of their invariant actuality, give rise to regularity
 across measurements at different vantage points (i.e.~modalities), an
 idea dating back to Helmholtz (1878). Recent work examining the
-mechanics of generalization in deep neural networks lends modern support
-to this notion (Achille \& Soatto, 2017; Shwartz-Ziv \& Tishby, 2017).
-That said, many things that `go together' are not visually similar, but
-rather have hiearchical, functional, or associative relations
-(e.g.~carrot/vegetable, skateboard/board, carrot/bunny, respetively).
-What we suggest here is that perhaps among early-learned words, the
-doubled influence of visual \emph{and} linguistic similarity slows early
-learning. Indeed, such an account is in keeping with infant and toddler
-research that finds that for displays of semantically-similar items,
-word comprehension is reduced (Arias-Trejo \& Plunkett, 2010; E.
-Bergelson \& Aslin, 2017).
+mechanics of generalization in deep neural nets lends modern information
+theoretic support to this notion (Achille \& Soatto, 2017; Shwartz-Ziv
+\& Tishby, 2017). That said, many things that `go together' are not
+visually similar, but rather have hiearchical, functional, or
+associative relations (e.g.~carrot/vegetable, skateboard/board,
+carrot/bunny, respetively). What we suggest here is that perhaps among
+early-learned words, the doubled influence of visual \emph{and}
+linguistic similarity slows early learning. Indeed, such an account is
+in keeping with infant and toddler research that finds that for displays
+of semantically-similar items, word comprehension is reduced
+(Arias-Trejo \& Plunkett, 2010; E. Bergelson \& Aslin, 2017).
 
 The results here provide in-principle proofs that vector space models of
 words and images can fruitfully be combined and linked to early language
