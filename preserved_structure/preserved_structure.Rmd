@@ -156,7 +156,7 @@ wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio,
 ```
 
 
-```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=4, fig.width=3.4}
+```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=3.7, fig.width=3.4}
 ggplot(combo, aes(cos_word, cos_img))+
   geom_point(size=3, shape =1)+
   geom_smooth(method="lm", aes(group=1), show.legend=F, fill ="red", alpha = .7)+
@@ -165,7 +165,7 @@ ggplot(combo, aes(cos_word, cos_img))+
   xlab("Cosine Word")+
   ylab("Cosine Image")+
   xlim(0.2,0.80)+
-  ylim(0.2,0.80)+
+  ylim(0.2,0.7)+
   theme(legend.position="bottom", 
         legend.title = element_blank(), 
         legend.text = element_text(size=7), 
@@ -255,12 +255,12 @@ We found that the number of overlapping neighbors a given word had was negativel
 
 
 
-```{r overlap-aoa-graphs, echo=F, fig.cap = cap}
+```{r overlap-aoa-graphs, echo=F, fig.cap = cap, fig.width = 3.5}
 
 
 ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
   geom_point()+
-  geom_text_repel(aes(label = definition))+
+  geom_text_repel(aes(label = definition), size=3.5)+
   facet_wrap(~comp_prod, scales = "free_y")+
   stat_smooth(method = "lm")+
   theme_bw(base_size = 10)+
