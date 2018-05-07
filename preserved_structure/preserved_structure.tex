@@ -84,7 +84,8 @@ marker of category boundaries.
 vector space models; semantic similarity; word learning
 \end{abstract}
 
-\section{Introduction}\label{introduction}
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
 
 Infants are presented with a challenge to carve the world into distinct
 lexical entities in the process of learning their first language.
@@ -97,17 +98,17 @@ environments are varyingly informative with regards to object
 segmentation and category structure. Some researchers have suggested
 that categorization is along fundamentally perceptual grounds and that
 only later in development is conceptual knowledge incorporated into
-these nascent perceptual categories (Quinn \& Eimas, 1997, 2000; Quinn,
-Johnson, Mareschal, Rakison, \& Younger, 2000). Others suggest that
-there are in fact two distinct processes at work, such that perceptual
-categories are computed automatically by the sensory systems, while
-conceptual categories are independently formed through conscious action
-(Mandler, 2000). Träuble and Pauen (2007) provide evidence of functional
-information (regarding the animacy of objects) influencing early
-category judgements. Gelman and Markman (1986) explicitly set these two
-sources of category cues against each other (i.e.~functional
-vs.~perceptual), and find that preschoolers can override perceptual
-overlap in reasoning about functional similarity, in natural kinds.
+these nascent perceptual categories (Quinn \& Eimas, 1997, 2000; Quinn
+et al., 2000). Others suggest that there are in fact two distinct
+processes at work, such that perceptual categories are computed
+automatically by the sensory systems, while conceptual categories are
+independently formed through conscious action (Mandler, 2000). Träuble
+and Pauen (2007) provide evidence of functional information (regarding
+the animacy of objects) influencing early category judgements. Gelman
+and Markman (1986) explicitly set these two sources of category cues
+against each other (i.e.~functional vs.~perceptual), and find that
+preschoolers can override perceptual overlap in reasoning about
+functional similarity, in natural kinds.
 
 The degree to which conceptual and perceptual information are separable,
 both in early learning, and in adult experts, is an important open
@@ -164,9 +165,11 @@ that similarity makes word-learning and category-learning more difficult
 items with more neighbors will be later-learned (or put otherwise, known
 by fewer children of a given age.)
 
-\section{Methods}\label{methods}
+\hypertarget{methods}{%
+\section{Methods}\label{methods}}
 
-\subsection{Items}\label{items}
+\hypertarget{items}{%
+\subsection{Items}\label{items}}
 
 The 27 items analyzed here were selected due to their high frequency in
 infants' early visual and linguistic input, aggregated as part of the
@@ -203,7 +206,8 @@ compilation of the MacArthur-Bates Communicative Development Inventory,
 which we use as a proxy for age of acquisition below (Dale \& Fenson,
 1996).
 
-\subsection{Vector Representations}\label{vector-representations}
+\hypertarget{vector-representations}{%
+\subsection{Vector Representations}\label{vector-representations}}
 
 We generate two sets of vector representations for these early-learned
 items. The first set of vectors are taken from a pretrained set of GloVe
@@ -217,7 +221,8 @@ medium (e.g.~images or words) into a metric space where distances
 between points can be computed and function as a measure of similarity
 between objects.
 
-\subsubsection{Word Vectors}\label{word-vectors}
+\hypertarget{word-vectors}{%
+\subsubsection{Word Vectors}\label{word-vectors}}
 
 In the case of our word vectors, the GloVe algorithm instantiates the
 distributional hypothesis, which proposes that words which co-occur with
@@ -233,7 +238,8 @@ word-space), each of our 27 items is represented as a 300-dimensional
 vector, with each word assigned a unique point in a common vector
 space\footnote{While the Common Crawl corpus is best-suited to our goal of modelling 'how words behave' writ large, we also conducted the analyses below with vectors trained on the North American English CHILDES corpora (MacWhinney, 2000), which is $\sim$4000x smaller. We observe the same qualitative patterns with both corpora.}.
 
-\subsubsection{Image Vectors}\label{image-vectors}
+\hypertarget{image-vectors}{%
+\subsubsection{Image Vectors}\label{image-vectors}}
 
 The image embeddings are taken from the final layer of activations in a
 convolutional neural network, whose objective function tunes network
@@ -272,12 +278,21 @@ d(x, y) = 1 - \frac{x\cdot y}{\|x\|\|y\|}
 Our \(d(x, y)\) is not a distance function in the strict sense, but is
 less susceptible to differences in \(L^2\) norm influencing our measure
 of similarity, unlike Euclidean distance. Thus in principle, cosine
-similarity corrects for frequency effects in training data. All code
+similarity corrects for frequency effects inherent to the training data.
+In order to measure the quality of our image vectors, we benchmarked
+classification performance, finding that the model is indeed learning
+useful representations (top 1 = 0.26, top 5 = 0.63). Even when presented
+with highly child-centric instances of any given object, Inception V3
+reliably assigns a correct label within its top 5 guesses. In cases
+where none of the top 5 labels are the correct class, guesses tend to be
+reasonable given the highly idiocyncratic forms these objects take
+(e.g.~the top guess for a popular cartoon puppy was ``teddy''). All code
 used for generating these vectors and for the subsequent analysis can be
 found on
 Github\footnote{\url{https://github.com/BergelsonLab/preserved_structure}}.
 
-\subsection{Comparing spaces}\label{comparing-spaces}
+\hypertarget{comparing-spaces}{%
+\subsection{Comparing spaces}\label{comparing-spaces}}
 
 Having computed our two sets of vectors (i.e.~those from word-space and
 those from image-space), we can compare all the pairwise distances
@@ -303,7 +318,8 @@ other.
 \end{figure}
 \end{CodeChunk}
 
-\section{Results}\label{results}
+\hypertarget{results}{%
+\section{Results}\label{results}}
 
 To test whether image- and word-based similarity converged for this set
 of 27 items, we conducted several analyses. First, we tested whether the
@@ -314,8 +330,8 @@ among the 351 pairs of distances (\(R = 0.30\),
 \(p < 1.5e-08\))\footnote{since distances are identical for cat-dog and dog-cat, and since we omit an item's distance to itself (0), there are (27*27-27)/2) pairs of distances. For simplicity, we report Pearson's R and plot a linear fit on Figure 1, but note that non-parametric correlations (e.g. Spearman's $\rho$) reveal the same pattern.}.
 
 Next, we examined the degree to which our set of 27 words shared
-overlapping `neighbors' in the two vector spaces (see Table
-\ref{tbl:overlap-table}). We defined neighbor by first determining the
+overlapping `neighbors' in the two vector spaces (see Figure
+\ref{fig:overlap-table}). We defined neighbor by first determining the
 mean similarity distance between each item and the 26 other items. Any
 items whose distance to this target had a zscore of less than -1 was
 considered a neighbor. Within word-space, items had on average 3.3
@@ -324,7 +340,7 @@ neighbors (\(SD=1.6\), \(R=0-6\)).
 
 We next tested whether both spaces picked out overlapping neighbors
 (e.g.~whether the neighbor of `cat' in image-space overlapped with the
-neighbors of `cat' in word-space, see Table \ref{tbl:overlap-table}).
+neighbors of `cat' in word-space, see Figure \ref{fig:overlap-table}).
 The majority of items have at least 1 neighbor which is shared across
 representational spaces. To quantify this overlap, we computed overlap
 ratios, which measured how many of the neighbors overlapped, divided by
@@ -336,8 +352,9 @@ image-space and word-space, but that the \emph{most} similar
 words/images (i.e.~each item's neighbors) were also consistent across
 these spaces.
 
+\hypertarget{connecting-with-learnability}{%
 \section{Connecting with
-Learnability}\label{connecting-with-learnability}
+Learnability}\label{connecting-with-learnability}}
 
 While some degree of convergence across image and word spaces is to be
 expected given that these are two different manifestations of the same
@@ -353,6 +370,12 @@ both. That is, we used comprehension norms (from MCDI-Words and
 Gestures, averaging over 8-18 months) and production norms (from
 MCDI-Words and Sentences, averaging over 16-30 months).
 
+\begin{CodeChunk}
+\begin{figure}[tb]
+\includegraphics{figs/overlap-aoa-graphs-1} \caption[Proportion of children in WordBank reported to understand (left, averaged over 8-18 months) or produce (right, averaged over 16-30 months) the 27 items, as a function of how many overlapping neighbors they have (i.e]{Proportion of children in WordBank reported to understand (left, averaged over 8-18 months) or produce (right, averaged over 16-30 months) the 27 items, as a function of how many overlapping neighbors they have (i.e. in both image- and word-space). Lines indicates linear fit with SE confidence bands (both R$>$-.45, p$<$.05).}\label{fig:overlap-aoa-graphs}
+\end{figure}
+\end{CodeChunk}
+
 We found that the number of overlapping neighbors a given word had was
 negatively correlated with the proportion of children who were reported
 to understand the word (\(R=-0.48\), \(p = 0.011\)) and produce the word
@@ -360,24 +383,18 @@ to understand the word (\(R=-0.48\), \(p = 0.011\)) and produce the word
 That is, words with more overlapping neighbors are later-learned (or put
 otherwise, known by fewer children) than words with fewer overlapping
 neighbors. To test whether this was specific to overlap, we examined the
-number of image-only and word-only neighbors (see Table
-\ref{tbl:overlap-table})); these measures did not correlate with word
+number of image-only and word-only neighbors (see Figure
+\ref{fig:overlap-table})); these measures did not correlate with word
 knowledge (all \(p > .05\)).
-
-\begin{table}
-\centering
-\includegraphics[max size={0.9\columnwidth}{0.7\textheight}]{data/overlap_table_formatted2.png}
-\caption{Neighbors in image- and word-space. Neighbors in bold and red are shared between spaces; italicised words are image-neighbors only, underlined words are word-neighbors only. Overlap ratio reflects shared neighbors over total neighbors. See text for details.}
-\label{tbl:overlap-table}
-\end{table}
 
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/overlap-aoa-graphs-1} \caption[Proportion of children in WordBank reported to understand (left, averaged over 8-18 months) or produce (right, averaged over 16-30 months) the 27 items, as a function of how many overlapping neighbors they have (i.e]{Proportion of children in WordBank reported to understand (left, averaged over 8-18 months) or produce (right, averaged over 16-30 months) the 27 items, as a function of how many overlapping neighbors they have (i.e. in both image- and word-space). Lines indicates linear fit with SE confidence bands (both R$>$-.45, p$<$.05).}\label{fig:overlap-aoa-graphs}
+\includegraphics[width=1\linewidth]{data/overlap_table_formatted2} \caption[Neighbors in image- and word-space]{Neighbors in image- and word-space. Neighbors in bold and red are shared between spaces; italicised words are image-neighbors only, underlined words are word-neighbors only. Overlap ratio reflects shared neighbors over total neighbors. See text for details.}\label{fig:overlap-table}
 \end{figure}
 \end{CodeChunk}
 
-\section{Discussion}\label{discussion}
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
 
 The results above revealed a significant correspondence between
 representations learned by two different algorithms operating over
@@ -392,14 +409,31 @@ between these image- and word-based representations are the real life
 concepts they both aim to model. This is particularly noteworthy given
 the enormous dimensionality of our feature spaces, and the fact that
 these algorithms were placed under no pressure to find homologous
-representations.
+representations. That said, we do not suggest that these algorithms
+learned these reprentations the way children do, though we note that CNN
+architectures were originally inspired by primary visual cortex
+(Fukushima \& Miyake, 1982) and GloVe has recently found application in
+decoding semantic representations from brain activity (Pereira et al.,
+2018). Neither the Common Crawl nor the CHILDES corpora used to train
+the semantic networks are meant to represent a \emph{given} child's
+input. By analogy, the number page-hits on google for `recieve' and
+`receive' clarifies which spelling is correct, though google doesn't
+represent an individual's orthographic knowledge; here too, the semantic
+network's structure is used as a knowingly incorrect proxie for
+structure inherent \emph{in the language data} learners are presented
+with.
 
 The notion that we can make inferences about one aspect of an object
 given another aspect is not surprising or controversial. Rather than
 considering multiple dimensions of a word or concept at once, as real
 learners must, here we show that even with the experiences parcelled out
 separately into visual and linguistic spaces, what counts as `similar'
-is conserved to some degree.
+is conserved to some degree. That said, a limitation of the current work
+is that the image vectores are trained on images in context; while
+indeed in real experiences images occur with context that is informative
+about their meaning, extending this approach to decontextualized images
+using unsupervised algorithms would provide a cleaner demonstration of
+`purely' visual similarity; we save this for future work.
 
 Through what metrics can a learning algorithm, or indeed a human,
 establish gradations of likeness? Are these necessarily the same metrics
@@ -463,7 +497,8 @@ experiences, tests of overlapping similarity and relative degrees of
 within-class structure conservation may provide informative leverage for
 predicting age of acquisition across the early vocabulary.
 
-\section{Conclusion}\label{conclusion}
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
 
 We find evidence of links between visual and linguistic features learned
 by two distinct machine learning algorithms which operate over
@@ -480,200 +515,217 @@ vector-space approach can be tied to language acquisition, and provides
 promising new avenues for uncovering cross-representational influences
 on early word and concept learning.
 
-\section{Acknowledgements}\label{acknowledgements}
+\hypertarget{acknowledgements}{%
+\section{Acknowledgements}\label{acknowledgements}}
 
 We thank the SEEDLingS and Bergelson Lab teams, and Eric Bigelow for
 fruitful discussion, and NIH DP5-OD019812.
 
-\section{References}\label{references}
+\hypertarget{references}{%
+\section{References}\label{references}}
 
-\setlength{\parindent}{-0.1in} \setlength{\leftskip}{0.125in} \noindent
+\setlength{\parindent}{-0.1in} 
+\setlength{\leftskip}{0.125in}
+
+\noindent
 
 \hypertarget{refs}{}
-\hypertarget{ref-achille2017emergence}{}
+\leavevmode\hypertarget{ref-achille2017emergence}{}%
 Achille, A., \& Soatto, S. (2017). On the emergence of invariance and
-disentangling in deep representations. \emph{ArXiv Preprint
-ArXiv:1706.01350}.
+disentangling in deep representations. \emph{arXiv Preprint
+arXiv:1706.01350}.
 
-\hypertarget{ref-amatuni2017semantic}{}
+\leavevmode\hypertarget{ref-amatuni2017semantic}{}%
 Amatuni, A., \& Bergelson, E. (2017). Semantic networks generated from
 early linguistic input. In \emph{Proceedings of the 39th annual
 conference of the cognitive science society} (pp. 1538--1543).
 
-\hypertarget{ref-arias2010effects}{}
+\leavevmode\hypertarget{ref-arias2010effects}{}%
 Arias-Trejo, N., \& Plunkett, K. (2010). The effects of perceptual
 similarity and category membership on early word-referent
 identification. \emph{Journal of Experimental Child Psychology},
 \emph{105}(1-2), 63--80.
 
-\hypertarget{ref-bergelson2016seedlings}{}
+\leavevmode\hypertarget{ref-bergelson2016seedlings}{}%
 Bergelson, E. (2016a). Bergelson seedlings homebank corpus.
 \url{http://doi.org/10.21415/T5PK6D}
 
-\hypertarget{ref-bergelson2016seedlingsdatabrary}{}
+\leavevmode\hypertarget{ref-bergelson2016seedlingsdatabrary}{}%
 Bergelson, E. (2016b). SEEDLingS corpus. Retrieved January 26, 2018,
 from \url{https://nyu.databrary.org/volume/228}
 
-\hypertarget{ref-bergelson2017nature}{}
+\leavevmode\hypertarget{ref-bergelson2017nature}{}%
 Bergelson, E., \& Aslin, R. N. (2017). Nature and origins of the lexicon
 in 6-mo-olds. \emph{Proceedings of the National Academy of Sciences},
 \emph{114}(49), 12916--12921.
 
-\hypertarget{ref-bergelson2013acquisition}{}
+\leavevmode\hypertarget{ref-bergelson2013acquisition}{}%
 Bergelson, E., \& Swingley, D. (2013). The acquisition of abstract words
 by young infants. \emph{Cognition}, \emph{127}(3), 391--397.
 
-\hypertarget{ref-brent2001role}{}
+\leavevmode\hypertarget{ref-brent2001role}{}%
 Brent, M. R., \& Siskind, J. M. (2001). The role of exposure to isolated
 words in early vocabulary development. \emph{Cognition}, \emph{81}(2),
 B33--B44.
 
-\hypertarget{ref-colunga2005lexicon}{}
+\leavevmode\hypertarget{ref-colunga2005lexicon}{}%
 Colunga, E., \& Smith, L. B. (2005). From the lexicon to expectations
 about kinds: A role for associative learning. \emph{Psychological
 Review}, \emph{112}(2), 347.
 
-\hypertarget{ref-dale1996lexical}{}
+\leavevmode\hypertarget{ref-dale1996lexical}{}%
 Dale, P. S., \& Fenson, L. (1996). Lexical development norms for young
 children. \emph{Behavior Research Methods, Instruments, \& Computers},
 \emph{28}(1), 125--127.
 
-\hypertarget{ref-edelman1998representation}{}
+\leavevmode\hypertarget{ref-edelman1998representation}{}%
 Edelman, S. (1998). Representation is representation of similarities.
 \emph{Behavioral and Brain Sciences}, \emph{21}(4), 449--467.
 
-\hypertarget{ref-firth1957synopsis}{}
+\leavevmode\hypertarget{ref-firth1957synopsis}{}%
 Firth, J. R. (1957). A synopsis of linguistic theory, 1930-1955.
 \emph{Studies in Linguistic Analysis}.
 
-\hypertarget{ref-frank2017wordbank}{}
+\leavevmode\hypertarget{ref-frank2017wordbank}{}%
 Frank, M. C., Braginsky, M., Yurovsky, D., \& Marchman, V. A. (2017).
 Wordbank: An open repository for developmental vocabulary data.
 \emph{Journal of Child Language}, \emph{44}(3), 677--694.
 
-\hypertarget{ref-frank2009development}{}
+\leavevmode\hypertarget{ref-frank2009development}{}%
 Frank, M. C., Vul, E., \& Johnson, S. P. (2009). Development of infants'
 attention to faces during the first year. \emph{Cognition},
 \emph{110}(2), 160--170.
 
-\hypertarget{ref-gelman1986categories}{}
+\leavevmode\hypertarget{ref-fukushima1982neocognitron}{}%
+Fukushima, K., \& Miyake, S. (1982). Neocognitron: A self-organizing
+neural network model for a mechanism of visual pattern recognition. In
+\emph{Competition and cooperation in neural nets} (pp. 267--285).
+Springer.
+
+\leavevmode\hypertarget{ref-gelman1986categories}{}%
 Gelman, S. A., \& Markman, E. M. (1986). Categories and induction in
 young children. \emph{Cognition}, \emph{23}(3), 183--209.
 
-\hypertarget{ref-gleitman2005hard}{}
+\leavevmode\hypertarget{ref-gleitman2005hard}{}%
 Gleitman, L. R., Cassidy, K., Nappa, R., Papafragou, A., \& Trueswell,
 J. C. (2005). Hard words. \emph{Language Learning and Development},
 \emph{1}(1), 23--64.
 
-\hypertarget{ref-hahn2003similarity}{}
+\leavevmode\hypertarget{ref-hahn2003similarity}{}%
 Hahn, U., Chater, N., \& Richardson, L. B. (2003). Similarity as
 transformation. \emph{Cognition}, \emph{87}(1), 1--32.
 
-\hypertarget{ref-harris1954distributional}{}
+\leavevmode\hypertarget{ref-harris1954distributional}{}%
 Harris, Z. S. (1954). Distributional structure. \emph{Word},
 \emph{10}(2-3), 146--162.
 
-\hypertarget{ref-helmholtz1878facts}{}
+\leavevmode\hypertarget{ref-helmholtz1878facts}{}%
 Helmholtz, H. (1878). The facts of perception. \emph{Selected Writings
 of Hermann Helmholtz}, 1--15.
 
-\hypertarget{ref-james2013principles}{}
+\leavevmode\hypertarget{ref-james2013principles}{}%
 James, W. (1890). \emph{The principles of psychology}. Henry Holt;
 Company.
 
-\hypertarget{ref-kemp2005generative}{}
+\leavevmode\hypertarget{ref-kemp2005generative}{}%
 Kemp, C., Bernstein, A., \& Tenenbaum, J. B. (2005). A generative theory
 of similarity. In \emph{Proceedings of the 27th annual conference of the
 cognitive science society} (pp. 1132--1137).
 
-\hypertarget{ref-landau1992syntactic}{}
+\leavevmode\hypertarget{ref-landau1992syntactic}{}%
 Landau, B., Smith, L. B., \& Jones, S. (1992). Syntactic context and the
 shape bias in children's and adults' lexical learning. \emph{Journal of
 Memory and Language}, \emph{31}(6), 807--825.
 
-\hypertarget{ref-macwhinney2000childes}{}
+\leavevmode\hypertarget{ref-macwhinney2000childes}{}%
 MacWhinney, B. (2000). \emph{The childes project: The database} (Vol.
 2). Psychology Press.
 
-\hypertarget{ref-mandler2000perceptual}{}
+\leavevmode\hypertarget{ref-mandler2000perceptual}{}%
 Mandler, J. M. (2000). Perceptual and conceptual processes in infancy.
 \emph{Journal of Cognition and Development}, \emph{1}(1), 3--36.
 
-\hypertarget{ref-mareschal2001categorization}{}
+\leavevmode\hypertarget{ref-mareschal2001categorization}{}%
 Mareschal, D., \& Quinn, P. C. (2001). Categorization in infancy.
 \emph{Trends in Cognitive Sciences}, \emph{5}(10), 443--450.
 
-\hypertarget{ref-pennington2014glove}{}
+\leavevmode\hypertarget{ref-pennington2014glove}{}%
 Pennington, J., Socher, R., \& Manning, C. (2014). Glove: Global vectors
 for word representation. In \emph{Proceedings of the 2014 conference on
 empirical methods in natural language processing (emnlp)} (pp.
 1532--1543).
 
-\hypertarget{ref-quinn1997reexamination}{}
+\leavevmode\hypertarget{ref-pereira2018toward}{}%
+Pereira, F., Lou, B., Pritchett, B., Ritter, S., Gershman, S. J.,
+Kanwisher, N., \ldots{} Fedorenko, E. (2018). Toward a universal decoder
+of linguistic meaning from brain activation. \emph{Nature
+Communications}, \emph{9}(1), 963.
+
+\leavevmode\hypertarget{ref-quinn1997reexamination}{}%
 Quinn, P. C., \& Eimas, P. D. (1997). A reexamination of the
 perceptual-to-conceptual shift in mental representations. \emph{Review
 of General Psychology}, \emph{1}(3), 271.
 
-\hypertarget{ref-quinn2000emergence}{}
+\leavevmode\hypertarget{ref-quinn2000emergence}{}%
 Quinn, P. C., \& Eimas, P. D. (2000). The emergence of category
 representations during infancy: Are separate perceptual and conceptual
 processes required? \emph{Journal of Cognition and Development},
 \emph{1}(1), 55--61.
 
-\hypertarget{ref-quinn2000understanding}{}
+\leavevmode\hypertarget{ref-quinn2000understanding}{}%
 Quinn, P. C., Johnson, M. H., Mareschal, D., Rakison, D. H., \& Younger,
 B. A. (2000). Understanding early categorization: One process or two?
 \emph{Infancy}, \emph{1}(1), 111--122.
 
-\hypertarget{ref-rosch1978cognition}{}
+\leavevmode\hypertarget{ref-rosch1978cognition}{}%
 Rosch, E., \& Lloyd, B. B. (1978). Cognition and categorization.
 
-\hypertarget{ref-ILSVRC15}{}
+\leavevmode\hypertarget{ref-ILSVRC15}{}%
 Russakovsky, O., Deng, J., Su, H., Krause, J., Satheesh, S., Ma, S.,
 \ldots{} Fei-Fei, L. (2015). ImageNet Large Scale Visual Recognition
 Challenge. \emph{International Journal of Computer Vision (IJCV)},
 \emph{115}(3), 211--252. \url{http://doi.org/10.1007/s11263-015-0816-y}
 
-\hypertarget{ref-shepard1970second}{}
+\leavevmode\hypertarget{ref-shepard1970second}{}%
 Shepard, R. N., \& Chipman, S. (1970). Second-order isomorphism of
 internal representations: Shapes of states. \emph{Cognitive Psychology},
 \emph{1}(1), 1--17.
 
-\hypertarget{ref-shwartz2017opening}{}
+\leavevmode\hypertarget{ref-shwartz2017opening}{}%
 Shwartz-Ziv, R., \& Tishby, N. (2017). Opening the black box of deep
-neural networks via information. \emph{ArXiv Preprint ArXiv:1703.00810}.
+neural networks via information. \emph{arXiv Preprint arXiv:1703.00810}.
 
-\hypertarget{ref-sloutsky2003role}{}
+\leavevmode\hypertarget{ref-sloutsky2003role}{}%
 Sloutsky, V. M. (2003). The role of similarity in the development of
 categorization. \emph{Trends in Cognitive Sciences}, \emph{7}(6),
 246--251.
 
-\hypertarget{ref-sloutsky2001much}{}
+\leavevmode\hypertarget{ref-sloutsky2001much}{}%
 Sloutsky, V. M., Lo, Y.-F., \& Fisher, A. V. (2001). How much does a
 shared name make things similar? Linguistic labels, similarity, and the
 development of inductive inference. \emph{Child Development},
 \emph{72}(6), 1695--1709.
 
-\hypertarget{ref-stager1997infants}{}
+\leavevmode\hypertarget{ref-stager1997infants}{}%
 Stager, C. L., \& Werker, J. F. (1997). Infants listen for more phonetic
 detail in speech perception than in word-learning tasks. \emph{Nature},
 \emph{388}(6640), 381.
 
-\hypertarget{ref-szegedy2016rethinking}{}
+\leavevmode\hypertarget{ref-szegedy2016rethinking}{}%
 Szegedy, C., Vanhoucke, V., Ioffe, S., Shlens, J., \& Wojna, Z. (2016).
 Rethinking the inception architecture for computer vision. In
 \emph{Proceedings of the ieee conference on computer vision and pattern
 recognition} (pp. 2818--2826).
 
-\hypertarget{ref-trauble2007role}{}
+\leavevmode\hypertarget{ref-trauble2007role}{}%
 Träuble, B., \& Pauen, S. (2007). The role of functional information for
 infant categorization. \emph{Cognition}, \emph{105}(2), 362--379.
 
-\hypertarget{ref-tversky1977features}{}
+\leavevmode\hypertarget{ref-tversky1977features}{}%
 Tversky, A. (1977). Features of similarity. \emph{Psychological Review},
 \emph{84}(4), 327.
 
-\hypertarget{ref-yoshida2005linguistic}{}
+\leavevmode\hypertarget{ref-yoshida2005linguistic}{}%
 Yoshida, H., \& Smith, L. B. (2005). Linguistic cues enhance the
 learning of perceptual cues. \emph{Psychological Science}, \emph{16}(2),
 90--95.
