@@ -12,3 +12,5 @@ preserved_structure/data/all_basiclevel.csv
 preserved_structure/tex_out
 *.log
 *.gz
+*.tex
+.idea
