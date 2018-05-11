@@ -38,6 +38,7 @@ library(ggpubr)
 library(broom)
 library(ggrepel)
 library(forcats)
+# library(latex2exp)
 ```
 
 ```{r preliminary_data_loading}
@@ -61,10 +62,14 @@ wb_comp <- read_csv("data/wordbank_comprehension.csv") %>%
     "water"   = "water (beverage)")) %>% 
   filter(definition%in%words27$word) %>% 
     mutate(animate = ifelse(definition %in% animate, "animate", "inanimate"))
-overlap_ratios <- read_csv("data/overlap_ratios.csv") %>% 
+overlap_ratios <- read_csv("data/overlap_table_central.csv") %>% 
   mutate(animate = ifelse(word %in% animate, T, F))
+overlap_ratios_random <- read_csv("data/overlap_table_RANDOM.csv")
 # fix water picture in img space
-neighbor_counts <- read_csv("python/neighbor_counts.csv") %>% 
+neighbor_counts <- read_csv("data/neighbor_counts_central.csv") %>% 
+  rename(definition = word)
+
+neighbor_counts_random <- read_csv("data/neighbor_counts_RANDOM.csv") %>% 
   rename(definition = word)
 
 stimuli_counts <- read_csv("python/stimuli_counts.csv")
@@ -133,22 +138,29 @@ pairwise_corr_string <- sprintf("$R = %0.2f$, $p < %1.2g$", pairwise_corr$estima
 shapiro.test(overlap_ratios$overlap_ratio)#almost normal
 overlap_wilcox <- wilcox.test(overlap_ratios$overlap_ratio)# significantly different from chance
 #even with correction, both animate and animate overlaps>0, not different from each other
-wilcox.test(subset(overlap_ratios, animate==F)$overlap_ratio)
-wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio)
-wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio,
-            subset(overlap_ratios, animate==F)$overlap_ratio)
+# wilcox.test(subset(overlap_ratios, animate==F)$overlap_ratio)
+# wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio)
+# wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio,
+#             subset(overlap_ratios, animate==F)$overlap_ratio)
+
+shapiro.test(overlap_ratios_random$overlap_ratio)#almost normal
+overlap_wilcox_random <- wilcox.test(overlap_ratios_random$overlap_ratio)
+# overlap_wilcox
+# overlap_wilcox_random
+# 
+# wilcox.test(overlap_ratios$overlap_ratio, overlap_ratios_random$overlap_ratio)
 
 ```
 
 
-```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=3.7, fig.width=3.4}
+```{r pairwise-corr, echo = F, fig.cap = cap, fig.height=2.8, fig.width=3.3}
 ggplot(combo, aes(cos_word, cos_img))+
   geom_point(size=3, shape =1)+
   geom_smooth(method="lm", aes(group=1), show.legend=F, fill ="red", alpha = .7)+
   geom_smooth(method="lm", aes(group=1), se=F)+ # this second line is to trick ggplot into not putting the gray fill in the boxes in the legend (coming from the standard error in the first line)
   theme_bw()+
-  xlab("Cosine Word")+
-  ylab("Cosine Image")+
+  xlab("d(x, y) Word")+
+  ylab("$d(x, y) Image")+
   xlim(0.2,0.80)+
   ylim(0.2,0.7)+
   theme(legend.position="bottom", 
@@ -166,7 +178,7 @@ To test whether image- and word-based similarity converged for this set of 27 it
 
 Next, we examined the degree to which our set of 27 words shared overlapping 'neighbors' in the two vector spaces (see Figure \ref{fig:overlap-table}). We defined neighbor by first determining the mean similarity distance between each item and the 26 other items. Any items whose distance to this target had a zscore of less than -1 was considered a neighbor. Within word-space, items had on average `r round(mean(neighbor_counts$word_count), 2)` neighbors ($SD=`r round(sd(neighbor_counts$word_count), 2)`$ , $R=`r min(neighbor_counts$word_count)`-`r max(neighbor_counts$word_count)`)$. Within image-space, items had 2.51 neighbors ($SD=`r round(sd(neighbor_counts$image_count), 2)`$, $R=`r min(neighbor_counts$image_count)`-`r max(neighbor_counts$image_count)`$).
 
-We next tested whether both spaces picked out overlapping neighbors (e.g. whether the neighbor of 'cat' in image-space overlapped with the neighbors of 'cat' in word-space, see Figure \ref{fig:overlap-table}). The majority of items have at least 1 neighbor which is shared across representational spaces. To quantify this overlap, we computed overlap ratios, which measured how many of the neighbors overlapped, divided by how many neighbors there were. Overlap was significantly greater than 0 ($M=`r round(mean(overlap_ratios$overlap_ratio), 2)`$, $SD=`r round(sd(overlap_ratios$overlap_ratio), 2)`$, $p < 0.001$ by Wilcoxon test). This complements the correlational analysis, showing not just that the distances for any given pair tended to have similar values in image-space and word-space, but that the *most* similar words/images (i.e. each item's neighbors) were also consistent across these spaces.
+We next tested whether both spaces picked out overlapping neighbors (e.g. whether the neighbor of 'cat' in image-space overlapped with the neighbors of 'cat' in word-space, see Figure \ref{fig:overlap-table}). The majority of items have at least 1 neighbor which is shared across representational spaces. To quantify this overlap, we computed overlap ratios, which measured how many of the neighbors overlapped, divided by how many neighbors there were. Overlap was significantly greater than 0 ($M=`r round(mean(overlap_ratios$overlap_ratio), 3)`$, $SD=`r round(sd(overlap_ratios$overlap_ratio), 2)`$, $p < 0.001$ by Wilcoxon test). This complements the correlational analysis, showing not just that the distances for any given pair tended to have similar values in image-space and word-space, but that the *most* similar words/images (i.e. each item's neighbors) were also consistent across these spaces.
 
 
 
@@ -182,14 +194,14 @@ wb_prod_long_allmonths <- wb_prod_long %>%
   group_by(definition, animate) %>% 
   summarise(overall_prop_prod = mean(mean_prop_prod)) %>% 
   left_join(neighbor_counts) %>% 
-  mutate(totalneighbors = image_count+word_count+overlap_count,
+  mutate(totalneighbors = (image_count+word_count)-overlap_count,
          overlapratio = overlap_count/totalneighbors)
 
 wb_comp_long_allmonths <- wb_comp_long %>% 
   group_by(definition, animate) %>% 
   summarise(overall_prop_comp = mean(mean_prop_comp)) %>% 
   left_join(neighbor_counts) %>% 
-  mutate(totalneighbors = image_count+word_count+overlap_count,
+  mutate(totalneighbors = (image_count+word_count)-overlap_count,
          overlapratio = overlap_count/totalneighbors)
 
 prod_overlap_corr <- cor.test(wb_prod_long_allmonths$overall_prop_prod, wb_prod_long_allmonths$overlap_count, conf.int=T) %>% tidy()
@@ -203,6 +215,9 @@ wb_all<- wb_comp_long_allmonths %>%
     "comprehension" = "overall_prop_comp"
   ))
 
+write.csv(wb_all, "overlap_correlations.csv")
+
+# cor.test(wb_all$overlap_count, wb_all$prop_kids) # correlation
 ```
 
 ```{r overlap-aoa-graphs, echo=F, fig.cap = cap, fig.width = 3.5, fig.height=3}
@@ -221,7 +236,62 @@ ggplot(wb_all, aes(overlap_count,prop_kids, color = comp_prod))+
 cap <- "Proportion of children in WordBank reported to understand (left, averaged over 8-18 months) or produce (right, averaged over 16-30 months) the 27 items, as a function of how many overlapping neighbors they have (i.e. in both image- and word-space). Lines indicates linear fit with SE confidence bands (both R$>$-.45, p$<$.05)."
 ```
 
-We found that the number of overlapping neighbors a given word had was negatively correlated with the proportion of children who were reported to understand the word ($R=`r round(comp_overlap_corr$estimate, 2)`$, $p = `r round(comp_overlap_corr$p.value, 3)`$) and produce the word ($R=`r round(prod_overlap_corr$estimate, 2)`$, $p = `r round(prod_overlap_corr$p.value, 3)`$); see Figure \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping neighbors are later-learned (or put otherwise, known by fewer children) than words with fewer overlapping neighbors. To test whether this was specific to overlap, we examined the number of image-only and word-only neighbors (see Figure \ref{fig:overlap-table})); these measures did not correlate with word knowledge (all $p > .05$).
+
+
+
+```{r overlap-aoa-random, echo=F}
+wb_prod_long <- wb_prod %>% 
+  gather(`16`:`30`, value = 'mean_prop_prod', key = "month")
+wb_comp_long <- wb_comp %>% 
+  gather(`8`:`18`, value = 'mean_prop_comp', key = "month")
+wb_prod_long_allmonths_random <- wb_prod_long %>% 
+  group_by(definition, animate) %>% 
+  summarise(overall_prop_prod = mean(mean_prop_prod)) %>% 
+  left_join(neighbor_counts_random) %>% 
+  mutate(totalneighbors = (image_count+word_count)-overlap_count,
+         overlapratio = overlap_count/totalneighbors)
+
+wb_comp_long_allmonths_random <- wb_comp_long %>% 
+  group_by(definition, animate) %>% 
+  summarise(overall_prop_comp = mean(mean_prop_comp)) %>% 
+  left_join(neighbor_counts_random) %>% 
+  mutate(totalneighbors = (image_count+word_count)-overlap_count,
+         overlapratio = overlap_count/totalneighbors)
+
+prod_overlap_corr_random <- cor.test(wb_prod_long_allmonths_random$overall_prop_prod, wb_prod_long_allmonths_random$overlap_count, conf.int=T) %>% tidy()
+comp_overlap_corr_random <- cor.test(wb_comp_long_allmonths_random$overall_prop_comp, wb_comp_long_allmonths_random$overlap_count, conf.int=T) %>% tidy()
+
+wb_all_random<- wb_comp_long_allmonths_random %>% 
+  left_join(wb_prod_long_allmonths_random) %>% 
+  gather(c(overall_prop_comp, overall_prop_prod), value = prop_kids, key = comp_prod ) %>% 
+  mutate(comp_prod = fct_recode(comp_prod,
+    "production" = "overall_prop_prod",
+    "comprehension" = "overall_prop_comp"
+  ))
+
+
+# cor.test(wb_all_random$overlap_count, wb_all_random$prop_kids) # no correlation with random vecs
+# cor.test(wb_all$overlap_count, wb_all$prop_kids) # correlation
+```
+
+```{r overlap-aoa-graphs-random, echo=F, fig.cap = cap, fig.width = 3.5, fig.height=3, eval=F}
+
+# for random vector, no relationship between overlap and learnability
+
+ggplot(wb_all_random, aes(overlap_count,prop_kids, color = comp_prod))+
+  geom_point(shape=1)+
+  geom_text_repel(aes(label = definition), size=2.4, force=2)+
+  facet_wrap(~comp_prod, scales = "free_y")+
+  stat_smooth(method = "lm")+
+  theme_bw(base_size = 10)+
+  theme(axis.title=element_text(size=7))+
+  guides(colour = "none")+
+  xlab("# of overlapping neighbors")+
+  ylab("prop. word knowledge")
+
+```
+
+We found that the number of overlapping neighbors a given word had was negatively correlated with the proportion of children who were reported to understand the word ($R=`r round(comp_overlap_corr$estimate, 2)`$, $p = `r round(comp_overlap_corr$p.value, 3)`$) and produce the word ($R=`r round(prod_overlap_corr$estimate, 2)`$, $p = `r round(prod_overlap_corr$p.value, 3)`$); see Figure \ref{fig:overlap-aoa-graphs}. That is, words with more overlapping neighbors are later-learned (or put otherwise, known by fewer children) than words with fewer overlapping neighbors. To test whether this was specific to overlap, we examined the number of image-only and word-only neighbors (see Figure \ref{fig:overlap-table})); these measures did not correlate with word knowledge (all $p > .05$). Analyses using randomly generated vectors of identical dimensionality showed no preserved structure across spaces, no such learning correlate, and while overlap was significantly greater than 0, the mean overlap ratio was less than a third of that found in the trained vector set ($M$ = `r round(mean(overlap_ratios_random$overlap_ratio), 3)`, $SD=`r round(sd(overlap_ratios_random$overlap_ratio), 3)`$,  $p < 0.001$ by Wilcoxon test). 
 
 
 
