@@ -117,10 +117,8 @@ top_5_perf = sum(perf$top_5)/length(perf$top_5)
 ```
 
 This is not a distance function in the strict sense, but unlike Euclidean distance, is less susceptible to differences in $L^2$ norm influencing our measure of similarity. Thus in principle, cosine similarity corrects for frequency effects inherent to the training data. To validate our image vectors, we benchmarked classification accuracy, finding that Inception V3 is indeed learning useful representations of these highly child-centric images: the model's top prediction was of the correct item-class `r round(top_1_perf, 2)*100`% of the time; in `r round(top_5_perf, 2)*100`% of cases it was in the top 5. 
-<!-- eb:check if my reword is correct (top 1 = `r round(top_1_perf, 2)`, top 5 = `r round(top_5_perf, 2)`).  -->
 Even when incorrect, predictions tended to reflect idiosyncrasies in child-relevant items, e.g. the top guess for a cartoon puppy was "teddy". 
-<!-- eb: if we're really stuck for space, can drop the above sentence -->
-<!-- eb: taking a break, will resume here but committing for now -->
+
 
 ## Comparing spaces 
 Having computed our two sets of vectors (i.e. word-space and image-space), we can compare pairwise distances between items, both within a single space and across the two. When comparing across the two spaces, a correlation in pairwise distances implies that inter-object distances have been conserved. For example, if "dog" and "cat" are close together in word space and mutually far apart from "chair" and "table" in that same space, maintaining this relationship for all pairwise distances in the \textit{other} vector space means that the global inter-object structure is preserved across this mapping. This is despite being in strikingly different spaces, both in terms of dimensionality (words:300, images:2048) and by virtue of using completely different algorithms and inputs to establish the vector representations for items. So while their absolute locations might have been transformed, this correlation (and related computations) would be a measure of the \textit{degree of invariance} in their positioning relative to each other. 
@@ -141,8 +139,8 @@ overlap_wilcox <- wilcox.test(overlap_ratios$overlap_ratio, conf.int=T)# signifi
 # wilcox.test(subset(overlap_ratios, animate==T)$overlap_ratio,
 #             subset(overlap_ratios, animate==F)$overlap_ratio)
 
-shapiro.test(overlap_ratios_random$overlap_ratio)#almost normal
-#eb: uh no it's not
+shapiro.test(overlap_ratios_random$overlap_ratio)
+
 overlap_wilcox_random <- wilcox.test(overlap_ratios_random$overlap_ratio, conf.int=T)
 # overlap_wilcox
 # overlap_wilcox_random
@@ -316,7 +314,6 @@ Through what metrics can a learning algorithm, or indeed a human, establish grad
 In principle, one would expect that words with greater invariance across different representational dimensions would be learned earlier, since such representations are likely easier to make categorical inferences over. Indeed, while many words lack visual correlates, e.g. grammatical markers or unobservables [@gleitman2005hard], words with less consistent visual features are generally learned later [@dale1996lexical; @bergelson2013acquisition]. This is in contrast to the more helpful scenario where, for example, visibly round objects occur with 'roll'; indeed such correlated perceptual and linguistic cues aid the child learner [@yoshida2005linguistic]. 
 
 Our WordBank-based analysis speaks to this, highlighting that for these concrete nouns, when the space is cluttered along both visual and linguistic dimensions, learning is slower. Notably, we find no effect of word- or image-only neighbors, suggesting that the overlap-neighbor effect may indeed be due to the (perhaps more noticeable) “clutter” across spaces. Such an account is in keeping with research that finds that for displays of semantically-similar items, word comprehension is reduced [@bergelson2017nature; @arias2010effects]. Similar feature-space cluttering effects have been a standard in the visual search literature, where target-to-distractor similarity reduces speed and accuracy of search [@treisman1988feature; @duncan1989visual]. 
-<!-- eb: dropped @treisman1991search; just for space -->
 Interestingly, when learning the structure of new objects, adults learning Chinese characters perform better in visual search when they are trained with characters that force attention to the points of confluence between features [@popov2017target]; perhaps infants do the same. That said, while concrete nouns are an appropriate target for these current analyses given their demonstrably early age of acquisition [@dale1996lexical], further work with more abstract words (nouns and beyond) is a clear next step. 
 
 The results here provide in-principle proof that vector space models of words and images can be fruitfully combined and linked to early language and concept learning. Our approach could readily be extended to examine learning-relevant properties like animacy, shape, and color (e.g. Frank, Vul, & Johnson [-@frank2009development], Landau, Smith, & Jones [-@landau1992syntactic]). Along these lines, in an exploratory analyses with these items we find that splitting item-pairs into animate, inanimate, and mixed categories suggests that the image- and word-based correlation is particularly strong for the inanimate items, though with only 27 items, further conclusions are as-yet unwarranted. However, one can imagine that in a larger database of children's visual and linguistic experiences, tests of overlapping similarity and relative degrees of within-class structure conservation may provide informative leverage for predicting age of acquisition across the early vocabulary.
